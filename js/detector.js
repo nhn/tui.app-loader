@@ -80,6 +80,10 @@
         }
     };
 
+    /****************
+     * Android series
+     ****************/
+
     /**
      * 안드로이드 intent지원 불가 detector
      */
@@ -163,6 +167,10 @@
         }
     }, detector);
 
+    /****************
+     * iOS series
+     ****************/
+
     /**
      * ios 구버전 detector
      */
@@ -201,6 +209,10 @@
             this.runAppWithIframe(context.urlScheme);
         }
     }, iosDetector);
+
+    /****************
+     * ETC
+     ****************/
 
     /**
      * 기타 브라우저

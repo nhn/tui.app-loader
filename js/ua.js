@@ -3,9 +3,9 @@
  * @dependency code-snippet.js
  */
 (function(exports) {
-    /**
-     * 정규식 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
-     */
+    /***************
+     * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
+     ***************/
     var mobileRegText = {
         "phones": {
             "iPhone": "\\biPhone\\b|\\biPod\\b",
@@ -155,6 +155,7 @@
         cache = {},
         hasOwnProp = Object.prototype.hasOwnProperty;
 
+    // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
     (function init() {
         var key, values, value, i, len, verPos, mobileDetectRules = mobileRegText;
         for (key in mobileDetectRules.props) {
@@ -188,6 +189,14 @@
             WindowsMobileOS: mobileDetectRules.oss.WindowsMobileOS
         };
     }());
+    /****************
+     * RegExp processing end : original - mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
+     ****************/
+
+
+    /****************
+     * Device, OS, Browser Information collecting
+     ****************/
 
     /**
      * userAgent 를 받아온다

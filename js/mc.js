@@ -6,6 +6,11 @@
     "use strict";
 
     var CallAppMobile = ne.util.defineClass(/** @lends CallAppMobile.prototype */{
+
+        /****************
+         * member fields
+         ****************/
+
         /**
          * browser, device detector
          */
@@ -27,6 +32,10 @@
                 scheme: ''
             }
         },
+
+        /****************
+         * member methods
+         ****************/
 
         /**
          * 초기화
