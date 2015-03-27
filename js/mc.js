@@ -9,7 +9,7 @@
     };
 
     /**
-     * 공통기능 모음
+     * detectors 공통기능 모음
      */
     var detector = {
         /**
@@ -76,7 +76,7 @@
     };
 
     /**
-     * 안드로이드 No intentURL
+     * 안드로이드 intent지원 불가 detector
      */
     var androidSchemeDetector = ne.util.extend({
         type: 'scheme',
@@ -88,7 +88,7 @@
     }, detector);
 
     /**
-     * 안드로이드 intentURL
+     * 안드로이드 intent지원 detector
      */
     var androidIntendDetector = {
         type: 'intend',
@@ -100,7 +100,7 @@
     };
 
     /**
-     * IOS
+     * iosDetector 공통기능
      */
     var iosDetector = ne.util.extend({
         type: 'ios',
@@ -108,7 +108,7 @@
             window.location.href = storeURL;
         },
         /**
-         * 아몰라
+         * visiblitychange  이벤트 등록
          */
         bindVisibilityChangeEvent: function() {
             document.addEventListener('visibilitychange', function clear() {
@@ -119,7 +119,7 @@
             });
         },
         /**
-         * 아몰라
+         *  pagehide 이벤트 등록
          */
         bindPagehideEvent: function() {
             var self = this;
@@ -133,7 +133,7 @@
     }, detector);
 
     /**
-     * ios 7 이하
+     * ios 구버전 detector
      */
     var iosOlderDetector = ne.util.extend({
         run: function(context) {
@@ -146,7 +146,7 @@
     }, iosDetector);
 
     /**
-     * ios 8 이상
+     * ios 신버전 detector
      * @type {Object|void|*}
      */
     var iosRecentDetector = ne.util.extend({
@@ -226,6 +226,9 @@
             } else { //기타 환경일경우 detector 셋팅
                 setTimeout(function () {
                     self.detector = etcDetector;
+                    if (context.etcCallback) {
+                        etcDetector.run = context.etcCallback;
+                    }
                 }, TIMEOUT.INTERVAL);
             }
 
@@ -253,6 +256,17 @@
         /**
          * 앱을 호출한다.
          * @param options
+         * @exmaple
+         * appLoader.exec({
+         *      name: 'app', // application Name (ex. facebook, twitter, daum)
+         *      ios: {
+         *          scheme: 'fecheck://', // iphone app scheme
+         *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
+         *      },
+         *      and: {
+         *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+         *      }
+         *  });
          */
         exec: function(options) {
             options = ne.util.extend(this.defaults, options);
@@ -270,4 +284,4 @@
 
     exports.appLoader = new CallAppMobile;
 
-})(window, app);
+})(window, window.app);
