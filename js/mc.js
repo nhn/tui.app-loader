@@ -23,11 +23,16 @@
                 scheme: ''
             }
         },
+
+        /**
+         * 초기화
+         */
         init: function() {
             this.ua = app.userAgent();
             this.os = app.getOS();
             this.version = app.version(app.ios ? app.device : 'Android');
         },
+
         /***
          * Detector를 os에 따라 선택
          * @param {object} context 옵션값
@@ -38,7 +43,6 @@
                 isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
                 isIntend = ne.util.isExisty(context.intentURI),
                 store = context.storeURL;
-
             if (app.android) { // 안드로이드일경우 detector 셋팅
                 if (isNotIntend && store) {
                     this.detector = androidSchemeDetector;
@@ -55,12 +59,13 @@
                 setTimeout(function () {
                     self.detector = etcDetector;
                     if (context.etcCallback) {
-                        etcDetector.run = context.etcCallback;
+                        context.etcCallback();
                     }
                 }, 100);
             }
 
         },
+
         /**
          * 선택된 detector 실행
          */
@@ -69,6 +74,7 @@
                 this.detector.run(context);
             }
         },
+
         /**
          * intent 미지원 브라우저 여부 판별
          * @returns {boolean}
@@ -102,7 +108,8 @@
                 appName: options.name,
                 urlScheme: options.ios.scheme,
                 storeURL: options.ios.url,
-                intentURI: options.and.scheme
+                intentURI: options.and.scheme,
+                etcCallback: options.etcCallback
             };
             this.setDetector(context);
             this.runDetector(context);

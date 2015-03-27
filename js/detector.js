@@ -21,6 +21,7 @@
                 iframe.src = urlScheme;
             }, TIMEOUT.INTERVAL);
         },
+
         /**
          * iframe 생성
          * @param {string} id iframe ID
@@ -38,6 +39,7 @@
             document.body.appendChild(iframe);
             return iframe;
         },
+
         /**
          * fallback함수를 time에 따라 지연실행
          * @param {string} time 지연시간
@@ -45,7 +47,7 @@
          * @param {function} fallback 실행함수
          * @returns {number}
          */
-        deferFallback: function(time, url, fallback) {
+        deferFallback: function(url, fallback, time) {
             var clickedAt = new Date().getTime(),
                 self = this;
 
@@ -56,6 +58,7 @@
                 }
             }, time);
         },
+
         /**
          * check a webpage is visible or in focus
          * @returns {boolean}
@@ -77,10 +80,18 @@
      * 안드로이드 intent지원 불가 detector
      */
     var androidSchemeDetector = ne.util.extend({
+        /**
+         * detector type
+         */
         type: 'scheme',
+
+        /**
+         * detector 실행
+         * @param {object} context
+         */
         run: function(context) {
             var storeURL = context.storeURL;
-            this.deferFallback(TIMEOUT.ANDROID, storeURL, context.notFoundCallback);
+            this.deferFallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
             this.runAppWithIframe(context.urlScheme);
         }
     }, detector);
@@ -89,7 +100,15 @@
      * 안드로이드 intent지원 detector
      */
     var androidIntendDetector = {
+        /**
+         * detector type
+         */
         type: 'intend',
+
+        /**
+         * detector 실행
+         * @param {object} context
+         */
         run: function(context) {
             setTimeout(function () {
                 top.location.href = context.intentURI;
@@ -101,10 +120,19 @@
      * iosDetector 공통기능
      */
     var iosDetector = ne.util.extend({
+        /**
+         * detector type
+         */
         type: 'ios',
+
+        /**
+         * 기본 앱페이지 이동함수
+         * @param storeURL
+         */
         moveTo: function(storeURL) {
             window.location.href = storeURL;
         },
+
         /**
          * visiblitychange  이벤트 등록
          */
@@ -116,6 +144,7 @@
                 }
             });
         },
+
         /**
          *  pagehide 이벤트 등록
          */
@@ -134,10 +163,14 @@
      * ios 구버전 detector
      */
     var iosOlderDetector = ne.util.extend({
+        /**
+         * detector 실행
+         * @param {object} context
+         */
         run: function(context) {
             var storeURL = context.storeURL,
                 fallback = context.notFoundCallback || this.moveTo;
-            this.tid = this.deferFallback(TIMEOUT.IOS_LONG, storeURL, fallback);
+            this.tid = this.deferFallback(storeURL, fallback, TIMEOUT.IOS_LONG);
             this.bindPagehideEvent();
             this.runAppWithIframe(context.urlScheme);
         }
@@ -148,13 +181,17 @@
      * @type {Object|void|*}
      */
     var iosRecentDetector = ne.util.extend({
+        /**
+         * detector 실행
+         * @param {object} context
+         */
         run: function(context) {
             var storeURL = context.storeURL,
                 fallback = context.notFoundCallback || this.moveTo;
             if (this.moveTo === fallback) {
-                this.tid = this.deferFallback(TIMEOUT.IOS_SHORT, storeURL, fallback);
+                this.tid = this.deferFallback(storeURL, fallback, TIMEOUT.IOS_SHORT);
             } else {
-                this.tid = this.deferFallback(TIMEOUT.IOS_LONG, storeURL, fallback);
+                this.tid = this.deferFallback(storeURL, fallback, TIMEOUT.IOS_LONG);
             }
             this.bindVisibilityChangeEvent();
             this.runAppWithIframe(context.urlScheme);

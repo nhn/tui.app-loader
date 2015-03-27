@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title></title>
     <script type="text/javascript" src="js/code-snippet.js"></script>
+    <script type="text/javascript" src="js/detector.js"></script>
     <script type="text/javascript" src="js/ua.js"></script>
     <script type="text/javascript" src="js/mc.js"></script>
     <script type="text/javascript">
@@ -16,6 +17,9 @@
             },
             and: {
                 scheme: 'intent://home#Intent;scheme=elevenst;package=com.elevenst;end'
+            },
+            etcCallback: function() {
+                alert('미지원 브라우저입니다.');
             }
         });
 
