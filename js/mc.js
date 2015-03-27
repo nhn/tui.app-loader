@@ -1,3 +1,7 @@
+/**
+ * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @dependency code-snippet.js, detector.js, ua.js
+ */
 (function(exports, app) {
     "use strict";
 

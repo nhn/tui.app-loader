@@ -1,3 +1,7 @@
+/**
+ * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
+ * @dependency code-snippet.js
+ */
 (function(exports) {
     /**
      * 정규식 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]

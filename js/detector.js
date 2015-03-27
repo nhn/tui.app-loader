@@ -1,3 +1,7 @@
+/**
+ * @fileoverview 각 환경별 앱을 실행시키는 액션객체들을 모아둔 파일
+ * @dependency code-snipet.js, ua.js
+ */
 (function(exports) {
     var TIMEOUT = {
         IOS_SHORT: 1000,
