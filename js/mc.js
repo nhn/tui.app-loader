@@ -56,7 +56,7 @@
                 isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
                 isIntend = ne.util.isExisty(context.intentURI),
                 store = context.storeURL;
-            if (app.android) { // 안드로이드일경우 detector 셋팅
+            if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
                 if (isNotIntend && store) {
                     this.detector = androidSchemeDetector;
                 } else if (isIntend) {
@@ -100,6 +100,7 @@
             var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), "i");
             return blackListRegexp.test(app.ua);
         },
+
         /**
          * 앱을 호출한다.
          * @param options
@@ -122,7 +123,8 @@
                 urlScheme: options.ios.scheme,
                 storeURL: options.ios.url,
                 intentURI: options.and.scheme,
-                etcCallback: options.etcCallback
+                etcCallback: options.etcCallback,
+                andVersion: options.and.version
             };
             this.setDetector(context);
             this.runDetector(context);
