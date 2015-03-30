@@ -3,11 +3,11 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <!--<script type="text/javascript" src="js/code-snippet.js"></script>-->
-    <!--<script type="text/javascript" src="js/detector.js"></script>-->
-    <!--<script type="text/javascript" src="js/ua.js"></script>-->
-    <!--<script type="text/javascript" src="js/mc.js"></script>-->
-    <script type="text/javascript" src="module-apploader.js"></script>
+    <script type="text/javascript" src="js/code-snippet.js"></script>
+    <script type="text/javascript" src="js/detector.js"></script>
+    <script type="text/javascript" src="js/ua.js"></script>
+    <script type="text/javascript" src="js/mc.js"></script>
+    <!--<script type="text/javascript" src="module-apploader.js"></script>-->
     <script type="text/javascript">
         // 실행
         appLoader.exec({
@@ -17,7 +17,8 @@
                 url: 'itms-apps://itunes.apple.com/app/id397938216?mt=8'
             },
             and: {
-                scheme: 'intent://home#Intent;scheme=elevenst;package=com.elevenst;end'
+                scheme: 'intent://home#Intent;scheme=elevenst;package=com.elevenst;end',
+                version: 4.0 // android 지원 브라우저
             },
             etcCallback: function() {
                 alert('미지원 브라우저입니다.');
