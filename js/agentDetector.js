@@ -1,6 +1,7 @@
 /**
  * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
  * @dependency code-snippet.js
+ * @author FE개발팀
  */
 (function(exports) {
     /***************
@@ -312,7 +313,7 @@
         }
     }
 
-    exports.app = {
+    exports.agentDetector = {
         userAgent: getUserAgent,
         getOS: getOS,
         ua: ua,

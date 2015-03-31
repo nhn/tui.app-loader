@@ -1,11 +1,12 @@
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
- * @dependency code-snippet.js, detector.js, ua.js
+ * @dependency code-snippet.js, detectors.js, agentDetector.js
+ * @author FE개발팀
  */
 (function(exports, app) {
     'use strict';
 
-    var CallAppMobile = ne.util.defineClass(/** @lends CallAppMobile.prototype */{
+    var MobileCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
 
         /****************
          * member fields
@@ -28,7 +29,7 @@
                 scheme: '',
                 url: ''
             },
-            and: {
+            android: {
                 scheme: ''
             }
         },
@@ -51,7 +52,6 @@
          * @param {object} context 옵션값
          */
         setDetector: function(context) {
-
             var self = this,
                 isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
                 isIntend = ne.util.isExisty(context.intentURI),
@@ -76,13 +76,13 @@
                     }
                 }, 100);
             }
-
         },
 
         /**
          * 선택된 detector 실행
          */
         runDetector: function(context) {
+            // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
             if(this.detector && (this.detector.type !== etcDetector.type)) {
                 this.detector.run(context);
             }
@@ -105,13 +105,13 @@
          * 앱을 호출한다.
          * @param options
          * @exmaple
-         * appLoader.exec({
+         * mobileCaller.exec({
          *      name: 'app', // application Name (ex. facebook, twitter, daum)
          *      ios: {
          *          scheme: 'fecheck://', // iphone app scheme
          *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
          *      },
-         *      and: {
+         *      android: {
          *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
          *      }
          *  });
@@ -122,9 +122,9 @@
                 appName: options.name,
                 urlScheme: options.ios.scheme,
                 storeURL: options.ios.url,
-                intentURI: options.and.scheme,
+                intentURI: options.android.scheme,
                 etcCallback: options.etcCallback,
-                andVersion: options.and.version
+                andVersion: options.android.version
             };
             this.setDetector(context);
             this.runDetector(context);
@@ -132,6 +132,6 @@
         }
     });
 
-    exports.appLoader = new CallAppMobile;
+    exports.mobileCaller = new MobileCaller();
 
-})(window, window.app);
+})(window, window.agentDetector);
