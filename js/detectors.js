@@ -233,5 +233,5 @@
         etcDetector: etcDetector
     });
 
-})(window);
+})(ne.component.appCaller);
 
