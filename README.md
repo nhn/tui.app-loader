@@ -29,4 +29,4 @@ App Loader
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| 0.1.0 | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
+| 1.0.0 | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
