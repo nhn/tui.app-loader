@@ -1,171 +1,170 @@
-/*!module-apploader v0.0.1 | NHN Entertainment*/
-/**********
- * mobileCaller.js
- **********/
-
+/*!app-loader v1.0.0a | NHN Entertainment*/
+(function() {
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author FE개발팀
  */
-(function(ne) {
-    'use strict';
-    /* istanbul ignore if */
-    if (!ne) {
-        ne = window.ne = {};
-    }
-    if (!ne.component) {
-        ne.component = window.ne.component = {};
-    }
+/* istanbul ignore if */
+if (!ne) {
+    ne = window.ne = {};
+}
+if (!ne.component) {
+    ne.component = window.ne.component = {};
+}
+/**
+ * @constructor
+ */
+ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
+    /****************
+     * member fields
+     ****************/
 
-    ne.component.appCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
-
-        /****************
-         * member fields
-         ****************/
-
-        /**
-         * browser, device detector
-         */
-        detector: null,
-        /**
-         * OS (android/ios/etc)
-         */
-        os: null,
-        /**
-         * default options to run exec
-         */
-        defaults: {
-            name: '',
-            ios: {
-                scheme: '',
-                url: ''
-            },
-            android: {
-                scheme: ''
-            }
+    /**
+     * browser, device detector
+     */
+    detector: null,
+    /**
+     * OS (android/ios/etc)
+     */
+    os: null,
+    /**
+     * default options to run exec
+     */
+    defaults: {
+        name: '',
+        ios: {
+            scheme: '',
+            url: ''
         },
-
-        /****************
-         * member methods
-         ****************/
-
-        /**
-         * 초기화
-         */
-        init: function() {
-            var app = ne.component.appCaller.agentDetector;
-            this.ua = app.userAgent();
-            this.os = app.getOS();
-            this.version = app.version(app.ios ? app.device : 'Android');
-        },
-
-        /***
-         * Detector를 os에 따라 선택
-         * @param {object} context 옵션값
-         */
-        setDetector: function(context) {
-            var self = this,
-                isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
-                isIntend = ne.util.isExisty(context.intentURI),
-                store = context.storeURL,
-                construct = ne.component.appCaller,
-                app = construct.agentDetector;
-
-            if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
-                if (isNotIntend && store) {
-                    this.detector = construct.androidSchemeDetector;
-                } else if (isIntend) {
-                    this.detector = construct.androidIntendDetector;
-                }
-            } else if (app.ios && store) {// IOS일경우 detector 셋팅
-                if(parseInt(this.version.major, 10) < 8) {
-                    this.detector = construct.iosOlderDetector;
-                } else {
-                    this.detector = construct.iosRecentDetector;
-                }
-            } else { //기타 환경일경우 detector 셋팅
-                setTimeout(function () {
-                    self.detector = construct.etcDetector;
-                    if (context.etcCallback) {
-                        context.etcCallback();
-                    }
-                }, 100);
-            }
-        },
-
-        /**
-         * 선택된 detector 실행
-         */
-        runDetector: function(context) {
-            // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-            var construct = ne.component.appCaller;
-            if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
-                this.detector.run(context);
-            }
-        },
-
-        /**
-         * intent 미지원 브라우저 여부 판별
-         * @returns {boolean}
-         */
-        isIntentLess: function() {
-            var intentlessBrowsers = [
-                'firefox',
-                'opr'
-            ];
-            var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
-                app = ne.component.appCaller.agentDetector;
-            return blackListRegexp.test(app.ua);
-        },
-
-        /**
-         * 앱을 호출한다.
-         * @param options
-         * @exmaple
-         * mobileCaller.exec({
-         *      name: 'app', // application Name (ex. facebook, twitter, daum)
-         *      ios: {
-         *          scheme: 'fecheck://', // iphone app scheme
-         *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
-         *      },
-         *      android: {
-         *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
-         *      }
-         *  });
-         */
-        exec: function(options) {
-            options = ne.util.extend(this.defaults, options);
-            var context = {
-                appName: options.name,
-                urlScheme: options.ios.scheme,
-                storeURL: options.ios.url,
-                intentURI: options.android.scheme,
-                etcCallback: options.etcCallback,
-                andVersion: options.android.version
-            };
-            this.setDetector(context);
-            this.runDetector(context);
-
+        android: {
+            scheme: ''
         }
-    });
+    },
 
-})(window.ne);
-/**********
- * agentDetector.js
- **********/
+    /****************
+     * member methods
+     ****************/
+
+    /**
+     * 초기화
+     */
+    init: function() {
+        var ad = this.agentDetector = new ne.component.AppLoader.agentDetector();
+        this.ua = ad.userAgent();
+        this.os = ad.getOS();
+        this.version = ad.version(ad.ios ? ad.device : 'Android');
+    },
+
+    /***
+     * Detector를 os에 따라 선택
+     * @param {object} context 옵션값
+     */
+    setDetector: function(context) {
+        var self = this,
+            isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
+            isIntend = ne.util.isExisty(context.intentURI),
+            store = context.storeURL,
+            baseDetect = ne.component.AppLoader.Detector,
+            iOSDetect = ne.component.AppLoader.Detector,
+            ad = this.agentDetector;
+
+        if (ad.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
+            if (isNotIntend && store) {
+                this.detector = baseDetect.androidSchemeDetector;
+            } else if (isIntend) {
+                this.detector = baseDetect.androidIntendDetector;
+            }
+        } else if (ad.ios && store) {// IOS일경우 detector 셋팅
+            if(parseInt(this.version.major, 10) < 8) {
+                this.detector = iOSDetect.iosOlderDetector;
+            } else {
+                this.detector = iOSDetect.iosRecentDetector;
+            }
+        } else { //기타 환경일경우 detector 셋팅
+            setTimeout(function () {
+                self.detector = baseDetect.etcDetector;
+                if (context.etcCallback) {
+                    context.etcCallback();
+                }
+            }, 100);
+        }
+    },
+
+    /**
+     * 선택된 detector 실행
+     */
+    runDetector: function(context) {
+        // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
+        if(this.detector && (this.detector.type !== ne.component.AppLoader.Detector.etcDetector.type)) {
+            this.detector.run(context);
+        }
+    },
+
+    /**
+     * intent 미지원 브라우저 여부 판별
+     * @returns {boolean}
+     */
+    isIntentLess: function() {
+        var intentlessBrowsers = [
+            'firefox',
+            'opr'
+        ];
+        var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
+            app = ne.component.AppLoader.agentDetector;
+        return blackListRegexp.test(app.ua);
+    },
+
+    /**
+     * 앱을 호출한다.
+     * @param options
+     * @exmaple
+     * mobileCaller.exec({
+     *      name: 'app', // application Name (ex. facebook, twitter, daum)
+     *      ios: {
+     *          scheme: 'fecheck://', // iphone app scheme
+     *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
+     *      },
+     *      android: {
+     *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+     *      }
+     *  });
+     */
+    exec: function(options) {
+        options = ne.util.extend(this.defaults, options);
+        var context = {
+            appName: options.name,
+            urlScheme: options.ios.scheme,
+            storeURL: options.ios.url,
+            intentURI: options.android.scheme,
+            etcCallback: options.etcCallback,
+            andVersion: options.android.version
+        };
+        this.setDetector(context);
+        this.runDetector(context);
+    }
+});
+
+
 
 /**
- * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
- * @dependency code-snippet.js
- * @author FE개발팀
+* @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
+* @dependency code-snippet.js, appLoader.js
+* @author FE개발팀
+*/
+/**
+ * @constructor
  */
-(function(exports) {
+ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.component.AppLoader.agentDetector.prototype */{
+    cache: {},
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
      ***************/
-    var mobileRegText = {
+    /**
+     * 각 기종 및 운영체제 정규식 텍스트
+     */
+    mobileRegText: {
         'phones': {
             'iPhone': '\\biPhone\\b|\\biPod\\b',
             'BlackBerry': 'BlackBerry|\\bBB10\\b|rim[0-9]+',
@@ -304,22 +303,60 @@
                 'hpwOS\/[VER];'
             ]
         }
-    };
-    mobileRegText.oss0 = {
-        WindowsPhoneOS: mobileRegText.oss.WindowsPhoneOS,
-        WindowsMobileOS: mobileRegText.oss.WindowsMobileOS
-    };
+    },
 
-    var ua = window.navigator.userAgent,
-        cache = {},
-        hasOwnProp = Object.prototype.hasOwnProperty;
+    /**
+     * 브라우저의 userAgent
+     */
+    ua: window.navigator.userAgent,
 
-    // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
-    (function init() {
-        var key, values, value, i, len, verPos, mobileDetectRules = mobileRegText;
-        for (key in mobileDetectRules.props) {
-            if (hasOwnProp.call(mobileDetectRules.props, key)) {
-                values = mobileDetectRules.props[key];
+
+    init: function() {
+        this.convert();
+
+        var rules = this.mobileRegText;
+        rules.oss0 = {
+            WindowsPhoneOS: rules.oss.WindowsPhoneOS,
+            WindowsMobileOS: rules.oss.WindowsMobileOS
+        };
+        this.device =  this._findMatch(rules.phones, this.ua);
+        this.ios = this.isIOS();
+        this.android = this.isAndroid();
+    },
+
+    /**
+     * 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+     */
+    convert: function() {
+        var rule,
+            mobileDetectRules = this.mobileRegText;
+
+        this._propConvert();
+
+        for (rule in mobileDetectRules) {
+            if(rule !== 'props') {
+                this._convertToRegExp(mobileDetectRules[rule]);
+            }
+        }
+    },
+
+    /**
+     * 각 환경에 따른 속성정규식을 컨버팅한다.
+     * @private
+     */
+    _propConvert: function() {
+        var key,
+            values,
+            value,
+            i,
+            len,
+            verPos,
+            hasOwnProp = Object.prototype.hasOwnProperty,
+            rules = this.mobileRegText.props;
+
+        for (key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                values = rules[key];
                 if (!ne.util.isArray(values)) {
                     values = [values];
                 }
@@ -332,59 +369,71 @@
                     }
                     values[i] = new RegExp(value, 'i');
                 }
-                mobileDetectRules.props[key] = values;
+                rules[key] = values;
             }
         }
-
-        convertToRegExp(mobileDetectRules.oss);
-        convertToRegExp(mobileDetectRules.phones);
-        convertToRegExp(mobileDetectRules.tablets);
-        convertToRegExp(mobileDetectRules.uas);
-        convertToRegExp(mobileDetectRules.utils);
-
-        // copy some patterns to oss0 which are tested first (see issue#15)
-        mobileDetectRules.oss0 = {
-            WindowsPhoneOS: mobileDetectRules.oss.WindowsPhoneOS,
-            WindowsMobileOS: mobileDetectRules.oss.WindowsMobileOS
-        };
-    }());
-    /****************
-     * RegExp processing end : original - mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
-     ****************/
-
-
-    /****************
-     * Device, OS, Browser Information collecting
-     ****************/
+    },
 
     /**
      * userAgent 를 받아온다
      * @returns {*}
      */
-    function getUserAgent() {
-        if (cache.userAgent === undefined) {
-            cache.userAgent = findMatch(mobileRegText.uas, this.ua);
+    userAgent: function() {
+        if (ne.util.isUndefined(this.cache.userAgent)) {
+            this.cache.userAgent = this._findMatch(this.mobileRegText.uas, this.ua);
         }
-        return cache.userAgent;
-    }
+        return this.cache.userAgent;
+    },
+
+    /**
+     * 정규식으로 전환한다
+     * @param object
+     * @private
+     */
+    _convertToRegExp: function(object) {
+        var hasOwnProp = Object.prototype.hasOwnProperty,
+            key;
+        for (key in object) {
+            if (hasOwnProp.call(object, key)) {
+                object[key] = new RegExp(object[key], 'i');
+            }
+        }
+    },
 
     /**
      * OS를 찾는다
      * @returns {*}
      */
-    function getOS() {
-        return findMatch(mobileRegText.oss0, ua) ||
-            findMatch(mobileRegText.oss, ua);
-    }
+    getOS: function() {
+        return this._findMatch(this.mobileRegText.oss0, this.ua) ||
+            this._findMatch(this.mobileRegText.oss, this.ua);
+    },
+
+    /**
+     * rules 와 맞는 값을 찾는다.
+     * @private
+     */
+    _findMatch: function(rules, userAgent) {
+        var key,
+            hasOwnProp = Object.prototype.hasOwnProperty;
+        for (key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                if (rules[key].test(userAgent)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    },
 
     /**
      * 버전을 찾는다
      * @returns {*}
      */
-    function getVersion(propertyName) {
-        var version = getVersionStr(propertyName, ua);
-        return version ? prepareVersionNo(version) : NaN;
-    }
+    version: function(propertyName) {
+        var version = this._getVersionStr(propertyName, this.ua);
+        return version ? this._prepareVersionNo(version) : NaN;
+    },
     /**
      * Check the version of the given property in the User-Agent.
      * @param {String} propertyName
@@ -392,11 +441,18 @@
      * @return {String} version or <tt>null</tt> if version not found
      * @private
      */
-    function getVersionStr(propertyName, userAgent) {
-        var props = mobileRegText.props, patterns, i, len, match;
+    _getVersionStr: function(propertyName, userAgent) {
+        var props = this.mobileRegText.props,
+            patterns,
+            i,
+            len,
+            match,
+            hasOwnProp = Object.prototype.hasOwnProperty;
+
         if (hasOwnProp.call(props, propertyName)) {
             patterns = props[propertyName];
             len = patterns.length;
+
             for (i = 0; i < len; ++i) {
                 match = patterns[i].exec(userAgent);
                 if (match !== null) {
@@ -405,7 +461,7 @@
             }
         }
         return null;
-    };
+    },
 
     /**
      * Prepare the version number.
@@ -413,7 +469,7 @@
      * @return {Number} the version number as a floating number
      * @private
      */
-    function prepareVersionNo(version) {
+    _prepareVersionNo: function(version) {
         var numbers;
 
         numbers = version.split(/[a-z._ \/\-]/i);
@@ -426,300 +482,272 @@
             version += numbers.join('');
         }
         return Number(version);
-    };
-
-    /**
-     * rules 와 맞는 값을 찾는다.
-     */
-    function findMatch(rules, userAgent) {
-        var key;
-        for (key in rules) {
-            if (hasOwnProp.call(rules, key)) {
-                if (rules[key].test(userAgent)) {
-                    return key;
-                }
-            }
-        }
-        return null;
-    }
+    },
 
     /**
      * iOS 여부 판단
      * @returns {boolean}
      */
-    function isIOS() {
-        return getOS() === 'iOS';
-    }
+    isIOS: function() {
+        return this.getOS() === 'iOS';
+    },
 
     /**
      * 안드로이드 여부 판단
      * @returns {boolean}
      */
-    function isAndroid() {
-        return getOS() === 'AndroidOS';
+    isAndroid: function() {
+        return this.getOS() === 'AndroidOS';
     }
-
-    /**
-     * 정규식으로 전환한다
-     * @param object
-     */
-    function convertToRegExp(object) {
-        for (var key in object) {
-            if (hasOwnProp.call(object, key)) {
-                object[key] = new RegExp(object[key], 'i');
-            }
-        }
-    }
-
-    exports.agentDetector = {
-        userAgent: getUserAgent,
-        getOS: getOS,
-        ua: ua,
-        device: findMatch(mobileRegText.phones, ua),
-        version: getVersion,
-        ios: isIOS(),
-        android: isAndroid()
-    };
-
-})(ne.component.appCaller);
-/**********
- * detectors.js
- **********/
+});
 
 /**
- * @fileoverview 각 환경별 앱을 실행시키는 액션객체들을 모아둔 파일
- * @dependency code-snipet.js, agentDetector.js
+ * @fileovrview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @dependency code-snippet.js, appLoader.js
  * @author FE개발팀
  */
-(function(exports) {
-    var TIMEOUT = {
+/**
+ * @namespace ne.component.AppLoader.Detector
+ */
+ne.component.AppLoader.Detector = {
+    /**
+     * for timer
+     */
+    TIMEOUT: {
         IOS_SHORT: 1000,
         IOS_LONG: 1000 * 2,
         ANDROID: 100 * 3,
         INTERVAL: 100
-    };
+    },
+    /**
+     * iframe을 통한 앱호출
+     * @param {string} urlScheme iframe url
+     */
+    runAppWithIframe: function (urlScheme) {
+        var self = this,
+            iframe;
+        setTimeout(function () {
+            iframe = self.getIframeMadeById('supportFrame');
+            iframe.src = urlScheme;
+        }, this.this.TIMEOUT.INTERVAL);
+    },
 
     /**
-     * detectors 공통기능 모음
+     * iframe 생성
+     * @param {string} id iframe ID
+     * @returns {HTMLElement}
      */
-    var detector = {
-        /**
-         * iframe을 통한 앱호출
-         * @param {string} urlScheme iframe url
-         */
-        runAppWithIframe: function(urlScheme) {
-            var self = this,
-                iframe;
-            setTimeout(function () {
-                iframe = self.getIframeMadeById('supportFrame');
-                iframe.src = urlScheme;
-            }, TIMEOUT.INTERVAL);
-        },
+    getIframeMadeById: function (id) {
+        var iframe = document.createElement('iframe');
+        ne.util.extend(iframe, {
+            id: id,
+            frameborder: '0',
+            width: '0',
+            height: '0'
+        });
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        return iframe;
+    },
 
-        /**
-         * iframe 생성
-         * @param {string} id iframe ID
-         * @returns {HTMLElement}
-         */
-        getIframeMadeById: function(id) {
-            var iframe = document.createElement('iframe');
-            ne.util.extend(iframe, {
-                id: id,
-                frameborder: '0',
-                width: '0',
-                height: '0'
-            });
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            return iframe;
-        },
+    /**
+     * callback함수를 time에 따라 지연실행
+     * @param {string} time 지연시간
+     * @param {string} url 호출 url
+     * @param {function} callback 실행함수
+     * @returns {number}
+     */
+    deferCallback: function (url, callback, time) {
+        var clickedAt = new Date().getTime(),
+            now,
+            isPV = this.isPageVisibility();
 
-        /**
-         * callback함수를 time에 따라 지연실행
-         * @param {string} time 지연시간
-         * @param {string} url 호출 url
-         * @param {function} callback 실행함수
-         * @returns {number}
-         */
-        deferCallback: function(url, callback, time) {
-            var clickedAt = new Date().getTime(),
-                now,
-                isPV = this.isPageVisibility();
-
-            return setTimeout(function () {
-                now = new Date().getTime();
-                if (isPV && now - clickedAt < time + TIMEOUT.INTERVAL) {
-                    callback(url);
-                }
-            }, time);
-        },
-
-        /**
-         * check a webpage is visible or in focus
-         * @returns {boolean}
-         */
-        isPageVisibility: function() {
-            if (ne.util.isExisty(document.hidden)) {
-                return !document.hidden;
+        return setTimeout(function () {
+            now = new Date().getTime();
+            if (isPV && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
+                callback(url);
             }
-            if (ne.util.isExisty(document.webkitHidden)) {
-                return !document.webkitHidden;
+        }, time);
+    },
+
+    /**
+     * check a webpage is visible or in focus
+     * @returns {boolean}
+     */
+    isPageVisibility: function () {
+        if (ne.util.isExisty(document.hidden)) {
+            return !document.hidden;
+        }
+        if (ne.util.isExisty(document.webkitHidden)) {
+            return !document.webkitHidden;
+        }
+        return true;
+    }
+};
+
+/****************
+ * Android series
+ ****************/
+
+/**
+ * 안드로이드 intent지원 불가 detector
+ * @namespace ne.component.AppLoader.Detector.androidSchemeDetector
+ */
+ne.component.AppLoader.Detector.androidSchemeDetector = ne.util.extend({
+    /**
+     * detector type
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
+     */
+    type: 'scheme',
+
+    /**
+     * detector 실행
+     * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
+     */
+    run: function(context) {
+        var storeURL = context.storeURL;
+        this.deferCallback(storeURL, context.notFoundCallback, this.TIMEOUT.ANDROID);
+        this.runAppWithIframe(context.urlScheme);
+    }
+}, ne.component.AppLoader.Detector);
+
+
+/**
+ * 안드로이드 intent지원 detector
+ * @namespace ne.component.AppLoader.Detector.androidIntendDetector
+ */
+ne.component.AppLoader.Detector.androidIntendDetector = ne.util.extend({
+    /**
+     * detector type
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
+     */
+    type: 'intend',
+
+    /**
+     * detector 실행
+     * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
+     */
+    run: function(context) {
+        setTimeout(function () {
+            top.location.href = context.intentURI;
+        }, this.TIMEOUT.INTERVAL);
+    }
+}, ne.component.AppLoader.Detector);
+
+/**
+ * iosDetector 공통기능
+ * @namespace ne.component.AppLoader.iOSDetector
+ */
+ne.component.AppLoader.iOSDetector = ne.util.extend({
+    /**
+     * detector type
+     * @memberof ne.component.AppLoader.iOSDetector
+     */
+    type: 'ios',
+
+    /**
+     * 기본 앱페이지 이동함수
+     * @param storeURL
+     * @memberof ne.component.AppLoader.iOSDetector
+     */
+    moveTo: function(storeURL) {
+        window.location.href = storeURL;
+    },
+
+    /**
+     * visiblitychange  이벤트 등록
+     * @memberof ne.component.AppLoader.iOSDetector
+     */
+    bindVisibilityChangeEvent: function() {
+        var self = this;
+        document.addEventListener('visibilitychange', function clear() {
+            if (self.isPageVisibility()) {
+                clearTimeout(self.tid);
+                document.removeEventListener('visibilitychange', clear);
             }
-            return true;
-        }
-    };
-
-    /****************
-     * Android series
-     ****************/
+        });
+    },
 
     /**
-     * 안드로이드 intent지원 불가 detector
+     *  pagehide 이벤트 등록
+     *  @memberof ne.component.AppLoader.iOSDetector
      */
-    var androidSchemeDetector = ne.util.extend({
-        /**
-         * detector type
-         */
-        type: 'scheme',
-
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL;
-            this.deferCallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, detector);
-
-    /**
-     * 안드로이드 intent지원 detector
-     */
-    var androidIntendDetector = {
-        /**
-         * detector type
-         */
-        type: 'intend',
-
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            setTimeout(function () {
-                top.location.href = context.intentURI;
-            }, TIMEOUT.INTERVAL);
-        }
-    };
-
-    /**
-     * iosDetector 공통기능
-     */
-    var iosDetector = ne.util.extend({
-        /**
-         * detector type
-         */
-        type: 'ios',
-
-        /**
-         * 기본 앱페이지 이동함수
-         * @param storeURL
-         */
-        moveTo: function(storeURL) {
-            window.location.href = storeURL;
-        },
-
-        /**
-         * visiblitychange  이벤트 등록
-         */
-        bindVisibilityChangeEvent: function() {
-            var self = this;
-            document.addEventListener('visibilitychange', function clear() {
-                if (self.isPageVisibility()) {
-                    clearTimeout(self.tid);
-                    document.removeEventListener('visibilitychange', clear);
-                }
-            });
-        },
-
-        /**
-         *  pagehide 이벤트 등록
-         */
-        bindPagehideEvent: function() {
-            var self = this;
-            window.addEventListener('pagehide', function clear() {
-                if (self.isPageVisibility()) {
-                    clearTimeout(self.tid);
-                    window.removeEventListener('pagehide', clear);
-                }
-            });
-        }
-    }, detector);
-
-    /****************
-     * iOS series
-     ****************/
-
-    /**
-     * ios 구버전 detector
-     */
-    var iosOlderDetector = ne.util.extend({
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL,
-                callback = context.notFoundCallback || this.moveTo;
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
-            this.bindPagehideEvent();
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, iosDetector);
-
-    /**
-     * ios 신버전 detector
-     * @type {Object|void|*}
-     */
-    var iosRecentDetector = ne.util.extend({
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL,
-                callback = context.notFoundCallback || this.moveTo;
-            if (this.moveTo === callback) {
-                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_SHORT);
-            } else {
-                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+    bindPagehideEvent: function() {
+        var self = this;
+        window.addEventListener('pagehide', function clear() {
+            if (self.isPageVisibility()) {
+                clearTimeout(self.tid);
+                window.removeEventListener('pagehide', clear);
             }
-            this.bindVisibilityChangeEvent();
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, iosDetector);
+        });
+    }
+}, ne.component.AppLoader.Detector);
 
-    /****************
-     * ETC
-     ****************/
+/****************
+ * iOS series
+ ****************/
 
+/**
+ * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosOlderDetector
+ */
+ne.component.AppLoader.iOSDetector.iosOlderDetector = ne.util.extend({
     /**
-     * 기타 브라우저
+     * detector 실행
+     * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosOlderDetector
      */
-    var etcDetector = {
-        type: 'etc',
-        run: function() {
+    run: function(context) {
+        var storeURL = context.storeURL,
+            callback = context.notFoundCallback || this.moveTo;
+        this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+        this.bindPagehideEvent();
+        this.runAppWithIframe(context.urlScheme);
+    }
+}, ne.component.AppLoader.iOSDetector);
+
+/**
+ * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosRecentDetector
+ */
+ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
+    /**
+     * detector 실행
+     * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosRecentDetector
+     */
+    run: function(context) {
+        var storeURL = context.storeURL,
+            callback = context.notFoundCallback || this.moveTo;
+        if (this.moveTo === callback) {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+        } else {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
-    };
+        this.bindVisibilityChangeEvent();
+        this.runAppWithIframe(context.urlScheme);
+    }
+}, ne.component.AppLoader.iOSDetector);
 
-    ne.util.extend(exports, {
-        androidSchemeDetector: androidSchemeDetector,
-        androidIntendDetector: androidIntendDetector,
-        iosOlderDetector: iosOlderDetector,
-        iosRecentDetector: iosRecentDetector,
-        etcDetector: etcDetector
-    });
+/****************
+ * ETC
+ ****************/
 
-})(ne.component.appCaller);
-
+/**
+ * 기타 미지원 환경
+ * @namespace ne.component.AppLoader.etcDetector
+ */
+ne.component.AppLoader.Detector.etcDetector = {
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
+    type: 'etc',
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
+    run: function() {
+    }
+};
+})();
