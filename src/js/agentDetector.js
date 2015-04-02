@@ -1,13 +1,14 @@
 /**
- * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
- * @dependency code-snippet.js
- * @author FE개발팀
- */
-(function(exports) {
+* @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
+* @dependency code-snippet.js
+* @author FE개발팀
+*/
+ne.component.AppLoader.agentDetector = ne.util.defineClass({
+    cache: {},
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
      ***************/
-    var mobileRegText = {
+    mobileRegText: {
         'phones': {
             'iPhone': '\\biPhone\\b|\\biPod\\b',
             'BlackBerry': 'BlackBerry|\\bBB10\\b|rim[0-9]+',
@@ -146,19 +147,22 @@
                 'hpwOS\/[VER];'
             ]
         }
-    };
-    mobileRegText.oss0 = {
-        WindowsPhoneOS: mobileRegText.oss.WindowsPhoneOS,
-        WindowsMobileOS: mobileRegText.oss.WindowsMobileOS
-    };
+    },
+    ua: window.navigator.userAgent,
 
-    var ua = window.navigator.userAgent,
-        cache = {},
-        hasOwnProp = Object.prototype.hasOwnProperty;
 
-    // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
-    (function init() {
-        var key, values, value, i, len, verPos, mobileDetectRules = mobileRegText;
+    init: function() {
+
+        var hasOwnProp = Object.prototype.hasOwnProperty;
+
+        // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+        var key,
+            values,
+            value,
+            i,
+            len,
+            verPos,
+            mobileDetectRules = this.mobileRegText;
         for (key in mobileDetectRules.props) {
             if (hasOwnProp.call(mobileDetectRules.props, key)) {
                 values = mobileDetectRules.props[key];
@@ -178,55 +182,79 @@
             }
         }
 
-        convertToRegExp(mobileDetectRules.oss);
-        convertToRegExp(mobileDetectRules.phones);
-        convertToRegExp(mobileDetectRules.tablets);
-        convertToRegExp(mobileDetectRules.uas);
-        convertToRegExp(mobileDetectRules.utils);
-
-        // copy some patterns to oss0 which are tested first (see issue#15)
-        mobileDetectRules.oss0 = {
-            WindowsPhoneOS: mobileDetectRules.oss.WindowsPhoneOS,
-            WindowsMobileOS: mobileDetectRules.oss.WindowsMobileOS
+        this._convertToRegExp(mobileDetectRules.oss);
+        this._convertToRegExp(mobileDetectRules.phones);
+        this._convertToRegExp(mobileDetectRules.tablets);
+        this._convertToRegExp(mobileDetectRules.uas);
+        this._convertToRegExp(mobileDetectRules.utils);
+        this.mobileRegText.oss0 = {
+            WindowsPhoneOS: this.mobileRegText.oss.WindowsPhoneOS,
+            WindowsMobileOS: this.mobileRegText.oss.WindowsMobileOS
         };
-    }());
-    /****************
-     * RegExp processing end : original - mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
-     ****************/
 
-
-    /****************
-     * Device, OS, Browser Information collecting
-     ****************/
-
+        this.device =  this._findMatch(mobileDetectRules.phones, this.ua);
+        this.ios = this.isIOS();
+        this.android = this.isAndroid();
+    },
+    
     /**
      * userAgent 를 받아온다
      * @returns {*}
      */
-    function getUserAgent() {
-        if (cache.userAgent === undefined) {
-            cache.userAgent = findMatch(mobileRegText.uas, this.ua);
+    userAgent: function() {
+        if (this.cache.userAgent === undefined) {
+            this.cache.userAgent = this._findMatch(this.mobileRegText.uas, this.ua);
         }
-        return cache.userAgent;
-    }
-
+        return this.cache.userAgent;
+    },
+    
+    /**
+     * 정규식으로 전환한다
+     * @param object
+     */
+    _convertToRegExp: function(object) {
+        var hasOwnProp = Object.prototype.hasOwnProperty,
+            key;
+        for (key in object) {
+            if (hasOwnProp.call(object, key)) {
+                object[key] = new RegExp(object[key], 'i');
+            }
+        }
+    },
+    
     /**
      * OS를 찾는다
      * @returns {*}
      */
-    function getOS() {
-        return findMatch(mobileRegText.oss0, ua) ||
-            findMatch(mobileRegText.oss, ua);
-    }
+    getOS: function() {
+        return this._findMatch(this.mobileRegText.oss0, this.ua) ||
+            this._findMatch(this.mobileRegText.oss, this.ua);
+    },
+    
+    /**
+     * rules 와 맞는 값을 찾는다.
+     */
+    _findMatch: function(rules, userAgent) {
+        var key,
+            hasOwnProp = Object.prototype.hasOwnProperty;
+        for (key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                if (rules[key].test(userAgent)) {
+                    return key;
+                }
+            }
+        }
+        return null;
+    },
 
     /**
      * 버전을 찾는다
      * @returns {*}
      */
-    function getVersion(propertyName) {
-        var version = getVersionStr(propertyName, ua);
-        return version ? prepareVersionNo(version) : NaN;
-    }
+    version: function(propertyName) {
+        var version = this._getVersionStr(propertyName, this.ua);
+        return version ? this._prepareVersionNo(version) : NaN;
+    },
     /**
      * Check the version of the given property in the User-Agent.
      * @param {String} propertyName
@@ -234,8 +262,13 @@
      * @return {String} version or <tt>null</tt> if version not found
      * @private
      */
-    function getVersionStr(propertyName, userAgent) {
-        var props = mobileRegText.props, patterns, i, len, match;
+    _getVersionStr: function(propertyName, userAgent) {
+        var props = this.mobileRegText.props,
+            patterns,
+            i,
+            len,
+            match,
+            hasOwnProp = Object.prototype.hasOwnProperty;
         if (hasOwnProp.call(props, propertyName)) {
             patterns = props[propertyName];
             len = patterns.length;
@@ -247,7 +280,7 @@
             }
         }
         return null;
-    };
+    },
 
     /**
      * Prepare the version number.
@@ -255,7 +288,7 @@
      * @return {Number} the version number as a floating number
      * @private
      */
-    function prepareVersionNo(version) {
+     _prepareVersionNo: function(version) {
         var numbers;
 
         numbers = version.split(/[a-z._ \/\-]/i);
@@ -268,59 +301,21 @@
             version += numbers.join('');
         }
         return Number(version);
-    };
-
-    /**
-     * rules 와 맞는 값을 찾는다.
-     */
-    function findMatch(rules, userAgent) {
-        var key;
-        for (key in rules) {
-            if (hasOwnProp.call(rules, key)) {
-                if (rules[key].test(userAgent)) {
-                    return key;
-                }
-            }
-        }
-        return null;
-    }
+    },
 
     /**
      * iOS 여부 판단
      * @returns {boolean}
      */
-    function isIOS() {
-        return getOS() === 'iOS';
-    }
+    isIOS: function() {
+        return this.getOS() === 'iOS';
+    },
 
     /**
      * 안드로이드 여부 판단
      * @returns {boolean}
      */
-    function isAndroid() {
-        return getOS() === 'AndroidOS';
+    isAndroid: function() {
+        return this.getOS() === 'AndroidOS';
     }
-
-    /**
-     * 정규식으로 전환한다
-     * @param object
-     */
-    function convertToRegExp(object) {
-        for (var key in object) {
-            if (hasOwnProp.call(object, key)) {
-                object[key] = new RegExp(object[key], 'i');
-            }
-        }
-    }
-
-    exports.agentDetector = {
-        userAgent: getUserAgent,
-        getOS: getOS,
-        ua: ua,
-        device: findMatch(mobileRegText.phones, ua),
-        version: getVersion,
-        ios: isIOS(),
-        android: isAndroid()
-    };
-
-})(ne.component.appLoader);
+});

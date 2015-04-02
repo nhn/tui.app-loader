@@ -1,8 +1,5 @@
-/*!component-app-loader v0.0.1 | NHN Entertainment*/
-/**********
- * mobileCaller.js
- **********/
-
+/*!app-loader v0.0.1 | NHN Entertainment*/
+(function() {
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
  * @dependency code-snippet.js, detectors.js, agentDetector.js
@@ -148,10 +145,6 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype *
 
     }
 });
-
-/**********
- * agentDetector.js
- **********/
 
 /**
  * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
@@ -477,10 +470,6 @@ ne.component.AppLoader.agentDetector = {
     android: isAndroid()
 };
 
-/**********
- * detectors.js
- **********/
-
 /**
  * @fileoverview 각 환경별 앱을 실행시키는 액션객체들을 모아둔 파일
  * @dependency code-snipet.js, agentDetector.js
@@ -716,3 +705,5 @@ ne.util.extend(ne.component.AppLoader, {
 });
 
 
+
+})();
