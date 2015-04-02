@@ -3,10 +3,18 @@
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author FE개발팀
  */
-(function(exports, app) {
+(function(ne) {
     'use strict';
+    /* istanbul ignore if */
+    if (!ne) {
+        ne = window.ne = {};
+    }
+    if (!ne.component) {
+        ne.component = window.ne.component = {};
+    }
 
-    var MobileCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
+
+    ne.component.appCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
 
         /****************
          * member fields
@@ -42,6 +50,7 @@
          * 초기화
          */
         init: function() {
+            var app = ne.component.appCaller.agentDetector;
             this.ua = app.userAgent();
             this.os = app.getOS();
             this.version = app.version(app.ios ? app.device : 'Android');
@@ -55,22 +64,25 @@
             var self = this,
                 isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
                 isIntend = ne.util.isExisty(context.intentURI),
-                store = context.storeURL;
+                store = context.storeURL,
+                construct = ne.component.appCaller,
+                app = construct.agentDetector;
+
             if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
                 if (isNotIntend && store) {
-                    this.detector = androidSchemeDetector;
+                    this.detector = construct.androidSchemeDetector;
                 } else if (isIntend) {
-                    this.detector = androidIntendDetector;
+                    this.detector = construct.androidIntendDetector;
                 }
             } else if (app.ios && store) {// IOS일경우 detector 셋팅
                 if(parseInt(this.version.major, 10) < 8) {
-                    this.detector = iosOlderDetector;
+                    this.detector = construct.iosOlderDetector;
                 } else {
-                    this.detector = iosRecentDetector;
+                    this.detector = construct.iosRecentDetector;
                 }
             } else { //기타 환경일경우 detector 셋팅
                 setTimeout(function () {
-                    self.detector = etcDetector;
+                    self.detector = construct.etcDetector;
                     if (context.etcCallback) {
                         context.etcCallback();
                     }
@@ -83,7 +95,8 @@
          */
         runDetector: function(context) {
             // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-            if(this.detector && (this.detector.type !== etcDetector.type)) {
+            var construct = ne.component.appCaller;
+            if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
                 this.detector.run(context);
             }
         },
@@ -97,7 +110,8 @@
                 'firefox',
                 'opr'
             ];
-            var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i');
+            var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
+                app = ne.component.appCaller.agentDetector;
             return blackListRegexp.test(app.ua);
         },
 
@@ -132,6 +146,4 @@
         }
     });
 
-    exports.mobileCaller = new MobileCaller();
-
-})(window, window.agentDetector);
+})(window.ne);

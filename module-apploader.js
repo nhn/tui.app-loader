@@ -1,246 +1,157 @@
 /*!module-apploader v0.0.1 | NHN Entertainment*/
 /**********
- * detectors.js
+ * mobileCaller.js
  **********/
 
 /**
- * @fileoverview 각 환경별 앱을 실행시키는 액션객체들을 모아둔 파일
- * @dependency code-snipet.js, agentDetector.js
+ * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author FE개발팀
  */
-(function(exports) {
-    var TIMEOUT = {
-        IOS_SHORT: 1000,
-        IOS_LONG: 1000 * 2,
-        ANDROID: 100 * 3,
-        INTERVAL: 100
-    };
+(function(ne) {
+    'use strict';
+    /* istanbul ignore if */
+    if (!ne) {
+        ne = window.ne = {};
+    }
+    if (!ne.component) {
+        ne.component = window.ne.component = {};
+    }
 
-    /**
-     * detectors 공통기능 모음
-     */
-    var detector = {
+
+    ne.component.appCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
+
+        /****************
+         * member fields
+         ****************/
+
         /**
-         * iframe을 통한 앱호출
-         * @param {string} urlScheme iframe url
+         * browser, device detector
          */
-        runAppWithIframe: function(urlScheme) {
+        detector: null,
+        /**
+         * OS (android/ios/etc)
+         */
+        os: null,
+        /**
+         * default options to run exec
+         */
+        defaults: {
+            name: '',
+            ios: {
+                scheme: '',
+                url: ''
+            },
+            android: {
+                scheme: ''
+            }
+        },
+
+        /****************
+         * member methods
+         ****************/
+
+        /**
+         * 초기화
+         */
+        init: function() {
+            var app = ne.component.appCaller.agentDetector;
+            this.ua = app.userAgent();
+            this.os = app.getOS();
+            this.version = app.version(app.ios ? app.device : 'Android');
+        },
+
+        /***
+         * Detector를 os에 따라 선택
+         * @param {object} context 옵션값
+         */
+        setDetector: function(context) {
             var self = this,
-                iframe;
-            setTimeout(function () {
-                iframe = self.getIframeMadeById('supportFrame');
-                iframe.src = urlScheme;
-            }, TIMEOUT.INTERVAL);
-        },
+                isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
+                isIntend = ne.util.isExisty(context.intentURI),
+                store = context.storeURL,
+                construct = ne.component.appCaller,
+                app = construct.agentDetector;
 
-        /**
-         * iframe 생성
-         * @param {string} id iframe ID
-         * @returns {HTMLElement}
-         */
-        getIframeMadeById: function(id) {
-            var iframe = document.createElement('iframe');
-            ne.util.extend(iframe, {
-                id: id,
-                frameborder: '0',
-                width: '0',
-                height: '0'
-            });
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            return iframe;
-        },
-
-        /**
-         * callback함수를 time에 따라 지연실행
-         * @param {string} time 지연시간
-         * @param {string} url 호출 url
-         * @param {function} callback 실행함수
-         * @returns {number}
-         */
-        deferCallback: function(url, callback, time) {
-            var clickedAt = new Date().getTime(),
-                now,
-                isPV = this.isPageVisibility();
-
-            return setTimeout(function () {
-                now = new Date().getTime();
-                if (isPV && now - clickedAt < time + TIMEOUT.INTERVAL) {
-                    callback(url);
+            if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
+                if (isNotIntend && store) {
+                    this.detector = construct.androidSchemeDetector;
+                } else if (isIntend) {
+                    this.detector = construct.androidIntendDetector;
                 }
-            }, time);
+            } else if (app.ios && store) {// IOS일경우 detector 셋팅
+                if(parseInt(this.version.major, 10) < 8) {
+                    this.detector = construct.iosOlderDetector;
+                } else {
+                    this.detector = construct.iosRecentDetector;
+                }
+            } else { //기타 환경일경우 detector 셋팅
+                setTimeout(function () {
+                    self.detector = construct.etcDetector;
+                    if (context.etcCallback) {
+                        context.etcCallback();
+                    }
+                }, 100);
+            }
         },
 
         /**
-         * check a webpage is visible or in focus
+         * 선택된 detector 실행
+         */
+        runDetector: function(context) {
+            // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
+            var construct = ne.component.appCaller;
+            if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
+                this.detector.run(context);
+            }
+        },
+
+        /**
+         * intent 미지원 브라우저 여부 판별
          * @returns {boolean}
          */
-        isPageVisibility: function() {
-            if (ne.util.isExisty(document.hidden)) {
-                return !document.hidden;
-            }
-            if (ne.util.isExisty(document.webkitHidden)) {
-                return !document.webkitHidden;
-            }
-            return true;
-        }
-    };
-
-    /****************
-     * Android series
-     ****************/
-
-    /**
-     * 안드로이드 intent지원 불가 detector
-     */
-    var androidSchemeDetector = ne.util.extend({
-        /**
-         * detector type
-         */
-        type: 'scheme',
-
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL;
-            this.deferCallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, detector);
-
-    /**
-     * 안드로이드 intent지원 detector
-     */
-    var androidIntendDetector = {
-        /**
-         * detector type
-         */
-        type: 'intend',
-
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            setTimeout(function () {
-                top.location.href = context.intentURI;
-            }, TIMEOUT.INTERVAL);
-        }
-    };
-
-    /**
-     * iosDetector 공통기능
-     */
-    var iosDetector = ne.util.extend({
-        /**
-         * detector type
-         */
-        type: 'ios',
-
-        /**
-         * 기본 앱페이지 이동함수
-         * @param storeURL
-         */
-        moveTo: function(storeURL) {
-            window.location.href = storeURL;
+        isIntentLess: function() {
+            var intentlessBrowsers = [
+                'firefox',
+                'opr'
+            ];
+            var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
+                app = ne.component.appCaller.agentDetector;
+            return blackListRegexp.test(app.ua);
         },
 
         /**
-         * visiblitychange  이벤트 등록
+         * 앱을 호출한다.
+         * @param options
+         * @exmaple
+         * mobileCaller.exec({
+         *      name: 'app', // application Name (ex. facebook, twitter, daum)
+         *      ios: {
+         *          scheme: 'fecheck://', // iphone app scheme
+         *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
+         *      },
+         *      android: {
+         *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+         *      }
+         *  });
          */
-        bindVisibilityChangeEvent: function() {
-            var self = this;
-            document.addEventListener('visibilitychange', function clear() {
-                if (self.isPageVisibility()) {
-                    clearTimeout(self.tid);
-                    document.removeEventListener('visibilitychange', clear);
-                }
-            });
-        },
+        exec: function(options) {
+            options = ne.util.extend(this.defaults, options);
+            var context = {
+                appName: options.name,
+                urlScheme: options.ios.scheme,
+                storeURL: options.ios.url,
+                intentURI: options.android.scheme,
+                etcCallback: options.etcCallback,
+                andVersion: options.android.version
+            };
+            this.setDetector(context);
+            this.runDetector(context);
 
-        /**
-         *  pagehide 이벤트 등록
-         */
-        bindPagehideEvent: function() {
-            var self = this;
-            window.addEventListener('pagehide', function clear() {
-                if (self.isPageVisibility()) {
-                    clearTimeout(self.tid);
-                    window.removeEventListener('pagehide', clear);
-                }
-            });
         }
-    }, detector);
-
-    /****************
-     * iOS series
-     ****************/
-
-    /**
-     * ios 구버전 detector
-     */
-    var iosOlderDetector = ne.util.extend({
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL,
-                callback = context.notFoundCallback || this.moveTo;
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
-            this.bindPagehideEvent();
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, iosDetector);
-
-    /**
-     * ios 신버전 detector
-     * @type {Object|void|*}
-     */
-    var iosRecentDetector = ne.util.extend({
-        /**
-         * detector 실행
-         * @param {object} context
-         */
-        run: function(context) {
-            var storeURL = context.storeURL,
-                callback = context.notFoundCallback || this.moveTo;
-            if (this.moveTo === callback) {
-                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_SHORT);
-            } else {
-                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
-            }
-            this.bindVisibilityChangeEvent();
-            this.runAppWithIframe(context.urlScheme);
-        }
-    }, iosDetector);
-
-    /****************
-     * ETC
-     ****************/
-
-    /**
-     * 기타 브라우저
-     */
-    var etcDetector = {
-        type: 'etc',
-        run: function() {
-        }
-    };
-
-    ne.util.extend(exports, {
-        androidSchemeDetector: androidSchemeDetector,
-        androidIntendDetector: androidIntendDetector,
-        iosOlderDetector: iosOlderDetector,
-        iosRecentDetector: iosRecentDetector,
-        etcDetector: etcDetector
     });
 
-})(window);
-
-
+})(window.ne);
 /**********
  * agentDetector.js
  **********/
@@ -570,145 +481,245 @@
         android: isAndroid()
     };
 
-})(window);
+})(ne.component.appCaller);
 /**********
- * mobileCaller.js
+ * detectors.js
  **********/
 
 /**
- * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
- * @dependency code-snippet.js, detectors.js, agentDetector.js
+ * @fileoverview 각 환경별 앱을 실행시키는 액션객체들을 모아둔 파일
+ * @dependency code-snipet.js, agentDetector.js
  * @author FE개발팀
  */
-(function(exports, app) {
-    'use strict';
+(function(exports) {
+    var TIMEOUT = {
+        IOS_SHORT: 1000,
+        IOS_LONG: 1000 * 2,
+        ANDROID: 100 * 3,
+        INTERVAL: 100
+    };
 
-    var MobileCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
-
-        /****************
-         * member fields
-         ****************/
-
+    /**
+     * detectors 공통기능 모음
+     */
+    var detector = {
         /**
-         * browser, device detector
+         * iframe을 통한 앱호출
+         * @param {string} urlScheme iframe url
          */
-        detector: null,
-        /**
-         * OS (android/ios/etc)
-         */
-        os: null,
-        /**
-         * default options to run exec
-         */
-        defaults: {
-            name: '',
-            ios: {
-                scheme: '',
-                url: ''
-            },
-            android: {
-                scheme: ''
-            }
-        },
-
-        /****************
-         * member methods
-         ****************/
-
-        /**
-         * 초기화
-         */
-        init: function() {
-            this.ua = app.userAgent();
-            this.os = app.getOS();
-            this.version = app.version(app.ios ? app.device : 'Android');
-        },
-
-        /***
-         * Detector를 os에 따라 선택
-         * @param {object} context 옵션값
-         */
-        setDetector: function(context) {
+        runAppWithIframe: function(urlScheme) {
             var self = this,
-                isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
-                isIntend = ne.util.isExisty(context.intentURI),
-                store = context.storeURL;
-            if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
-                if (isNotIntend && store) {
-                    this.detector = androidSchemeDetector;
-                } else if (isIntend) {
-                    this.detector = androidIntendDetector;
-                }
-            } else if (app.ios && store) {// IOS일경우 detector 셋팅
-                if(parseInt(this.version.major, 10) < 8) {
-                    this.detector = iosOlderDetector;
-                } else {
-                    this.detector = iosRecentDetector;
-                }
-            } else { //기타 환경일경우 detector 셋팅
-                setTimeout(function () {
-                    self.detector = etcDetector;
-                    if (context.etcCallback) {
-                        context.etcCallback();
-                    }
-                }, 100);
-            }
+                iframe;
+            setTimeout(function () {
+                iframe = self.getIframeMadeById('supportFrame');
+                iframe.src = urlScheme;
+            }, TIMEOUT.INTERVAL);
         },
 
         /**
-         * 선택된 detector 실행
+         * iframe 생성
+         * @param {string} id iframe ID
+         * @returns {HTMLElement}
          */
-        runDetector: function(context) {
-            // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-            if(this.detector && (this.detector.type !== etcDetector.type)) {
-                this.detector.run(context);
-            }
+        getIframeMadeById: function(id) {
+            var iframe = document.createElement('iframe');
+            ne.util.extend(iframe, {
+                id: id,
+                frameborder: '0',
+                width: '0',
+                height: '0'
+            });
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            return iframe;
         },
 
         /**
-         * intent 미지원 브라우저 여부 판별
+         * callback함수를 time에 따라 지연실행
+         * @param {string} time 지연시간
+         * @param {string} url 호출 url
+         * @param {function} callback 실행함수
+         * @returns {number}
+         */
+        deferCallback: function(url, callback, time) {
+            var clickedAt = new Date().getTime(),
+                now,
+                isPV = this.isPageVisibility();
+
+            return setTimeout(function () {
+                now = new Date().getTime();
+                if (isPV && now - clickedAt < time + TIMEOUT.INTERVAL) {
+                    callback(url);
+                }
+            }, time);
+        },
+
+        /**
+         * check a webpage is visible or in focus
          * @returns {boolean}
          */
-        isIntentLess: function() {
-            var intentlessBrowsers = [
-                'firefox',
-                'opr'
-            ];
-            var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i');
-            return blackListRegexp.test(app.ua);
+        isPageVisibility: function() {
+            if (ne.util.isExisty(document.hidden)) {
+                return !document.hidden;
+            }
+            if (ne.util.isExisty(document.webkitHidden)) {
+                return !document.webkitHidden;
+            }
+            return true;
+        }
+    };
+
+    /****************
+     * Android series
+     ****************/
+
+    /**
+     * 안드로이드 intent지원 불가 detector
+     */
+    var androidSchemeDetector = ne.util.extend({
+        /**
+         * detector type
+         */
+        type: 'scheme',
+
+        /**
+         * detector 실행
+         * @param {object} context
+         */
+        run: function(context) {
+            var storeURL = context.storeURL;
+            this.deferCallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
+            this.runAppWithIframe(context.urlScheme);
+        }
+    }, detector);
+
+    /**
+     * 안드로이드 intent지원 detector
+     */
+    var androidIntendDetector = {
+        /**
+         * detector type
+         */
+        type: 'intend',
+
+        /**
+         * detector 실행
+         * @param {object} context
+         */
+        run: function(context) {
+            setTimeout(function () {
+                top.location.href = context.intentURI;
+            }, TIMEOUT.INTERVAL);
+        }
+    };
+
+    /**
+     * iosDetector 공통기능
+     */
+    var iosDetector = ne.util.extend({
+        /**
+         * detector type
+         */
+        type: 'ios',
+
+        /**
+         * 기본 앱페이지 이동함수
+         * @param storeURL
+         */
+        moveTo: function(storeURL) {
+            window.location.href = storeURL;
         },
 
         /**
-         * 앱을 호출한다.
-         * @param options
-         * @exmaple
-         * mobileCaller.exec({
-         *      name: 'app', // application Name (ex. facebook, twitter, daum)
-         *      ios: {
-         *          scheme: 'fecheck://', // iphone app scheme
-         *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
-         *      },
-         *      android: {
-         *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
-         *      }
-         *  });
+         * visiblitychange  이벤트 등록
          */
-        exec: function(options) {
-            options = ne.util.extend(this.defaults, options);
-            var context = {
-                appName: options.name,
-                urlScheme: options.ios.scheme,
-                storeURL: options.ios.url,
-                intentURI: options.android.scheme,
-                etcCallback: options.etcCallback,
-                andVersion: options.android.version
-            };
-            this.setDetector(context);
-            this.runDetector(context);
+        bindVisibilityChangeEvent: function() {
+            var self = this;
+            document.addEventListener('visibilitychange', function clear() {
+                if (self.isPageVisibility()) {
+                    clearTimeout(self.tid);
+                    document.removeEventListener('visibilitychange', clear);
+                }
+            });
+        },
 
+        /**
+         *  pagehide 이벤트 등록
+         */
+        bindPagehideEvent: function() {
+            var self = this;
+            window.addEventListener('pagehide', function clear() {
+                if (self.isPageVisibility()) {
+                    clearTimeout(self.tid);
+                    window.removeEventListener('pagehide', clear);
+                }
+            });
         }
+    }, detector);
+
+    /****************
+     * iOS series
+     ****************/
+
+    /**
+     * ios 구버전 detector
+     */
+    var iosOlderDetector = ne.util.extend({
+        /**
+         * detector 실행
+         * @param {object} context
+         */
+        run: function(context) {
+            var storeURL = context.storeURL,
+                callback = context.notFoundCallback || this.moveTo;
+            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+            this.bindPagehideEvent();
+            this.runAppWithIframe(context.urlScheme);
+        }
+    }, iosDetector);
+
+    /**
+     * ios 신버전 detector
+     * @type {Object|void|*}
+     */
+    var iosRecentDetector = ne.util.extend({
+        /**
+         * detector 실행
+         * @param {object} context
+         */
+        run: function(context) {
+            var storeURL = context.storeURL,
+                callback = context.notFoundCallback || this.moveTo;
+            if (this.moveTo === callback) {
+                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_SHORT);
+            } else {
+                this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+            }
+            this.bindVisibilityChangeEvent();
+            this.runAppWithIframe(context.urlScheme);
+        }
+    }, iosDetector);
+
+    /****************
+     * ETC
+     ****************/
+
+    /**
+     * 기타 브라우저
+     */
+    var etcDetector = {
+        type: 'etc',
+        run: function() {
+        }
+    };
+
+    ne.util.extend(exports, {
+        androidSchemeDetector: androidSchemeDetector,
+        androidIntendDetector: androidIntendDetector,
+        iosOlderDetector: iosOlderDetector,
+        iosRecentDetector: iosRecentDetector,
+        etcDetector: etcDetector
     });
 
-    exports.mobileCaller = new MobileCaller();
+})(ne.component.appCaller);
 
-})(window, window.agentDetector);
