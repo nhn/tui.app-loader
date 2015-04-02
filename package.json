@@ -1,6 +1,6 @@
 {
   "name": "component-app-loader",
-  "version": "1.0.0a",
+  "version": "1.0.0",
   "description": "app-loader",
   "main": "Gruntfile.js",
   "directories": {
