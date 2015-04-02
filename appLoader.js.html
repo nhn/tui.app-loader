@@ -43,6 +43,7 @@ if (!ne.component) {
 }
 /**
  * @constructor
+ * @class
  */
 ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
@@ -96,7 +97,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
             baseDetect = ne.component.AppLoader.Detector,
-            iOSDetect = ne.component.AppLoader.Detector,
+            iOSDetect = ne.component.AppLoader.iOSDetector,
             ad = this.agentDetector;
 
         if (ad.android &amp;&amp; this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
@@ -148,8 +149,10 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
     /**
      * 앱을 호출한다.
      * @param options
-     * @exmaple
-     * mobileCaller.exec({
+     *
+     * @example
+     * var loader = new ne.component.AppLoader();
+     * loader.exec({
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
      *          scheme: 'fecheck://', // iphone app scheme
