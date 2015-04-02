@@ -10,9 +10,8 @@ App Loader
 
 ## Documentation
 * **Sample** - 준비중
-* **Tutorial** - https://github.nhnent.com/fe/component-auto-complete/wiki/Component-AutoComplete
-* **API** - https://github.nhnent.com/pages/fe/component-auto-complete
-* **CI** - http://fe.nhnent.com:8080/jenkins/job/component-auto-complete/
+* **API** - 준비중
+* **CI** - 준비중
 
 ## Dependency
 * code-snippet - https://github.nhnent.com/fe/share-code-snippet
