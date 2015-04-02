@@ -236,7 +236,7 @@ ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
  * 기타 미지원 환경
  * @namespace ne.component.AppLoader.etcDetector
  */
-ne.component.AppLoader.etcDetector = {
+ne.component.AppLoader.Detector.etcDetector = {
     /**
      * @memberof ne.component.AppLoader.etcDetector
      */

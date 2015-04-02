@@ -95,8 +95,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
      */
     runDetector: function(context) {
         // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-        var construct = ne.component.AppLoader;
-        if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
+        if(this.detector && (this.detector.type !== ne.component.AppLoader.Detector.etcDetector.type)) {
             this.detector.run(context);
         }
     },

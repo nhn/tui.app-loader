@@ -184,7 +184,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
         this._propConvert();
 
         for (rule in mobileDetectRules) {
-            if(rule !== 'prop') {
+            if(rule !== 'props') {
                 this._convertToRegExp(mobileDetectRules[rule]);
             }
         }
@@ -298,9 +298,11 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
             len,
             match,
             hasOwnProp = Object.prototype.hasOwnProperty;
+
         if (hasOwnProp.call(props, propertyName)) {
             patterns = props[propertyName];
             len = patterns.length;
+
             for (i = 0; i < len; ++i) {
                 match = patterns[i].exec(userAgent);
                 if (match !== null) {

@@ -7,11 +7,11 @@
     <script type="text/javascript" src="src/js/appLoader.js"></script>
     <script type="text/javascript" src="src/js/detectors.js"></script>
     <script type="text/javascript" src="src/js/agentDetector.js"></script>
-    <!--<script type="text/javascript" src="module-AppLoader.js"></script>-->
+    <!--<script type="text/javascript" src="app-loader.js"></script>-->
     <script type="text/javascript">
         // 실행
-        var caller = new ne.component.AppLoader();
-        caller.exec({
+        var loader = new ne.component.AppLoader();
+        loader.exec({
             name: 'app',
             ios: {
                 scheme: 'elevenst://home',

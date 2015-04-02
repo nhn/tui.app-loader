@@ -1,4 +1,4 @@
-/*!app-loader v0.0.1 | NHN Entertainment*/
+/*!app-loader v1.0.0a | NHN Entertainment*/
 (function() {
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
@@ -12,8 +12,10 @@ if (!ne) {
 if (!ne.component) {
     ne.component = window.ne.component = {};
 }
-
-ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype */{
+/**
+ * @constructor
+ */
+ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
     /****************
      * member fields
@@ -95,8 +97,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype *
      */
     runDetector: function(context) {
         // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-        var construct = ne.component.AppLoader;
-        if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
+        if(this.detector && (this.detector.type !== ne.component.AppLoader.Detector.etcDetector.type)) {
             this.detector.run(context);
         }
     },
@@ -142,7 +143,6 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype *
         };
         this.setDetector(context);
         this.runDetector(context);
-
     }
 });
 
@@ -150,14 +150,20 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype *
 
 /**
 * @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
-* @dependency code-snippet.js
+* @dependency code-snippet.js, appLoader.js
 * @author FE개발팀
 */
-ne.component.AppLoader.agentDetector = ne.util.defineClass({
+/**
+ * @constructor
+ */
+ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.component.AppLoader.agentDetector.prototype */{
     cache: {},
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
      ***************/
+    /**
+     * 각 기종 및 운영체제 정규식 텍스트
+     */
     mobileRegText: {
         'phones': {
             'iPhone': '\\biPhone\\b|\\biPod\\b',
@@ -298,19 +304,22 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
             ]
         }
     },
+
+    /**
+     * 브라우저의 userAgent
+     */
     ua: window.navigator.userAgent,
 
 
     init: function() {
-
         this.convert();
 
-        this.mobileRegText.oss0 = {
-            WindowsPhoneOS: this.mobileRegText.oss.WindowsPhoneOS,
-            WindowsMobileOS: this.mobileRegText.oss.WindowsMobileOS
+        var rules = this.mobileRegText;
+        rules.oss0 = {
+            WindowsPhoneOS: rules.oss.WindowsPhoneOS,
+            WindowsMobileOS: rules.oss.WindowsMobileOS
         };
-
-        this.device =  this._findMatch(mobileDetectRules.phones, this.ua);
+        this.device =  this._findMatch(rules.phones, this.ua);
         this.ios = this.isIOS();
         this.android = this.isAndroid();
     },
@@ -325,11 +334,10 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
         this._propConvert();
 
         for (rule in mobileDetectRules) {
-            if(rule !== 'prop') {
+            if(rule !== 'props') {
                 this._convertToRegExp(mobileDetectRules[rule]);
             }
         }
-
     },
 
     /**
@@ -371,12 +379,12 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
      * @returns {*}
      */
     userAgent: function() {
-        if (this.cache.userAgent === undefined) {
+        if (ne.util.isUndefined(this.cache.userAgent)) {
             this.cache.userAgent = this._findMatch(this.mobileRegText.uas, this.ua);
         }
         return this.cache.userAgent;
     },
-    
+
     /**
      * 정규식으로 전환한다
      * @param object
@@ -391,7 +399,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
             }
         }
     },
-    
+
     /**
      * OS를 찾는다
      * @returns {*}
@@ -400,7 +408,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
         return this._findMatch(this.mobileRegText.oss0, this.ua) ||
             this._findMatch(this.mobileRegText.oss, this.ua);
     },
-    
+
     /**
      * rules 와 맞는 값을 찾는다.
      * @private
@@ -440,9 +448,11 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
             len,
             match,
             hasOwnProp = Object.prototype.hasOwnProperty;
+
         if (hasOwnProp.call(props, propertyName)) {
             patterns = props[propertyName];
             len = patterns.length;
+
             for (i = 0; i < len; ++i) {
                 match = patterns[i].exec(userAgent);
                 if (match !== null) {
@@ -459,7 +469,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
      * @return {Number} the version number as a floating number
      * @private
      */
-     _prepareVersionNo: function(version) {
+    _prepareVersionNo: function(version) {
         var numbers;
 
         numbers = version.split(/[a-z._ \/\-]/i);
@@ -492,7 +502,12 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
 });
 
 /**
- * 각 환경별 처리
+ * @fileovrview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @dependency code-snippet.js, appLoader.js
+ * @author FE개발팀
+ */
+/**
+ * @namespace ne.component.AppLoader.Detector
  */
 ne.component.AppLoader.Detector = {
     /**
@@ -514,7 +529,7 @@ ne.component.AppLoader.Detector = {
         setTimeout(function () {
             iframe = self.getIframeMadeById('supportFrame');
             iframe.src = urlScheme;
-        }, this.TIMEOUT.INTERVAL);
+        }, this.this.TIMEOUT.INTERVAL);
     },
 
     /**
@@ -549,7 +564,7 @@ ne.component.AppLoader.Detector = {
 
         return setTimeout(function () {
             now = new Date().getTime();
-            if (isPV && now - clickedAt < time + TIMEOUT.INTERVAL) {
+            if (isPV && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
                 callback(url);
             }
         }, time);
@@ -576,36 +591,43 @@ ne.component.AppLoader.Detector = {
 
 /**
  * 안드로이드 intent지원 불가 detector
+ * @namespace ne.component.AppLoader.Detector.androidSchemeDetector
  */
 ne.component.AppLoader.Detector.androidSchemeDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
      */
     type: 'scheme',
 
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
      */
     run: function(context) {
         var storeURL = context.storeURL;
-        this.deferCallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
+        this.deferCallback(storeURL, context.notFoundCallback, this.TIMEOUT.ANDROID);
         this.runAppWithIframe(context.urlScheme);
     }
 }, ne.component.AppLoader.Detector);
 
+
 /**
  * 안드로이드 intent지원 detector
+ * @namespace ne.component.AppLoader.Detector.androidIntendDetector
  */
 ne.component.AppLoader.Detector.androidIntendDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
      */
     type: 'intend',
 
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
      */
     run: function(context) {
         setTimeout(function () {
@@ -616,16 +638,19 @@ ne.component.AppLoader.Detector.androidIntendDetector = ne.util.extend({
 
 /**
  * iosDetector 공통기능
+ * @namespace ne.component.AppLoader.iOSDetector
  */
 ne.component.AppLoader.iOSDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     type: 'ios',
 
     /**
      * 기본 앱페이지 이동함수
      * @param storeURL
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     moveTo: function(storeURL) {
         window.location.href = storeURL;
@@ -633,6 +658,7 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
     /**
      * visiblitychange  이벤트 등록
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     bindVisibilityChangeEvent: function() {
         var self = this;
@@ -646,6 +672,7 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
     /**
      *  pagehide 이벤트 등록
+     *  @memberof ne.component.AppLoader.iOSDetector
      */
     bindPagehideEvent: function() {
         var self = this;
@@ -664,37 +691,40 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
 /**
  * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosOlderDetector
  */
 ne.component.AppLoader.iOSDetector.iosOlderDetector = ne.util.extend({
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosOlderDetector
      */
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
-        this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+        this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
         this.runAppWithIframe(context.urlScheme);
     }
 }, ne.component.AppLoader.iOSDetector);
 
 /**
- * ios 신버전 detector
- * @type {Object|void|*}
+ * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosRecentDetector
  */
 ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosRecentDetector
      */
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
         if (this.moveTo === callback) {
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_SHORT);
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
         } else {
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
         this.runAppWithIframe(context.urlScheme);
@@ -706,13 +736,18 @@ ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
  ****************/
 
 /**
- * 기타 브라우저
+ * 기타 미지원 환경
+ * @namespace ne.component.AppLoader.etcDetector
  */
-ne.component.AppLoader.etcDetector = {
+ne.component.AppLoader.Detector.etcDetector = {
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
     type: 'etc',
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
     run: function() {
     }
 };
-
-
 })();
