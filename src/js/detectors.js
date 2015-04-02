@@ -1,5 +1,10 @@
 /**
- * 각 환경별 처리
+ * @fileovrview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @dependency code-snippet.js, appLoader.js
+ * @author FE개발팀
+ */
+/**
+ * @namespace ne.component.AppLoader.Detector
  */
 ne.component.AppLoader.Detector = {
     /**
@@ -21,7 +26,7 @@ ne.component.AppLoader.Detector = {
         setTimeout(function () {
             iframe = self.getIframeMadeById('supportFrame');
             iframe.src = urlScheme;
-        }, this.TIMEOUT.INTERVAL);
+        }, this.this.TIMEOUT.INTERVAL);
     },
 
     /**
@@ -56,7 +61,7 @@ ne.component.AppLoader.Detector = {
 
         return setTimeout(function () {
             now = new Date().getTime();
-            if (isPV && now - clickedAt < time + TIMEOUT.INTERVAL) {
+            if (isPV && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
                 callback(url);
             }
         }, time);
@@ -83,36 +88,43 @@ ne.component.AppLoader.Detector = {
 
 /**
  * 안드로이드 intent지원 불가 detector
+ * @namespace ne.component.AppLoader.Detector.androidSchemeDetector
  */
 ne.component.AppLoader.Detector.androidSchemeDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
      */
     type: 'scheme',
 
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidSchemeDetector
      */
     run: function(context) {
         var storeURL = context.storeURL;
-        this.deferCallback(storeURL, context.notFoundCallback, TIMEOUT.ANDROID);
+        this.deferCallback(storeURL, context.notFoundCallback, this.TIMEOUT.ANDROID);
         this.runAppWithIframe(context.urlScheme);
     }
 }, ne.component.AppLoader.Detector);
 
+
 /**
  * 안드로이드 intent지원 detector
+ * @namespace ne.component.AppLoader.Detector.androidIntendDetector
  */
 ne.component.AppLoader.Detector.androidIntendDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
      */
     type: 'intend',
 
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.Detector.androidIntendDetector
      */
     run: function(context) {
         setTimeout(function () {
@@ -123,16 +135,19 @@ ne.component.AppLoader.Detector.androidIntendDetector = ne.util.extend({
 
 /**
  * iosDetector 공통기능
+ * @namespace ne.component.AppLoader.iOSDetector
  */
 ne.component.AppLoader.iOSDetector = ne.util.extend({
     /**
      * detector type
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     type: 'ios',
 
     /**
      * 기본 앱페이지 이동함수
      * @param storeURL
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     moveTo: function(storeURL) {
         window.location.href = storeURL;
@@ -140,6 +155,7 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
     /**
      * visiblitychange  이벤트 등록
+     * @memberof ne.component.AppLoader.iOSDetector
      */
     bindVisibilityChangeEvent: function() {
         var self = this;
@@ -153,6 +169,7 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
     /**
      *  pagehide 이벤트 등록
+     *  @memberof ne.component.AppLoader.iOSDetector
      */
     bindPagehideEvent: function() {
         var self = this;
@@ -171,37 +188,40 @@ ne.component.AppLoader.iOSDetector = ne.util.extend({
 
 /**
  * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosOlderDetector
  */
 ne.component.AppLoader.iOSDetector.iosOlderDetector = ne.util.extend({
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosOlderDetector
      */
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
-        this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+        this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
         this.runAppWithIframe(context.urlScheme);
     }
 }, ne.component.AppLoader.iOSDetector);
 
 /**
- * ios 신버전 detector
- * @type {Object|void|*}
+ * ios 구버전 detector
+ * @namespace ne.component.AppLoader.iOSDetector.iosRecentDetector
  */
 ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
     /**
      * detector 실행
      * @param {object} context
+     * @memberof ne.component.AppLoader.iOSDetector.iosRecentDetector
      */
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
         if (this.moveTo === callback) {
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_SHORT);
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
         } else {
-            this.tid = this.deferCallback(storeURL, callback, TIMEOUT.IOS_LONG);
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
         this.runAppWithIframe(context.urlScheme);
@@ -213,10 +233,17 @@ ne.component.AppLoader.iOSDetector.iosRecentDetector = ne.util.extend({
  ****************/
 
 /**
- * 기타 브라우저
+ * 기타 미지원 환경
+ * @namespace ne.component.AppLoader.etcDetector
  */
 ne.component.AppLoader.etcDetector = {
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
     type: 'etc',
+    /**
+     * @memberof ne.component.AppLoader.etcDetector
+     */
     run: function() {
     }
 };

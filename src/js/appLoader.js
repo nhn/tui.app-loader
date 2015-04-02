@@ -10,8 +10,10 @@ if (!ne) {
 if (!ne.component) {
     ne.component = window.ne.component = {};
 }
-
-ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype */{
+/**
+ * @constructor
+ */
+ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
     /****************
      * member fields
