@@ -8,11 +8,6 @@ App Loader
 * 판단여부에 따라 앱호출 및 설치페이지로 이동
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
-## 테스트환경
-* Galaxy Note I, II
-* Galaxy S III, IV
-* iPhone 5S
-
 ## Documentation
 * **Sample** - 준비중
 * **Tutorial** - https://github.nhnent.com/fe/component-auto-complete/wiki/Component-AutoComplete
@@ -22,10 +17,15 @@ App Loader
 ## Dependency
 * code-snippet - https://github.nhnent.com/fe/share-code-snippet
 
+## Test environment
+* Galaxy Note I, II
+* Galaxy S III, IV
+* iPhone 5S
+* Chrome Emulator
+
 ## Download/Install
 * Bower: `bower install "git+http://3c672057a1ac16c4e6f1baaba73e24d5270ef453:x-oauth-basic@github.nhnent.com/fe/component-app-loader.git#tag"`
 * Download: https://github.nhnent.com/fe/component-app-loader
-
 
 ## History
 | Version | Description | Date | Developer |
