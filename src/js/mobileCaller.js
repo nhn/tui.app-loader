@@ -14,7 +14,7 @@
     }
 
 
-    ne.component.appCaller = ne.util.defineClass(/** @lends MobileCaller.prototype */{
+    ne.component.appLoader = ne.util.defineClass(/** @lends MobileCaller.prototype */{
 
         /****************
          * member fields
@@ -50,7 +50,7 @@
          * 초기화
          */
         init: function() {
-            var app = ne.component.appCaller.agentDetector;
+            var app = ne.component.appLoader.agentDetector;
             this.ua = app.userAgent();
             this.os = app.getOS();
             this.version = app.version(app.ios ? app.device : 'Android');
@@ -65,7 +65,7 @@
                 isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
                 isIntend = ne.util.isExisty(context.intentURI),
                 store = context.storeURL,
-                construct = ne.component.appCaller,
+                construct = ne.component.appLoader,
                 app = construct.agentDetector;
 
             if (app.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
@@ -95,7 +95,7 @@
          */
         runDetector: function(context) {
             // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-            var construct = ne.component.appCaller;
+            var construct = ne.component.appLoader;
             if(this.detector && (this.detector.type !== construct.etcDetector.type)) {
                 this.detector.run(context);
             }
@@ -111,7 +111,7 @@
                 'opr'
             ];
             var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
-                app = ne.component.appCaller.agentDetector;
+                app = ne.component.appLoader.agentDetector;
             return blackListRegexp.test(app.ua);
         },
 

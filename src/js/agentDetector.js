@@ -323,4 +323,4 @@
         android: isAndroid()
     };
 
-})(ne.component.appCaller);
+})(ne.component.appLoader);
