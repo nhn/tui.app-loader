@@ -140,7 +140,6 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends MobileCaller.prototype *
         };
         this.setDetector(context);
         this.runDetector(context);
-
     }
 });
 

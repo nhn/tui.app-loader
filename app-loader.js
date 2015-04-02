@@ -303,19 +303,52 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
 
     init: function() {
 
-        var hasOwnProp = Object.prototype.hasOwnProperty;
+        this.convert();
 
-        // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+        this.mobileRegText.oss0 = {
+            WindowsPhoneOS: this.mobileRegText.oss.WindowsPhoneOS,
+            WindowsMobileOS: this.mobileRegText.oss.WindowsMobileOS
+        };
+
+        this.device =  this._findMatch(mobileDetectRules.phones, this.ua);
+        this.ios = this.isIOS();
+        this.android = this.isAndroid();
+    },
+
+    /**
+     * 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+     */
+    convert: function() {
+        var rule,
+            mobileDetectRules = this.mobileRegText;
+
+        this._propConvert();
+
+        for (rule in mobileDetectRules) {
+            if(rule !== 'prop') {
+                this._convertToRegExp(mobileDetectRules[rule]);
+            }
+        }
+
+    },
+
+    /**
+     * 각 환경에 따른 속성정규식을 컨버팅한다.
+     * @private
+     */
+    _propConvert: function() {
         var key,
             values,
             value,
             i,
             len,
             verPos,
-            mobileDetectRules = this.mobileRegText;
-        for (key in mobileDetectRules.props) {
-            if (hasOwnProp.call(mobileDetectRules.props, key)) {
-                values = mobileDetectRules.props[key];
+            hasOwnProp = Object.prototype.hasOwnProperty,
+            rules = this.mobileRegText.props;
+
+        for (key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                values = rules[key];
                 if (!ne.util.isArray(values)) {
                     values = [values];
                 }
@@ -328,25 +361,11 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
                     }
                     values[i] = new RegExp(value, 'i');
                 }
-                mobileDetectRules.props[key] = values;
+                rules[key] = values;
             }
         }
-
-        this._convertToRegExp(mobileDetectRules.oss);
-        this._convertToRegExp(mobileDetectRules.phones);
-        this._convertToRegExp(mobileDetectRules.tablets);
-        this._convertToRegExp(mobileDetectRules.uas);
-        this._convertToRegExp(mobileDetectRules.utils);
-        this.mobileRegText.oss0 = {
-            WindowsPhoneOS: this.mobileRegText.oss.WindowsPhoneOS,
-            WindowsMobileOS: this.mobileRegText.oss.WindowsMobileOS
-        };
-
-        this.device =  this._findMatch(mobileDetectRules.phones, this.ua);
-        this.ios = this.isIOS();
-        this.android = this.isAndroid();
     },
-    
+
     /**
      * userAgent 를 받아온다
      * @returns {*}
@@ -361,6 +380,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
     /**
      * 정규식으로 전환한다
      * @param object
+     * @private
      */
     _convertToRegExp: function(object) {
         var hasOwnProp = Object.prototype.hasOwnProperty,
@@ -383,6 +403,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
     
     /**
      * rules 와 맞는 값을 찾는다.
+     * @private
      */
     _findMatch: function(rules, userAgent) {
         var key,

@@ -8,6 +8,9 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
      ***************/
+    /**
+     * 각 기종 및 운영체제 정규식 텍스트
+     */
     mobileRegText: {
         'phones': {
             'iPhone': '\\biPhone\\b|\\biPod\\b',
@@ -148,24 +151,59 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
             ]
         }
     },
+
+    /**
+     * 브라우저의 userAgent
+     */
     ua: window.navigator.userAgent,
 
 
     init: function() {
+        this.convert();
 
-        var hasOwnProp = Object.prototype.hasOwnProperty;
+        var rules = this.mobileRegText;
+        rules.oss0 = {
+            WindowsPhoneOS: rules.oss.WindowsPhoneOS,
+            WindowsMobileOS: rules.oss.WindowsMobileOS
+        };
+        this.device =  this._findMatch(rules.phones, this.ua);
+        this.ios = this.isIOS();
+        this.android = this.isAndroid();
+    },
 
-        // 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+    /**
+     * 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+     */
+    convert: function() {
+        var rule,
+            mobileDetectRules = this.mobileRegText;
+
+        this._propConvert();
+
+        for (rule in mobileDetectRules) {
+            if(rule !== 'prop') {
+                this._convertToRegExp(mobileDetectRules[rule]);
+            }
+        }
+    },
+
+    /**
+     * 각 환경에 따른 속성정규식을 컨버팅한다.
+     * @private
+     */
+    _propConvert: function() {
         var key,
             values,
             value,
             i,
             len,
             verPos,
-            mobileDetectRules = this.mobileRegText;
-        for (key in mobileDetectRules.props) {
-            if (hasOwnProp.call(mobileDetectRules.props, key)) {
-                values = mobileDetectRules.props[key];
+            hasOwnProp = Object.prototype.hasOwnProperty,
+            rules = this.mobileRegText.props;
+
+        for (key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                values = rules[key];
                 if (!ne.util.isArray(values)) {
                     values = [values];
                 }
@@ -178,39 +216,26 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
                     }
                     values[i] = new RegExp(value, 'i');
                 }
-                mobileDetectRules.props[key] = values;
+                rules[key] = values;
             }
         }
-
-        this._convertToRegExp(mobileDetectRules.oss);
-        this._convertToRegExp(mobileDetectRules.phones);
-        this._convertToRegExp(mobileDetectRules.tablets);
-        this._convertToRegExp(mobileDetectRules.uas);
-        this._convertToRegExp(mobileDetectRules.utils);
-        this.mobileRegText.oss0 = {
-            WindowsPhoneOS: this.mobileRegText.oss.WindowsPhoneOS,
-            WindowsMobileOS: this.mobileRegText.oss.WindowsMobileOS
-        };
-
-        this.device =  this._findMatch(mobileDetectRules.phones, this.ua);
-        this.ios = this.isIOS();
-        this.android = this.isAndroid();
     },
-    
+
     /**
      * userAgent 를 받아온다
      * @returns {*}
      */
     userAgent: function() {
-        if (this.cache.userAgent === undefined) {
+        if (ne.util.isUndefined(this.cache.userAgent)) {
             this.cache.userAgent = this._findMatch(this.mobileRegText.uas, this.ua);
         }
         return this.cache.userAgent;
     },
-    
+
     /**
      * 정규식으로 전환한다
      * @param object
+     * @private
      */
     _convertToRegExp: function(object) {
         var hasOwnProp = Object.prototype.hasOwnProperty,
@@ -221,7 +246,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
             }
         }
     },
-    
+
     /**
      * OS를 찾는다
      * @returns {*}
@@ -230,9 +255,10 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
         return this._findMatch(this.mobileRegText.oss0, this.ua) ||
             this._findMatch(this.mobileRegText.oss, this.ua);
     },
-    
+
     /**
      * rules 와 맞는 값을 찾는다.
+     * @private
      */
     _findMatch: function(rules, userAgent) {
         var key,
@@ -288,7 +314,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass({
      * @return {Number} the version number as a floating number
      * @private
      */
-     _prepareVersionNo: function(version) {
+    _prepareVersionNo: function(version) {
         var numbers;
 
         numbers = version.split(/[a-z._ \/\-]/i);
