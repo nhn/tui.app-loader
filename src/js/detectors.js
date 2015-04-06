@@ -26,7 +26,7 @@ ne.component.AppLoader.Detector = {
         setTimeout(function () {
             iframe = self.getIframeMadeById('supportFrame');
             iframe.src = urlScheme;
-        }, this.this.TIMEOUT.INTERVAL);
+        }, this.TIMEOUT.INTERVAL);
     },
 
     /**
@@ -57,11 +57,12 @@ ne.component.AppLoader.Detector = {
     deferCallback: function (url, callback, time) {
         var clickedAt = new Date().getTime(),
             now,
-            isPV = this.isPageVisibility();
+            isPV = this.isPageVisibility(),
+            self = this;
 
         return setTimeout(function () {
             now = new Date().getTime();
-            if (isPV && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
+            if (isPV && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
                 callback(url);
             }
         }, time);

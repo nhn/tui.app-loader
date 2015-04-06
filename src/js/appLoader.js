@@ -12,6 +12,7 @@ if (!ne.component) {
 }
 /**
  * @constructor
+ * @class
  */
 ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
@@ -55,7 +56,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
         this.version = ad.version(ad.ios ? ad.device : 'Android');
     },
 
-    /***
+    /**
      * Detector를 os에 따라 선택
      * @param {object} context 옵션값
      */
@@ -65,7 +66,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
             baseDetect = ne.component.AppLoader.Detector,
-            iOSDetect = ne.component.AppLoader.Detector,
+            iOSDetect = ne.component.AppLoader.iOSDetector,
             ad = this.agentDetector;
 
         if (ad.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
@@ -110,15 +111,25 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
             'opr'
         ];
         var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
-            app = ne.component.AppLoader.agentDetector;
+            app = this.agentDetector;
         return blackListRegexp.test(app.ua);
+    },
+
+    /**
+     * OS정보를 받아온다.
+     * @returns {string}
+     */
+    getOS: function() {
+        return this.agentDetector.getOS();
     },
 
     /**
      * 앱을 호출한다.
      * @param options
-     * @exmaple
-     * mobileCaller.exec({
+     *
+     * @example
+     * var loader = new ne.component.AppLoader();
+     * loader.exec({
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
      *          scheme: 'fecheck://', // iphone app scheme

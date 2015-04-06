@@ -1,4 +1,4 @@
-/*!app-loader v1.0.0a | NHN Entertainment*/
+/*!app-loader v1.0.0 | NHN Entertainment*/
 (function() {
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
@@ -14,6 +14,7 @@ if (!ne.component) {
 }
 /**
  * @constructor
+ * @class
  */
 ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
 
@@ -57,7 +58,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
         this.version = ad.version(ad.ios ? ad.device : 'Android');
     },
 
-    /***
+    /**
      * Detector를 os에 따라 선택
      * @param {object} context 옵션값
      */
@@ -67,7 +68,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
             baseDetect = ne.component.AppLoader.Detector,
-            iOSDetect = ne.component.AppLoader.Detector,
+            iOSDetect = ne.component.AppLoader.iOSDetector,
             ad = this.agentDetector;
 
         if (ad.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
@@ -112,15 +113,25 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
             'opr'
         ];
         var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
-            app = ne.component.AppLoader.agentDetector;
+            app = this.agentDetector;
         return blackListRegexp.test(app.ua);
+    },
+
+    /**
+     * OS정보를 받아온다.
+     * @returns {string}
+     */
+    getOS: function() {
+        return this.agentDetector.getOS();
     },
 
     /**
      * 앱을 호출한다.
      * @param options
-     * @exmaple
-     * mobileCaller.exec({
+     *
+     * @example
+     * var loader = new ne.component.AppLoader();
+     * loader.exec({
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
      *          scheme: 'fecheck://', // iphone app scheme
@@ -529,7 +540,7 @@ ne.component.AppLoader.Detector = {
         setTimeout(function () {
             iframe = self.getIframeMadeById('supportFrame');
             iframe.src = urlScheme;
-        }, this.this.TIMEOUT.INTERVAL);
+        }, this.TIMEOUT.INTERVAL);
     },
 
     /**
@@ -560,11 +571,12 @@ ne.component.AppLoader.Detector = {
     deferCallback: function (url, callback, time) {
         var clickedAt = new Date().getTime(),
             now,
-            isPV = this.isPageVisibility();
+            isPV = this.isPageVisibility(),
+            self = this;
 
         return setTimeout(function () {
             now = new Date().getTime();
-            if (isPV && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
+            if (isPV && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
                 callback(url);
             }
         }, time);
