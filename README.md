@@ -9,8 +9,8 @@ App Loader
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
 ## Documentation
-* **Sample** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/tutorial-tutorial.html
 * **API** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/
+* **Sample** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/tutorial-tutorial.html
 * **CI** - 준비중
 
 ## Dependency
@@ -29,4 +29,4 @@ App Loader
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| 1.0.0 | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
+| <a href="https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/">1.0.0</a> | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
