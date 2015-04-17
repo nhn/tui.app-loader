@@ -9,8 +9,8 @@ App Loader
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
 ## Documentation
-* **Sample** - https://github.nhnent.com/pages/fe/component-app-loader/tutorial-tutorial.html
-* **API** - https://github.nhnent.com/pages/fe/component-app-loader/
+* **Sample** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/tutorial-tutorial.html
+* **API** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/
 * **CI** - 준비중
 
 ## Dependency
