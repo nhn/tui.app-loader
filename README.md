@@ -17,9 +17,9 @@ App Loader
 * code-snippet - https://github.nhnent.com/fe/share-code-snippet
 
 ## Test environment
-* Galaxy Note I, II
-* Galaxy S III, IV
-* iPhone 5S
+* Galaxy Note I(Android 2.3), II(Android 4.1)
+* Galaxy S III(Android 4.0), IV(Android 4.2.2)
+* iPhone 5S(iOS 8)
 * Chrome Emulator
 
 ## Download/Install
