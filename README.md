@@ -14,7 +14,7 @@ App Loader
 * **CI** - 준비중
 
 ## Dependency
-* code-snippet - https://github.nhnent.com/fe/share-code-snippet
+* code-snippet - https://github.nhnent.com/fe/code-snippet
 
 ## Test environment
 * Galaxy Note I(Android 2.3), II(Android 4.1)
