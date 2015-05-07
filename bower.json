@@ -1,12 +1,11 @@
 {
-  "name": "component-app-loader",
+  "name": "ne-component-m-app-loader",
   "version": "1.0.0",
   "authors": [
     "Jein Yi <jein.yi@nhnent.com>"
   ],
   "main": "app-loader.js",
   "license": "",
-  "private": true,
   "ignore": [
     "**/.*",
     ".*",
