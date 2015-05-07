@@ -9,12 +9,11 @@ App Loader
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
 ## Documentation
-* **API** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/
-* **Sample** - https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/tutorial-tutorial.html
-* **CI** - 준비중
+* **API** - http://nhnent.github.io/fe.component-m-app-loader/1.0.0/
+* **Sample** - http://nhnent.github.io/fe.component-m-app-loader/1.0.0/tutorial-tutorial.html
 
 ## Dependency
-* code-snippet - https://github.nhnent.com/fe/code-snippet
+* code-snippet - https://github.com/nhnent/fe.code-snippet
 
 ## Test environment
 * Galaxy Note I(Android 2.3), II(Android 4.1)
@@ -23,12 +22,12 @@ App Loader
 * Chrome Emulator
 
 ## Download/Install
-* Bower: 
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-app-loader.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-app-loader.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-app-loader
+* Bower:
+   * 최신버전 : `bower install ne-component-m-app-loader#master`
+   * 특정버전 : `bower install ne-component-m-app-loader[#tag]`
+* Download: https://github.com/nhnent/fe.component-m-app-loader
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| <a href="https://github.nhnent.com/pages/fe/component-app-loader/1.0.0/">1.0.0</a> | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
+| <a href="http://nhnent.github.io/fe.component-m-app-loader/1.0.0/">1.0.0</a> | 최초개발 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
