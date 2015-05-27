@@ -1,30 +1,29 @@
 {
-  "name": "component-app-loader",
-  "version": "1.0.0",
+  "name": "component-m-app-loader",
+  "version": "1.0.0a",
   "authors": [
-    "Jein Yi <jein.yi@nhnent.com>"
+    "이제인 <jein.yi@nhnent.com>"
   ],
-  "main": "app-loader.js",
-  "license": "",
-  "private": true,
+  "license": "MIT",
+	"private" : true,
   "ignore": [
     "**/.*",
-    ".*",
-    "*.zip",
-    "src",
-    "bin",
     "node_modules",
     "bower_components",
     "test",
-    "bower.json",
-    "conf.json",
+    "tests",
+    "src",
+    "server",
+    "data.js",
     "Gruntfile.js",
+    "conf.json",
     "karma.conf.js",
     "package.json",
+    ".gitignore",
     "samples"
   ],
   "dependencies": {
-    "jquery": "~1.8.3",
-    "code-snippet": "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/code-snippet.git#1.0.0"
+    "jquery" : "~1.8.3",
+	"code-snippet" : "~1.0.2"
   }
 }

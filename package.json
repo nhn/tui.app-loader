@@ -1,7 +1,26 @@
 {
-  "name": "component-app-loader",
+  "name": "component-m-app-loader",
   "version": "1.0.0",
-  "description": "app-loader",
+  "description": "안드로이드와 iOS환경의 모바일 웹 페이지에서 앱을 호출하는 컴포넌트<br>앱이 설치되어 있는지 체크하고, 설치되어 있을땐 해당앱을 실행하고 설치되어 있지 않을경우 다운로드 페이지로 이동시키는 컴포넌트 입니다.",
+  "featureList": [
+    "안드로이드와 iOS 환경의 웹페이지에서 앱이 설치되어 있는지 판단",
+    "판단여부에 따라 앱호출 및 설치페이지로 이동",
+    "안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공"
+  ],
+  "tutorial": "앱로더",
+  "samplePage": "tutorial.html",
+  "dependency": [
+    "jquery#~1.8.3",
+    "code-snippet#~1.0.2"
+  ],
+  "test": {
+    "Mobile": [
+      "Galaxy Note I(Android 2.3), II(Android 4.1)",
+      "Galaxy S III(Android 4.0), IV(Android 4.2.2)",
+      "iPhone 5S(iOS 8)",
+      "Chrome Emulator"
+    ]
+  },
   "main": "Gruntfile.js",
   "directories": {
     "test": "test"
@@ -11,7 +30,7 @@
   },
   "repository": "",
   "author": "",
-  "license": "BSD",
+  "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.0",
@@ -34,6 +53,20 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.2",
     "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git",
-    "requirejs": "^2.1.14"
+    "requirejs": "^2.1.14",
+    "readme-builder": "git+https://github.com/jein-yi/readme-builder.git"
+  },
+  "history": {
+    "1.0.0a": {
+      "content": "defineNamespace적용",
+      "date": "2015.05",
+      "author": "이제인 <jein.yi@nhnent.com>"
+    },
+    "1.0.0": {
+      "content": "배포",
+      "date": "2015.04",
+      "author": "이제인 <jein.yi@nhnent.com>",
+      "hasAPI": true
+    }
   }
 }

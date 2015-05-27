@@ -1,17 +1,13 @@
-/*!app-loader v1.0.0 | NHN Entertainment*/
+/*!component-m-app-loader v1.0.0 | NHN Entertainment*/
 (function() {
 /**
  * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author FE개발팀
  */
-/* istanbul ignore if */
-if (!ne) {
-    ne = window.ne = {};
-}
-if (!ne.component) {
-    ne.component = window.ne.component = {};
-}
+
+ne.util.defineNamespace('ne.component');
+
 /**
  * @constructor
  * @class

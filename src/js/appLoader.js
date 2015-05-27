@@ -3,13 +3,9 @@
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author FE개발팀
  */
-/* istanbul ignore if */
-if (!ne) {
-    ne = window.ne = {};
-}
-if (!ne.component) {
-    ne.component = window.ne.component = {};
-}
+
+ne.util.defineNamespace('ne.component');
+
 /**
  * @constructor
  * @class
