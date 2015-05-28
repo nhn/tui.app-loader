@@ -16,6 +16,7 @@ ne.component.AppLoader.Detector = {
         ANDROID: 100 * 3,
         INTERVAL: 100
     },
+    
     /**
      * iframe을 통한 앱호출
      * @param {string} urlScheme iframe url
