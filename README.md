@@ -1,12 +1,6 @@
 Mobile App Loader
 ===============
-모바일 앱 로더 컴포넌트<br>
-안드로이드와 iOS환경의 모바일 웹 페이지에서 앱을 호출하는 컴포넌트로,<br>
-앱의 설치 여부를 확인하여 
-- 앱이 설치되었을 경우 해당 앱을 실행
-- 앱이 설치되지 않았을 경우 앱 다운로드 페이지로 이동
-
-시키는 기능을 제공한다.
+모바일 앱 로더 컴포넌트<br>안드로이드와 iOS환경의 모바일 웹 페이지에서 앱을 호출하는 컴포넌트로,<br>앱의 설치 여부를 확인하여 <br>- 앱이 설치되었을 경우 해당 앱을 실행<br>- 앱이 설치되지 않았을 경우 앱 다운로드 페이지로 이동<br>시키는 기능을 제공한다.
 
 ## Feature
 * 안드로이드와 iOS 환경의 웹페이지에서 앱 설치 여부를 판단
@@ -15,9 +9,9 @@ Mobile App Loader
 
 ## Documentation
 * **API** : https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0
-* **Tutorial** : 준비중
+* **Tutorial** : https://github.nhnent.com/fe/component-m-app-loader/wiki/앱로더-컴포넌트-적용방법
 * **Sample** - https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0/tutorial-tutorial.html
-* **CI** : 준비중
+* **CI** : http://fe.nhnent.com:8080/jenkins/job/component-m-app-loader/
 
 
 
