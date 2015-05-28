@@ -9,7 +9,7 @@ Mobile App Loader
 
 ## Documentation
 * **API** : https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0
-* **Tutorial** : 준비중
+* **Tutorial** : https://github.nhnent.com/fe/component-m-app-loader/wiki/앱로더-컴포넌트-적용방법
 * **Sample** - https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0/tutorial-tutorial.html
 * **CI** : 준비중
 
