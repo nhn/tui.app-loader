@@ -11,7 +11,7 @@ Mobile App Loader
 * **API** : https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0
 * **Tutorial** : https://github.nhnent.com/fe/component-m-app-loader/wiki/앱로더-컴포넌트-적용방법
 * **Sample** - https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0/tutorial-tutorial.html
-* **CI** : http://fe.nhnent.com:8080/jenkins/job/component-m-app-loader/
+* **CI** : 준비중
 
 
 
