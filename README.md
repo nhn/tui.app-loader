@@ -8,10 +8,10 @@ Mobile App Loader
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
 ## Documentation
-* **API** : https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0
-* **Tutorial** : 준비중
-* **Sample** - https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0/tutorial-tutorial.html
-* **CI** : 준비중
+* **API** : https://nhnent.github.io/fe.component-m-app-loader/1.0.0
+* **Tutorial** : https://github.com/nhnent/fe.component-m-app-loader/wiki/앱로더-컴포넌트-적용방법
+* **Sample** - https://nhnent.github.io/fe.component-m-app-loader/1.0.0/tutorial-tutorial.html
+
 
 
 
@@ -29,9 +29,9 @@ Mobile App Loader
 
 ## Download/Install
 * Bower:
-   * 최신버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-app-loader.git#master"`
-   * 특정버전 : `bower install "git+http://70327b4564c7a80eb61724056876b960290946dd:x-oauth-basic@github.nhnent.com/fe/component-m-app-loader.git[#tag]"`
-* Download: https://github.nhnent.com/fe/component-m-app-loader
+   * 최신버전 : `bower install ne-component-m-app-loader#master`
+   * 특정버전 : `bower install ne-component-m-app-loader[#tag]`
+* Download: https://github.com/nhnent/fe.component-m-app-loader
 
 ## History
 | Version | Description | Date | Developer |
