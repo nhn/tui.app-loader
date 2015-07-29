@@ -8,7 +8,7 @@ Mobile App Loader
 * 안드로이드나 iOS환경이 아닐경우 또는 특정안드로이드 버전 이하의 경우, 미지원 환경에 대한 콜백을 제공
 
 ## Documentation
-* **API** : https://nhnent.github.io/fe.component-m-app-loader/1.0.0
+* **API** : https://nhnent.github.io/fe.component-m-app-loader/lastest
 * **Tutorial** : https://github.com/nhnent/fe.component-m-app-loader/wiki/앱로더-컴포넌트-적용방법
 * **Sample** - https://nhnent.github.io/fe.component-m-app-loader/1.0.0/tutorial-tutorial.html
 
