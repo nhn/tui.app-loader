@@ -36,6 +36,7 @@ Mobile App Loader
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
+| 1.0.0b | ios new window bug fix | 2015.08 | NHN Ent. FE dev team <dl_javascript@nhnent.com> | 
 | 1.0.0a | defineNamespace적용 | 2015.05 | FE개발팀 이제인 <jein.yi@nhnent.com> |
 | <a href="https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0">1.0.0</a> | 배포 | 2015.04 | FE개발팀 이제인 <jein.yi@nhnent.com> |
 
