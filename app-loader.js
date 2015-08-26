@@ -526,6 +526,7 @@ ne.component.AppLoader.Detector = {
         ANDROID: 100 * 3,
         INTERVAL: 100
     },
+    
     /**
      * iframe을 통한 앱호출
      * @param {string} urlScheme iframe url
@@ -567,12 +568,11 @@ ne.component.AppLoader.Detector = {
     deferCallback: function (url, callback, time) {
         var clickedAt = new Date().getTime(),
             now,
-            isPV = this.isPageVisibility(),
             self = this;
 
         return setTimeout(function () {
             now = new Date().getTime();
-            if (isPV && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
+            if (self.isPageVisibility() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
                 callback(url);
             }
         }, time);
@@ -758,4 +758,5 @@ ne.component.AppLoader.Detector.etcDetector = {
     run: function() {
     }
 };
+
 })();
