@@ -1,9 +1,7 @@
 {
   "source": {
     "include": [
-      "src/js/appLoader.js",
-      "src/js/agentDetector.js",
-      "src/js/detectors.js",
+      "src/js/",
       "README.md"
     ],
     "exclude": [],

@@ -1,18 +1,19 @@
 /**
-* @fileoverview  각 환경별 정보를 저장하고 있는 값객체 및 그 값들을 통한 userAgent정보를 추출해주는 객체
+* @fileoverview The extractor and detector user agent by device info. 
 * @dependency code-snippet.js, appLoader.js
-* @author FE개발팀
+* @author NHN Entertain ment. FE dev team.
 */
+
 /**
  * @constructor
  */
-ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.component.AppLoader.agentDetector.prototype */{
+var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
     cache: {},
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
      ***************/
     /**
-     * 각 기종 및 운영체제 정규식 텍스트
+     * Each device info and os reg string
      */
     mobileRegText: {
         'phones': {
@@ -156,11 +157,13 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 브라우저의 userAgent
+     * Browser userAgent
      */
     ua: window.navigator.userAgent,
 
-
+    /**
+     * Initialize
+     */
     init: function() {
         this.convert();
 
@@ -175,7 +178,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 각 디바이스, os, broswer의 정보를 정규식으로 전환한다.
+     * Convert device, os, browser info to reg edit.
      */
     convert: function() {
         var rule,
@@ -191,7 +194,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 각 환경에 따른 속성정규식을 컨버팅한다.
+     * Convert property by each invironment
      * @private
      */
     _propConvert: function() {
@@ -225,8 +228,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * userAgent 를 받아온다
-     * @returns {*}
+     * Get userAgent
      */
     userAgent: function() {
         if (ne.util.isUndefined(this.cache.userAgent)) {
@@ -236,7 +238,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 정규식으로 전환한다
+     * Conver to reg exp
      * @param object
      * @private
      */
@@ -251,7 +253,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * OS를 찾는다
+     * Find OS
      * @returns {*}
      */
     getOS: function() {
@@ -260,7 +262,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * rules 와 맞는 값을 찾는다.
+     * Find match useragent
      * @private
      */
     _findMatch: function(rules, userAgent) {
@@ -277,13 +279,14 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 버전을 찾는다
+     * Find version
      * @returns {*}
      */
     version: function(propertyName) {
         var version = this._getVersionStr(propertyName, this.ua);
         return version ? this._prepareVersionNo(version) : NaN;
     },
+    
     /**
      * Check the version of the given property in the User-Agent.
      * @param {String} propertyName
@@ -335,7 +338,7 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * iOS 여부 판단
+     * Whether iOS or not
      * @returns {boolean}
      */
     isIOS: function() {
@@ -343,10 +346,12 @@ ne.component.AppLoader.agentDetector = ne.util.defineClass(/**@lends ne.componen
     },
 
     /**
-     * 안드로이드 여부 판단
+     * Whether Android or not
      * @returns {boolean}
      */
     isAndroid: function() {
         return this.getOS() === 'AndroidOS';
     }
 });
+
+module.exports =  AgentDetector;

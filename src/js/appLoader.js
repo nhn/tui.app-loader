@@ -1,16 +1,17 @@
 /**
- * @fileoverview 모바일 앱을 호출하는 객체. 들어오는 값및 ua를 통해 추출한 환경 값에 따라 다른 detector를 설정하여, 앱 호출 역할을 위임한다.
+ * @fileoverview Load native app or move to install page
  * @dependency code-snippet.js, detectors.js, agentDetector.js
- * @author FE개발팀
+ * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
 
-ne.util.defineNamespace('ne.component');
-
+var AgentDetector = require('./agentDetector');
+var Detector = require('./detectors');
+var iOSDetector = require('./iosDetectors');
 /**
  * @constructor
  * @class
  */
-ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.prototype */{
+var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
 
     /****************
      * member fields
@@ -43,41 +44,41 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
      ****************/
 
     /**
-     * 초기화
+     * Initialize
      */
     init: function() {
-        var ad = this.agentDetector = new ne.component.AppLoader.agentDetector();
+        var ad = this.agentDetector = new AgentDetector();
         this.ua = ad.userAgent();
         this.os = ad.getOS();
         this.version = ad.version(ad.ios ? ad.device : 'Android');
     },
 
     /**
-     * Detector를 os에 따라 선택
-     * @param {object} context 옵션값
+     * Set os by Detector
+     * @param {object} context The options
      */
     setDetector: function(context) {
         var self = this,
             isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
-            baseDetect = ne.component.AppLoader.Detector,
-            iOSDetect = ne.component.AppLoader.iOSDetector,
+            baseDetect = Detector,
+            iOSDetect = iOSDetector,
             ad = this.agentDetector;
 
-        if (ad.android && this.version >= context.andVersion) { // 안드로이드일경우 detector 셋팅
+        if (ad.android && this.version >= context.andVersion) { // Andriod
             if (isNotIntend && store) {
                 this.detector = baseDetect.androidSchemeDetector;
             } else if (isIntend) {
                 this.detector = baseDetect.androidIntendDetector;
             }
-        } else if (ad.ios && store) {// IOS일경우 detector 셋팅
+        } else if (ad.ios && store) {// IOS
             if(parseInt(this.version.major, 10) < 8) {
                 this.detector = iOSDetect.iosOlderDetector;
             } else {
                 this.detector = iOSDetect.iosRecentDetector;
             }
-        } else { //기타 환경일경우 detector 셋팅
+        } else { // ETC
             setTimeout(function () {
                 self.detector = baseDetect.etcDetector;
                 if (context.etcCallback) {
@@ -88,17 +89,16 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
     },
 
     /**
-     * 선택된 detector 실행
+     * Run selected detector 
      */
     runDetector: function(context) {
-        // detector.js 에 있는 etcDetector와 타입을 비교하여 etc의 경우 run을 실행하지 않는다.
-        if(this.detector && (this.detector.type !== ne.component.AppLoader.Detector.etcDetector.type)) {
+        if(this.detector && (this.detector.type !== Detector.etcDetector.type)) {
             this.detector.run(context);
         }
     },
 
     /**
-     * intent 미지원 브라우저 여부 판별
+     * Whether intent supported
      * @returns {boolean}
      */
     isIntentLess: function() {
@@ -112,7 +112,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
     },
 
     /**
-     * OS정보를 받아온다.
+     * Get os
      * @returns {string}
      */
     getOS: function() {
@@ -120,7 +120,7 @@ ne.component.AppLoader = ne.util.defineClass(/** @lends ne.component.AppLoader.p
     },
 
     /**
-     * 앱을 호출한다.
+     * Call app
      * @param options
      *
      * @example
