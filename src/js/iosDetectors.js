@@ -68,7 +68,8 @@ iOSDetector.iosOlderDetector = ne.util.extend({
             callback = context.notFoundCallback || this.moveTo;
         this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
-        this.runAppWithIframe(context.urlScheme);
+        this.moveTo(context.urlScheme);
+        //this.runAppWithIframe(context.urlScheme);
     }
 }, iOSDetector);
 
@@ -91,7 +92,8 @@ iOSDetector.iosRecentDetector = ne.util.extend({
             this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
-        this.runAppWithIframe(context.urlScheme);
+        this.moveTo(context.urlScheme);
+        //this.runAppWithIframe(context.urlScheme);
     }
 }, iOSDetector);
 
