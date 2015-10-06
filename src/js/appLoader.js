@@ -7,6 +7,7 @@
 var AgentDetector = require('./agentDetector');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
+var EtcDetector = require('./etcDetectors');
 /**
  * @constructor
  * @class
@@ -92,7 +93,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      * Run selected detector 
      */
     runDetector: function(context) {
-        if(this.detector && (this.detector.type !== Detector.etcDetector.type)) {
+        if(this.detector && (this.detector.type !== EtcDetector.type)) {
             this.detector.run(context);
         }
     },
