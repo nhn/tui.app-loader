@@ -21,6 +21,7 @@ var iOSDetector = ne.util.extend({
      * @memberof iOSDetector
      */
     moveTo: function(storeURL) {
+        console.log('s', storeURL);
         window.location.href = storeURL;
     },
 
@@ -66,7 +67,7 @@ iOSDetector.iosOlderDetector = ne.util.extend({
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
-        this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+    //    this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
         this.moveTo(context.urlScheme);
         //this.runAppWithIframe(context.urlScheme);
@@ -87,9 +88,9 @@ iOSDetector.iosRecentDetector = ne.util.extend({
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
         if (this.moveTo === callback) {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+     //       this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
         } else {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+     //       this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
         this.moveTo(context.urlScheme);

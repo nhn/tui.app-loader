@@ -10,22 +10,25 @@
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
         // 실행
-        var loader = new ne.component.m.AppLoader();
-        loader.exec({
-            name: 'app',
-            ios: {
-                scheme: 'elevenst://home',
-                url: 'itms-apps://itunes.apple.com/app/id397938216?mt=8'
-            },
-            android: {
-                scheme: 'intent://home#Intent;scheme=elevenst;package=com.elevenst;end',
-                version: 4.0 // android 지원 브라우저
-            },
-            etcCallback: function() {
-                alert('미지원 브라우저입니다.');
-            }
-        });
+    var iosScheme = 'payco://open' + '';
+    var androidScheme = 'intent://open'+''+'#Intent;scheme=payco;package=com.nhnent.payapp;end'
 
+var loader = new ne.component.m.AppLoader();
+
+loader.exec({
+    name: 'payco',
+    ios: {
+        scheme: iosScheme,
+        url: "https://itunes.apple.com/kr/app/id924292102"
+    },
+    android: {
+        scheme: androidScheme,
+        version: 4.0 // android 지원 브라우저
+    },
+    etcCallback: function() {
+    	location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
+    }
+});
     </script>
 </head>
 <body>
