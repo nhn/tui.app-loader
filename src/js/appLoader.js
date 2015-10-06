@@ -151,4 +151,5 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
     }
 });
 
+module.exports = AppLoader;
 
