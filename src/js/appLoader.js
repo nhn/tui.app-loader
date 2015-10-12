@@ -66,7 +66,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
             ad = this.agentDetector,
-            iosVersion = parseInt(this.version.major, 10);
+            iosVersion = parseInt(this.version, 10);
 
         if (ad.android && this.version >= context.andVersion) { // Andriod
             if (isNotIntend && store) {
@@ -75,7 +75,6 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
                 this.detector = Detector.androidIntendDetector;
             }
         } else if (ad.ios && store) {// IOS
-alert(iosVersion + ': ' + context);
             if (context.useIOS9) {
                 if (iosVersion > 8 || context.syncToIOS9) { 
                     this.detector = iOSDetector.iosFixDetector;
