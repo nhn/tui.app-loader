@@ -58,50 +58,81 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
 
     /**
      * Set os by Detector
+     * @private
      * @param {object} context The options
      */
-    setDetector: function(context) {
+    _setDetector: function(context) {
         var self = this,
-            isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
-            isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
-            ad = this.agentDetector,
-            iosVersion = parseInt(this.version, 10);
+            ad = this.agentDetector;
         
         if (ad.android && this.version >= context.andVersion) { // Andriod
-            if (isNotIntend && store) {
-                this.detector = Detector.androidSchemeDetector;
-            } else if (isIntend) {
-                this.detector = Detector.androidIntendDetector;
-            }
+            this._setAndroidDetector(context);            
         } else if (ad.ios && store) {// IOS
-            if (context.useIOS9) {
-                if (iosVersion > 8 || context.syncToIOS9) { 
-                    this.detector = iOSDetector.iosFixDetector;
-                } else {
-                    this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector; 
-                }
-            } else  {
-                if (iosVersion < 8) {
-                    this.detector = iOSDetector.iosOlderDetector;
-                } else {    
-                    this.detector = iOSDetector.iosRecentDetector;
-                }
-            }
-       } else { // ETC
-            setTimeout(function () {
-                self.detector = EtcDetector;
-                if (context.etcCallback) {
-                    context.etcCallback();
-                }
-            }, 100);
+            this._setIOSDetector(context);
+        } else { // ETC
+           this._setEtcDetector(context); 
         }
     },
 
     /**
-     * Run selected detector 
+     * Set IOS Detector
+     * @private
+     * @param {object} context The information for app
      */
-    runDetector: function(context) {
+    _setIOSDetector: function(context) {
+        var iosVersion = parseInt(this.version, 10);
+        if (context.useIOS9) {
+            if (iosVersion > 8 || context.syncToIOS9) { 
+                this.detector = iOSDetector.iosFixDetector;
+            } else {
+                this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector; 
+            }
+        } else  {
+            if (iosVersion < 8) {
+                this.detector = iOSDetector.iosOlderDetector;
+            } else {    
+                this.detector = iOSDetector.iosRecentDetector;
+            }
+        }
+    },
+
+    /**
+     * Set android Detector
+     * @private
+     * @param {object} context The information for app
+     */
+    _setAndroidDetector: function(context) {
+        var isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
+            isIntend = ne.util.isExisty(context.intentURI);
+        if (isNotIntend && store) {
+            this.detector = Detector.androidSchemeDetector;
+        } else if (isIntend) {
+            this.detector = Detector.androidIntendDetector;
+        } 
+    },
+
+    /**
+     * Set EtcDetector
+     * @private
+     * @param {object} context The information for app
+     */
+    _setEtcDetector: function(context) {
+        var self = this;
+        setTimeout(function () {
+            self.detector = EtcDetector;
+            if (context.etcCallback) {
+                context.etcCallback();
+            }
+        }, 100);
+    },
+
+    /**
+     * Run selected detector 
+     * @private
+     * @param {object} context The information for app 
+     */
+    _runDetector: function(context) {
         if(this.detector && (this.detector.type !== EtcDetector.type)) {
             this.detector.run(context);
         }
@@ -131,7 +162,11 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
 
     /**
      * Call app
-     * @param options
+     * @param {object} options The option for app
+     *  @param {string} options.name An application name
+     *  @param {object} options.ios IOS app information
+     *  @param {object} options.android Android information
+     *  @param {object} options.timerSet A timer time set for callback deley time
      *
      * @example
      * var loader = new ne.component.AppLoader();
@@ -139,10 +174,19 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
      *          scheme: 'fecheck://', // iphone app scheme
-     *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url
+     *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url,
+     *          useIOS9: true,
+     *          syncIOS9: false
      *      },
      *      android: {
      *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+     *      },
+     *      timerSet: {
+     *          ios: {
+     *              long: 3000,
+     *              short: 2000
+     *          },
+     *          and: 1000
      *      }
      *  });
      */
@@ -157,9 +201,25 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             andVersion: options.android.version,
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9
-        };
-        this.setDetector(context);
-        this.runDetector(context);
+        }, timerSet = options.timerSet;
+    
+        this._setDetector(context);
+        
+        if (timerSet) {
+            this._setTimerTime(timerSet);
+        }
+    
+        this._runDetector(context);
+    },
+
+    /**
+     * Set timer time set
+     * @param {object} timerSet A set of timer times
+     */
+    _setTimerTime: function(timerSet) {
+        this.detector.TIMEOUT.IOS_SHORT = timerSet.ios.short || this.detector.TIMEOUT.IOS_SHORT;
+        this.detector.TIMEOUT.IOS_LONG = timerSet.ios.long || this.detector.TIMEOUT.IOS_LONG;
+        this.detector.TIMEOUT.ANDROID = timerSet.and || this.detector.TIMEOUT.ANDROID;    
     }
 });
 
