@@ -75,10 +75,13 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
                 this.detector = Detector.androidIntendDetector;
             }
         } else if (ad.ios && store) {// IOS
-            if (context.useIOS9 && context.syncToIOS9) {
-                this.detector = iOSDetector.iosFixDetector;
-            } else if (context.useIOS9 && iosVersion > 8) {
-                this.detector = iOSDetector.iosFixDetector;
+console.log(iosVersion, context);
+            if (context.useIOS9) {
+                if (iosVersion > 8 || context.syncToIOS9) { 
+                    this.detector = iOSDetector.iosFixDetector;
+                } else {
+                    this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iosOlderDetector; 
+                }
             } else  {
                 if (iosVersion < 8) {
                     this.detector = iOSDetector.iosOlderDetector;

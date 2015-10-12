@@ -21,7 +21,6 @@ var iOSDetector = ne.util.extend({
      * @memberof iOSDetector
      */
     moveTo: function(storeURL) {
-        console.log('s', storeURL);
         window.location.href = storeURL;
     },
 
