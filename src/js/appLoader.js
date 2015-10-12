@@ -75,7 +75,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
                 this.detector = Detector.androidIntendDetector;
             }
         } else if (ad.ios && store) {// IOS
-console.log(iosVersion, context);
+alert(iosVersion + ': ' + context);
             if (context.useIOS9) {
                 if (iosVersion > 8 || context.syncToIOS9) { 
                     this.detector = iOSDetector.iosFixDetector;
