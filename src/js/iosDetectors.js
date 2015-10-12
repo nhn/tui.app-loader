@@ -105,8 +105,15 @@ iOSDetector.iosFixDetector = ne.util.extend({
      * @memberof iOSDetector.iosFixDetector
      */
     run: function(context) {
+        var storeURL = context.storeURL,
+            callback = context.notFoundCallback || this.moveTo;
+        if (this.moveTo === callback) {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+        } else {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+        }
         this.bindVisibilityChangeEvent();
-        this.moveTo(context.storeURL); 
+        this.moveTo(context.urlScheme);
     } 
 }, iOSDetector);
 
