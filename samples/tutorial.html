@@ -9,29 +9,31 @@
     <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
-        // 실행
+    // Run code
     var iosScheme = 'payco://open' + '';
     var androidScheme = 'intent://open'+''+'#Intent;scheme=payco;package=com.nhnent.payapp;end'
 
-var loader = new ne.component.m.AppLoader();
+    var loader = new ne.component.m.AppLoader();
 
-loader.exec({
-    name: 'payco',
-    ios: {
-        scheme: iosScheme,
-        url: "https://itunes.apple.com/kr/app/id924292102"
-    },
-    android: {
-        scheme: androidScheme,
-        version: 4.0 // android 지원 브라우저
-    },
-    etcCallback: function() {
-    	location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
-    }
-});
+    loader.exec({
+        name: 'payco',
+        ios: {
+            scheme: iosScheme,
+            url: "https://itunes.apple.com/kr/app/id924292102",
+            useIOS9: true,
+            syncToIOS9 : false
+        },
+        android: {
+            scheme: androidScheme,
+            version: 4.0 // android version
+        },
+        etcCallback: function() {
+            location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
+        }
+    });
     </script>
 </head>
 <body>
-<p>모바일에서 확인 가능합니다</p>
+<p>App loader run in mobile.</p>
 </body>
 </html>

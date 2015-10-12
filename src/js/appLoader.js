@@ -33,7 +33,9 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
         name: '',
         ios: {
             scheme: '',
-            url: ''
+            url: '',
+            useIOS9: false,
+            syncToIOS9: false
         },
         android: {
             scheme: ''
@@ -63,25 +65,30 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
             isIntend = ne.util.isExisty(context.intentURI),
             store = context.storeURL,
-            baseDetect = Detector,
-            iOSDetect = iOSDetector,
-            ad = this.agentDetector;
+            ad = this.agentDetector,
+            iosVersion = parseInt(this.version.major, 10);
 
         if (ad.android && this.version >= context.andVersion) { // Andriod
             if (isNotIntend && store) {
-                this.detector = baseDetect.androidSchemeDetector;
+                this.detector = Detector.androidSchemeDetector;
             } else if (isIntend) {
-                this.detector = baseDetect.androidIntendDetector;
+                this.detector = Detector.androidIntendDetector;
             }
         } else if (ad.ios && store) {// IOS
-            if(parseInt(this.version.major, 10) < 8) {
-                this.detector = iOSDetect.iosOlderDetector;
-            } else {
-                this.detector = iOSDetect.iosRecentDetector;
+            if (context.useIOS9 && context.syncToIOS9) {
+                this.detector = iOSDetector.iosFixDetector;
+            } else if (context.useIOS9 && iosVersion > 8) {
+                this.detector = iOSDetector.iosFixDetector;
+            } else  {
+                if (iosVersion < 8) {
+                    this.detector = iOSDetector.iosOlderDetector;
+                } else {    
+                    this.detector = iOSDetector.iosRecentDetector;
+                }
             }
-        } else { // ETC
+       } else { // ETC
             setTimeout(function () {
-                self.detector = baseDetect.etcDetector;
+                self.detector = EtcDetector;
                 if (context.etcCallback) {
                     context.etcCallback();
                 }
@@ -145,7 +152,9 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             storeURL: options.ios.url,
             intentURI: options.android.scheme,
             etcCallback: options.etcCallback,
-            andVersion: options.android.version
+            andVersion: options.android.version,
+            syncToIOS9: options.ios.syncToIOS9,
+            useIOS9: options.ios.useIOS9
         };
         this.setDetector(context);
         this.runDetector(context);

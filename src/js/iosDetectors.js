@@ -69,8 +69,7 @@ iOSDetector.iosOlderDetector = ne.util.extend({
             callback = context.notFoundCallback || this.moveTo;
         this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
-        this.moveTo(context.urlScheme);
-        //this.runAppWithIframe(context.urlScheme);
+        this.runAppWithIframe(context.urlScheme);
     }
 }, iOSDetector);
 
@@ -93,9 +92,23 @@ iOSDetector.iosRecentDetector = ne.util.extend({
             this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
-        this.moveTo(context.urlScheme);
-        //this.runAppWithIframe(context.urlScheme);
+        this.runAppWithIframe(context.urlScheme);
     }
+}, iOSDetector);
+
+/**
+ * ios recent but safari prevent to call application via iframe src. 
+ */
+iOSDetector.iosFixDetector = ne.util.extend({
+    /**
+     * detector run
+     * @param {object} context
+     * @memberof iOSDetector.iosFixDetector
+     */
+    run: function(context) {
+        this.bindVisibilityChangeEvent();
+        this.moveTo(context.storeURL); 
+    } 
 }, iOSDetector);
 
 module.exports = iOSDetector;
