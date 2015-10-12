@@ -67,7 +67,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             store = context.storeURL,
             ad = this.agentDetector,
             iosVersion = parseInt(this.version, 10);
-
+        alert([iosVersion, context.useIOS9, context.syncToIOS9].join(';'));
         if (ad.android && this.version >= context.andVersion) { // Andriod
             if (isNotIntend && store) {
                 this.detector = Detector.androidSchemeDetector;
