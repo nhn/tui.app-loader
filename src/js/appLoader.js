@@ -80,7 +80,7 @@ console.log(iosVersion, context);
                 if (iosVersion > 8 || context.syncToIOS9) { 
                     this.detector = iOSDetector.iosFixDetector;
                 } else {
-                    this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iosOlderDetector; 
+                    this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector; 
                 }
             } else  {
                 if (iosVersion < 8) {
