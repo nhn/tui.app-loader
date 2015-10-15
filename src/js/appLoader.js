@@ -39,7 +39,8 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
         },
         android: {
             scheme: ''
-        }
+        },
+        notFoundCallback: function() {}
     },
 
     /****************
@@ -187,6 +188,12 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      *              short: 2000
      *          },
      *          and: 1000
+     *      },
+     *      notFoundCallback: function() {
+     *          alert('not found');
+     *      }, 
+     *      etcCallback: function() {
+     *          alert('etc');
      *      }
      *  });
      */
@@ -198,6 +205,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             storeURL: options.ios.url,
             intentURI: options.android.scheme,
             etcCallback: options.etcCallback,
+            notFoundCallback: options.notFoundCallback,
             andVersion: options.android.version,
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9
