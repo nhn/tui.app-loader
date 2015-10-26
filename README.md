@@ -11,9 +11,9 @@ First, check whether app is installed or not.<br>
 * Call app or move to install page
 
 ## Documentation
-* **API** : https://nhnent.github.io/fe.component-m-app-loader/latest
-* **Tutorial** : https://github.com/nhnent/fe.component-m-app-loader/wiki/AppLoader-Tutorial
-* **Sample** - https://nhnent.github.io/fe.component-m-app-loader/latest/tutorial-tutorial.html
+* **API** : https://nhnent.github.io/tui.component.m-app-loader/latest
+* **Tutorial** : https://github.com/nhnent/tui.component.m-app-loader/wiki/AppLoader-Tutorial
+* **Sample** - https://nhnent.github.io/tui.component.m-app-loader/latest/tutorial-tutorial.html
 
 
 
@@ -32,16 +32,16 @@ First, check whether app is installed or not.<br>
 
 ## Download/Install
 * Bower:
-   * latest : `bower install ne-component-m-app-loader#master`
-   * each version : `bower install ne-component-m-app-loader[#tag]`
-* Download: https://github.com/nhnent/fe.component-m-app-loader
+   * latest : `bower install tui-component-m-app-loader#master`
+   * each version : `bower install tui-component-m-app-loader[#tag]`
+* Download: https://github.com/nhnent/tui.component.m-app-loader
 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
 | 1.0.0b | ios new window bug fix | 2015.08 | NHN Ent. FE dev team <dl_javascript@nhnent.com> | 
 | 1.0.0a | defineNamespace apply | 2015.05 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
-| <a href="https://github.nhnent.com/pages/fe/component-m-app-loader/1.0.0">1.0.0</a> | release | 2015.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
+| <a href="https://nhnent.github.io/fe.component-m-app-loader/1.0.0/">1.0.0</a> | release | 2015.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 
 
 ## LICENSE

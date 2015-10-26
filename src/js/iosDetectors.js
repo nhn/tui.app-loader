@@ -8,7 +8,7 @@ var Detector = require('./detectors');
 /**
  * @namespace iOSDetector
  */
-var iOSDetector = ne.util.extend({
+var iOSDetector = tui.util.extend({
     /**
      * detector type
      * @memberof iOSDetector
@@ -57,7 +57,7 @@ var iOSDetector = ne.util.extend({
  * ios old detector
  * @namespace iOSDetector.iosOlderDetector
  */
-iOSDetector.iosOlderDetector = ne.util.extend({
+iOSDetector.iosOlderDetector = tui.util.extend({
     /**
      * detector Run
      * @param {object} context
@@ -76,7 +76,7 @@ iOSDetector.iosOlderDetector = ne.util.extend({
  * ios recent detector
  * @namespace iOSDetector.iosRecentDetector
  */
-iOSDetector.iosRecentDetector = ne.util.extend({
+iOSDetector.iosRecentDetector = tui.util.extend({
     /**
      * detector run
      * @param {object} context

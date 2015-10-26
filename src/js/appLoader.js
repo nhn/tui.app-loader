@@ -11,7 +11,7 @@ var iOSDetector = require('./iosDetectors');
  * @constructor
  * @class
  */
-var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
+var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /****************
      * member fields
@@ -59,8 +59,8 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      */
     setDetector: function(context) {
         var self = this,
-            isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
-            isIntend = ne.util.isExisty(context.intentURI),
+            isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntend = tui.util.isExisty(context.intentURI),
             store = context.storeURL,
             baseDetect = Detector,
             iOSDetect = iOSDetector,
@@ -124,7 +124,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      * @param options
      *
      * @example
-     * var loader = new ne.component.AppLoader();
+     * var loader = new tui.component.AppLoader();
      * loader.exec({
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
@@ -137,7 +137,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      *  });
      */
     exec: function(options) {
-        options = ne.util.extend(this.defaults, options);
+        options = tui.util.extend(this.defaults, options);
         var context = {
             appName: options.name,
             urlScheme: options.ios.scheme,
