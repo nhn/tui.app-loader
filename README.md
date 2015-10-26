@@ -20,7 +20,7 @@ First, check whether app is installed or not.<br>
 
 ## Dependency
 * jquery: ~1.8.3
-* code-snippet: ~1.0.2
+* tui-code-snippet: ~1.0.2
 
 ## Test environment
 * Mobile
