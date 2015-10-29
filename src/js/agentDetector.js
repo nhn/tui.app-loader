@@ -1,5 +1,5 @@
 /**
-* @fileoverview The extractor and detector user agent by device info. 
+* @fileoverview The extractor and detector user agent by device info.
 * @dependency code-snippet.js, appLoader.js
 * @author NHN Entertain ment. FE dev team.
 */
@@ -7,7 +7,7 @@
 /**
  * @constructor
  */
-var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
+var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
     cache: {},
     /***************
      * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
@@ -210,7 +210,7 @@ var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
         for (key in rules) {
             if (hasOwnProp.call(rules, key)) {
                 values = rules[key];
-                if (!ne.util.isArray(values)) {
+                if (!tui.util.isArray(values)) {
                     values = [values];
                 }
                 len = values.length;
@@ -231,7 +231,7 @@ var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
      * Get userAgent
      */
     userAgent: function() {
-        if (ne.util.isUndefined(this.cache.userAgent)) {
+        if (tui.util.isUndefined(this.cache.userAgent)) {
             this.cache.userAgent = this._findMatch(this.mobileRegText.uas, this.ua);
         }
         return this.cache.userAgent;
@@ -286,7 +286,7 @@ var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
         var version = this._getVersionStr(propertyName, this.ua);
         return version ? this._prepareVersionNo(version) : NaN;
     },
-    
+
     /**
      * Check the version of the given property in the User-Agent.
      * @param {String} propertyName
@@ -355,3 +355,4 @@ var AgentDetector = ne.util.defineClass(/**@lends AgentDetector.prototype */{
 });
 
 module.exports =  AgentDetector;
+

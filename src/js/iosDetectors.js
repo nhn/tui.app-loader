@@ -8,7 +8,7 @@ var Detector = require('./detectors');
 /**
  * @namespace iOSDetector
  */
-var iOSDetector = ne.util.extend({
+var iOSDetector = tui.util.extend({
     /**
      * detector type
      * @memberof iOSDetector
@@ -39,7 +39,7 @@ var iOSDetector = ne.util.extend({
     },
 
     /**
-     *  pagehide event 
+     *  pagehide event
      *  @memberof iOSDetector
      */
     bindPagehideEvent: function() {
@@ -57,7 +57,7 @@ var iOSDetector = ne.util.extend({
  * ios old detector
  * @namespace iOSDetector.iosOlderDetector
  */
-iOSDetector.iosOlderDetector = ne.util.extend({
+iOSDetector.iosOlderDetector = tui.util.extend({
     /**
      * detector Run
      * @param {object} context
@@ -76,7 +76,7 @@ iOSDetector.iosOlderDetector = ne.util.extend({
  * ios recent detector
  * @namespace iOSDetector.iosRecentDetector
  */
-iOSDetector.iosRecentDetector = ne.util.extend({
+iOSDetector.iosRecentDetector = tui.util.extend({
     /**
      * detector run
      * @param {object} context
@@ -96,9 +96,9 @@ iOSDetector.iosRecentDetector = ne.util.extend({
 }, iOSDetector);
 
 /**
- * ios recent but safari prevent to call application via iframe src. 
+ * ios recent but safari prevent to call application via iframe src.
  */
-iOSDetector.iosFixDetector = ne.util.extend({
+iOSDetector.iosFixDetector = tui.util.extend({
     /**
      * detector run
      * @param {object} context
@@ -114,7 +114,8 @@ iOSDetector.iosFixDetector = ne.util.extend({
         }
         this.bindVisibilityChangeEvent();
         this.moveTo(context.urlScheme);
-    } 
+    }
 }, iOSDetector);
 
 module.exports = iOSDetector;
+

@@ -16,7 +16,7 @@ var Detector = {
         ANDROID: 100 * 3,
         INTERVAL: 100
     },
-    
+
     /**
      * Call app by iframe
      * @param {string} urlScheme iframe url
@@ -37,7 +37,7 @@ var Detector = {
      */
     getIframeMadeById: function (id) {
         var iframe = document.createElement('iframe');
-        ne.util.extend(iframe, {
+        tui.util.extend(iframe, {
             id: id,
             frameborder: '0',
             width: '0',
@@ -73,10 +73,10 @@ var Detector = {
      * @returns {boolean}
      */
     isPageVisibility: function () {
-        if (ne.util.isExisty(document.hidden)) {
+        if (tui.util.isExisty(document.hidden)) {
             return !document.hidden;
         }
-        if (ne.util.isExisty(document.webkitHidden)) {
+        if (tui.util.isExisty(document.webkitHidden)) {
             return !document.webkitHidden;
         }
         return true;
@@ -91,7 +91,7 @@ var Detector = {
  * Android intent less
  * @namespace Detector.androidSchemeDetector
  */
-Detector.androidSchemeDetector = ne.util.extend({
+Detector.androidSchemeDetector = tui.util.extend({
     /**
      * detector type
      * @memberof Detector.androidSchemeDetector
@@ -99,7 +99,7 @@ Detector.androidSchemeDetector = ne.util.extend({
     type: 'scheme',
 
     /**
-     * Run detector 
+     * Run detector
      * @param {object} context
      * @memberof Detector.androidSchemeDetector
      */
@@ -115,7 +115,7 @@ Detector.androidSchemeDetector = ne.util.extend({
  * Android intent
  * @namespace Detector.androidIntendDetector
  */
-Detector.androidIntendDetector = ne.util.extend({
+Detector.androidIntendDetector = tui.util.extend({
     /**
      * detector type
      * @memberof Detector.androidIntendDetector
@@ -123,7 +123,7 @@ Detector.androidIntendDetector = ne.util.extend({
     type: 'intend',
 
     /**
-     * Run detector 
+     * Run detector
      * @param {object} context
      * @memberof Detector.androidIntendDetector
      */

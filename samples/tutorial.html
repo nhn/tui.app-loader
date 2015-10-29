@@ -3,37 +3,37 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+</head>
+<body>
+    <p>App loader run in mobile.</p>
     <script type="text/javascript" src="js/code-snippet.js"></script>
     <!--<script type="text/javascript" src="src/js/appLoader.js"></script>-->
     <!--<script type="text/javascript" src="src/js/detectors.js"></script>-->
     <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
-    // Run code
-    var iosScheme = 'payco://open' + '';
-    var androidScheme = 'intent://open'+''+'#Intent;scheme=payco;package=com.nhnent.payapp;end'
+        // Run code
+        var iosScheme = 'payco://open' + '';
+        var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
 
-    var loader = new ne.component.m.AppLoader();
+        var loader = new tui.component.m.AppLoader();
 
-    loader.exec({
-        name: 'payco',
-        ios: {
-            scheme: iosScheme,
-            url: "https://itunes.apple.com/kr/app/id924292102",
-            useIOS9: true,
-            syncToIOS9 : false
-        },
-        android: {
-            scheme: androidScheme,
-            version: 4.0 // android version
-        },
-        etcCallback: function() {
-            location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
-        }
-    });
+        loader.exec({
+            name: 'payco',
+            ios: {
+                scheme: iosScheme,
+                url: "https://itunes.apple.com/kr/app/id924292102",
+                useIOS9: true,
+                syncToIOS9 : false
+            },
+            android: {
+                scheme: androidScheme,
+                version: 4.0 // android version
+            },
+            etcCallback: function() {
+                location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
+            }
+        });
     </script>
-</head>
-<body>
-<p>App loader run in mobile.</p>
 </body>
 </html>

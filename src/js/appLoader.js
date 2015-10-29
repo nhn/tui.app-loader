@@ -12,7 +12,7 @@ var EtcDetector = require('./etcDetectors');
  * @constructor
  * @class
  */
-var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
+var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /****************
      * member fields
@@ -40,7 +40,6 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
         android: {
             scheme: ''
         },
-        notFoundCallback: function() {}
     },
 
     /****************
@@ -64,15 +63,17 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      */
     _setDetector: function(context) {
         var self = this,
+            isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntend = tui.util.isExisty(context.intentURI),
             store = context.storeURL,
             ad = this.agentDetector;
-        
+
         if (ad.android && this.version >= context.andVersion) { // Andriod
-            this._setAndroidDetector(context);            
+            this._setAndroidDetector(context);
         } else if (ad.ios && store) {// IOS
             this._setIOSDetector(context);
         } else { // ETC
-           this._setEtcDetector(context); 
+           this._setEtcDetector(context);
         }
     },
 
@@ -84,15 +85,15 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
     _setIOSDetector: function(context) {
         var iosVersion = parseInt(this.version, 10);
         if (context.useIOS9) {
-            if (iosVersion > 8 || context.syncToIOS9) { 
+            if (iosVersion > 8 || context.syncToIOS9) {
                 this.detector = iOSDetector.iosFixDetector;
             } else {
-                this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector; 
+                this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector;
             }
         } else  {
             if (iosVersion < 8) {
                 this.detector = iOSDetector.iosOlderDetector;
-            } else {    
+            } else {
                 this.detector = iOSDetector.iosRecentDetector;
             }
         }
@@ -104,13 +105,13 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _setAndroidDetector: function(context) {
-        var isNotIntend = (this.isIntentLess() || ne.util.isExisty(context.useUrlScheme)),
-            isIntend = ne.util.isExisty(context.intentURI);
+        var isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntend = tui.util.isExisty(context.intentURI);
         if (isNotIntend && store) {
             this.detector = Detector.androidSchemeDetector;
         } else if (isIntend) {
             this.detector = Detector.androidIntendDetector;
-        } 
+        }
     },
 
     /**
@@ -129,9 +130,9 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
     },
 
     /**
-     * Run selected detector 
+     * Run selected detector
      * @private
-     * @param {object} context The information for app 
+     * @param {object} context The information for app
      */
     _runDetector: function(context) {
         if(this.detector && (this.detector.type !== EtcDetector.type)) {
@@ -170,7 +171,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      *  @param {object} options.timerSet A timer time set for callback deley time
      *
      * @example
-     * var loader = new ne.component.AppLoader();
+     * var loader = new tui.component.AppLoader();
      * loader.exec({
      *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
@@ -191,14 +192,14 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
      *      },
      *      notFoundCallback: function() {
      *          alert('not found');
-     *      }, 
+     *      },
      *      etcCallback: function() {
      *          alert('etc');
      *      }
      *  });
      */
     exec: function(options) {
-        options = ne.util.extend(this.defaults, options);
+        options = tui.util.extend(this.defaults, options);
         var context = {
             appName: options.name,
             urlScheme: options.ios.scheme,
@@ -210,13 +211,13 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9
         }, timerSet = options.timerSet;
-    
+
         this._setDetector(context);
-        
+
         if (timerSet) {
             this._setTimerTime(timerSet);
         }
-    
+
         this._runDetector(context);
     },
 
@@ -227,7 +228,7 @@ var AppLoader = ne.util.defineClass(/** @lends AppLoader.prototype */{
     _setTimerTime: function(timerSet) {
         this.detector.TIMEOUT.IOS_SHORT = timerSet.ios.short || this.detector.TIMEOUT.IOS_SHORT;
         this.detector.TIMEOUT.IOS_LONG = timerSet.ios.long || this.detector.TIMEOUT.IOS_LONG;
-        this.detector.TIMEOUT.ANDROID = timerSet.and || this.detector.TIMEOUT.ANDROID;    
+        this.detector.TIMEOUT.ANDROID = timerSet.and || this.detector.TIMEOUT.ANDROID;
     }
 });
 
