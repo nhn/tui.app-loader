@@ -15,7 +15,6 @@
         // Run code
         var iosScheme = 'payco://open';
         var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
-
         var loader = new tui.component.m.AppLoader();
 
         loader.exec({
@@ -31,7 +30,15 @@
                 version: 4.0 // android version
             },
             etcCallback: function() {
-                top.location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
+                var contr = tui.component.m.AppLoader;
+                if (contr.getOS() === 'IOS' || contr.getOS() === 'Android') {
+                    alert(contr.getUserAgent());
+                    alert(contr.getUserAgents().join(' '));
+                    alert(contr.getVersion(contr.getOS()));
+                    alert(contr.getVersion(contr.getUserAgent()));
+                } else {
+                    alert('Run in mobile');
+                }
             }
         });
     </script>

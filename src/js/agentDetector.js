@@ -238,6 +238,28 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
     },
 
     /**
+     * Returns all detected user-agent strings.
+     * <br>
+     * The array is empty or contains one or more of following keys:<br>
+     * <br><tt>Chrome, Dolfin, Opera, Skyfire, IE, Firefox, Bolt, TeaShark, Blazer, Safari,
+     * Tizen, UCBrowser, baiduboxapp, baidubrowser, DiigoBrowser, Puffin, Mercury,
+     * ObigoBrowser, NetFront, GenericBrowser</tt><br>
+     * <br>
+     * In most cases calling {@link MobileDetect#userAgent} will be sufficient. But there are rare
+     * cases where a mobile device pretends to be more than one particular browser. You can get the
+     * list of all matches with {@link MobileDetect#userAgents} or check for a particular value by
+     * providing one of the defined keys as first argument to {@link MobileDetect#is}.
+     *
+     * @returns {Array} the array of detected user-agent keys or <tt>[]</tt>
+     * @function MobileDetect#userAgents
+     */
+    userAgents: function () {
+        if (tui.util.isUndefined(this.cache.userAgents)) {
+            this.cache.userAgents = this._findMatches(this.mobileRegText.uas, this.ua);
+        }
+        return this.cache.userAgents;
+    },
+    /**
      * Conver to reg exp
      * @param object
      * @private
@@ -276,6 +298,26 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
             }
         }
         return null;
+    },
+
+    /**
+     * Test userAgent string against a set of rules and return an array of matched keys.
+     * @param {Object} rules (key is String, value is RegExp)
+     * @param {String} userAgent the navigator.userAgent (or HTTP-Header 'User-Agent').
+     * @returns {Array} an array of matched keys, may be empty when there is no match, but not <tt>null</tt>
+     * @private
+     */
+    _findMatches: function(rules, userAgent) {
+        var result = [],
+            hasOwnProp = Object.prototype.hasOwnProperty;
+        for (var key in rules) {
+            if (hasOwnProp.call(rules, key)) {
+                if (rules[key].test(userAgent)) {
+                    result.push(key);
+                }
+            }
+        }
+        return result;
     },
 
     /**

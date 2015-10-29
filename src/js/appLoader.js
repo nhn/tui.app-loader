@@ -12,6 +12,7 @@ var EtcDetector = require('./etcDetectors');
  * @constructor
  * @class
  */
+var ad = new AgentDetector();
 var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /****************
@@ -42,6 +43,52 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
         },
     },
 
+    static:{
+        /**
+         * Get first user agent (it will be browser name)
+         * @static
+         * @function
+         * @return {string}
+         */
+        getUserAgent: function() {
+            return ad.userAgent();
+        },
+
+        /**
+         * Get all user agents by array
+         * @static
+         * @function
+         * @return {Array} agent strings
+         */
+        getUserAgents: function() {
+            return ad.userAgents();
+        },
+
+        /**
+         * Get OS
+         * @static
+         * @function
+         * @return {string}
+         */
+        getOS: function() {
+            return ad.getOS();
+        },
+
+        /**
+         * Get version
+         * @static
+         * @function
+         * @example
+         *  getVersion('IOS');
+         *  getVersion('Chrome');
+         *  getVersion('Android');
+         * @return {number|string} version
+         */
+        getVersion: function(type) {
+            return ad.version(type);
+        }
+    },
+
     /****************
      * member methods
      ****************/
@@ -50,7 +97,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * Initialize
      */
     init: function() {
-        var ad = this.agentDetector = new AgentDetector();
+        this.agentDetector = ad;
         this.ua = ad.userAgent();
         this.os = ad.getOS();
         this.version = ad.version(ad.ios ? ad.device : 'Android');
