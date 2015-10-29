@@ -1,6 +1,6 @@
 {
   "name": "component-m-app-loader",
-  "version": "1.0.0a",
+  "version": "1.0.0b",
   "authors": [
     "이제인 <jein.yi@nhnent.com>"
   ],
@@ -24,6 +24,6 @@
   ],
   "dependencies": {
     "jquery" : "~1.8.3",
-	"ne-code-snippet" : "~1.0.2"
+    "tui-code-snippet" : "~1.0.2"
   }
 }
