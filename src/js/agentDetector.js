@@ -1,5 +1,5 @@
 /**
-* @fileoverview The extractor and detector user agent by device info. 
+* @fileoverview The extractor and detector user agent by device info.
 * @dependency code-snippet.js, appLoader.js
 * @author NHN Entertain ment. FE dev team.
 */
@@ -286,7 +286,7 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
         var version = this._getVersionStr(propertyName, this.ua);
         return version ? this._prepareVersionNo(version) : NaN;
     },
-    
+
     /**
      * Check the version of the given property in the User-Agent.
      * @param {String} propertyName
@@ -355,3 +355,4 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
 });
 
 module.exports =  AgentDetector;
+

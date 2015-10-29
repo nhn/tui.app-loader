@@ -16,7 +16,7 @@ var Detector = {
         ANDROID: 100 * 3,
         INTERVAL: 100
     },
-    
+
     /**
      * Call app by iframe
      * @param {string} urlScheme iframe url
@@ -99,7 +99,7 @@ Detector.androidSchemeDetector = tui.util.extend({
     type: 'scheme',
 
     /**
-     * Run detector 
+     * Run detector
      * @param {object} context
      * @memberof Detector.androidSchemeDetector
      */
@@ -123,7 +123,7 @@ Detector.androidIntendDetector = tui.util.extend({
     type: 'intend',
 
     /**
-     * Run detector 
+     * Run detector
      * @param {object} context
      * @memberof Detector.androidIntendDetector
      */

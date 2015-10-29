@@ -3,32 +3,37 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+</head>
+<body>
+    <p>App loader run in mobile.</p>
     <script type="text/javascript" src="js/code-snippet.js"></script>
     <!--<script type="text/javascript" src="src/js/appLoader.js"></script>-->
     <!--<script type="text/javascript" src="src/js/detectors.js"></script>-->
     <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
-        // 실행
-        var loader = new ne.component.AppLoader();
+        // Run code
+        var iosScheme = 'payco://open';
+        var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
+
+        var loader = new tui.component.m.AppLoader();
+
         loader.exec({
-            name: 'app',
+            name: 'payco',
             ios: {
-                scheme: 'elevenst://home',
-                url: 'itms-apps://itunes.apple.com/app/id397938216?mt=8'
+                scheme: iosScheme,
+                url: "https://itunes.apple.com/kr/app/id924292102",
+                useIOS9: true,
+                syncToIOS9 : false
             },
             android: {
-                scheme: 'intent://home#Intent;scheme=elevenst;package=com.elevenst;end',
-                version: 4.0 // android 지원 브라우저
+                scheme: androidScheme,
+                version: 4.0 // android version
             },
             etcCallback: function() {
-                alert('미지원 브라우저입니다.');
+                location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
             }
         });
-
     </script>
-</head>
-<body>
-<p>모바일에서 확인 가능합니다</p>
 </body>
 </html>

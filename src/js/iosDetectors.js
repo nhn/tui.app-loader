@@ -39,7 +39,7 @@ var iOSDetector = tui.util.extend({
     },
 
     /**
-     *  pagehide event 
+     *  pagehide event
      *  @memberof iOSDetector
      */
     bindPagehideEvent: function() {
@@ -95,4 +95,27 @@ iOSDetector.iosRecentDetector = tui.util.extend({
     }
 }, iOSDetector);
 
+/**
+ * ios recent but safari prevent to call application via iframe src.
+ */
+iOSDetector.iosFixDetector = tui.util.extend({
+    /**
+     * detector run
+     * @param {object} context
+     * @memberof iOSDetector.iosFixDetector
+     */
+    run: function(context) {
+        var storeURL = context.storeURL,
+            callback = context.notFoundCallback || this.moveTo;
+        if (this.moveTo === callback) {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+        } else {
+            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+        }
+        this.bindVisibilityChangeEvent();
+        this.moveTo(context.urlScheme);
+    }
+}, iOSDetector);
+
 module.exports = iOSDetector;
+
