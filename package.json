@@ -16,6 +16,7 @@
     "hbsfy": "^2.2.1",
     "jasmine-core": "latest",
     "jasmine-jquery": "^2.1.0",
+    "jsdoc": "^3.3.3",
     "karma": "^0.12.37",
     "karma-browserify": "latest",
     "karma-coverage": "latest",
