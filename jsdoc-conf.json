@@ -37,6 +37,7 @@
     "hardwrap": true
   },
   "opts": {
+    "template": "./node_modules/fedoc-template",
     "recurse": true,
     "private": true,
     "destination": "doc",
