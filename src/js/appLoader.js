@@ -8,11 +8,11 @@ var AgentDetector = require('./agentDetector');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
 var EtcDetector = require('./etcDetectors');
+var ad = new AgentDetector();
 /**
  * @constructor
  * @class
  */
-var ad = new AgentDetector();
 var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /****************
@@ -43,11 +43,14 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
         },
     },
 
+    /*****************
+     * static members
+     *****************/
     static:{
         /**
          * Get first user agent (it will be browser name)
-         * @static
-         * @function
+         * @memberof AppLoader
+         * @function getUserAgent
          * @return {string}
          */
         getUserAgent: function() {
@@ -56,8 +59,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get all user agents by array
-         * @static
-         * @function
+         * @memberof AppLoader
+         * @function getUserAgents
          * @return {Array} agent strings
          */
         getUserAgents: function() {
@@ -66,8 +69,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get OS
-         * @static
-         * @function
+         * @memberof AppLoader
+         * @function getOS
          * @return {string}
          */
         getOS: function() {
@@ -76,8 +79,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get version
-         * @static
-         * @function
+         * @memberof AppLoader
+         * @function getVersion
          * @example
          *  getVersion('IOS');
          *  getVersion('Chrome');
