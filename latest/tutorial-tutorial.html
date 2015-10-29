@@ -1,79 +1,90 @@
-<div id="main" class="main"><script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/code-snippet.js"></script>
-<script type="text/javascript" src="js/toast-doc.js"></script>
-<script type="text/javascript" src="js/list.js"></script>
-<link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css" />
-<link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-<link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-<link type="text/css" rel="stylesheet" href="styles/jsdoc-fe2.css">
-   
-<section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: Default Example</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: Default Example</h1>
+
+    <section>
+
 <header>
     
 
-    <h2>tutorial</h2>
+    <h2>Default Example</h2>
 </header>
 
 <article>
-	
-    <a href="tutorials/tutorial.html" target="_blank">Open this sample in New Tab</a><br/>
-    <iframe id="exampleFrame" width="500" height="700" frameborder="0" src=tutorials/tutorial.html onload="onIframeLoad()"></iframe>
-    <br/>
-    <div id='codeArea'></div>
+    <!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <p>App loader run in mobile.</p>
+    <script type="text/javascript" src="js/code-snippet.js"></script>
+    <!--<script type="text/javascript" src="src/js/appLoader.js"></script>-->
+    <!--<script type="text/javascript" src="src/js/detectors.js"></script>-->
+    <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
+    <script type="text/javascript" src="js/app-loader.js"></script>
+    <script type="text/javascript">
+        // Run code
+        var iosScheme = 'payco://open';
+        var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
+
+        var loader = new tui.component.m.AppLoader();
+
+        loader.exec({
+            name: 'payco',
+            ios: {
+                scheme: iosScheme,
+                url: "https://itunes.apple.com/kr/app/id924292102",
+                useIOS9: true,
+                syncToIOS9 : false
+            },
+            android: {
+                scheme: androidScheme,
+                version: 4.0 // android version
+            },
+            etcCallback: function() {
+                location.href="https://play.google.com/store/apps/details?id=com.nhnent.payapp";
+            }
+        });
+    </script>
+</body>
+</html>
+
 </article>
-<script>
-/**
- * iframe load 이벤트 핸들러
- */
-function onIframeLoad() {
-    generateCode();
-    autoResize();
-}
-
-/**
- * iframe 의 너비/높이를 resize 한다.
- */
-function autoResize() {
-    var ef = document.getElementById('exampleFrame');
-    ef.width = document.getElementById('main').clientWidth - 40;
-    ef.height = getIframeDocument().body.clientHeight + 40;
-}
-
-/**
- * iframe 의 document 를 반환한다.
- * @returns {HTMLDocument|Document}
- */
-function getIframeDocument() {
-    var ef = document.getElementById('exampleFrame');
-    return ef.contentDocument || ef.contentWindow.document;
-}
-
-/**
- * iframe 마지막 script code 를 div 에 할당한다.
- */
-function generateCode() {
-    var codeArea = document.getElementById('codeArea'),
-        doc = getIframeDocument(),
-        scripts;
-
-    if (doc) {
-        scripts = doc.getElementsByTagName('script');
-        codeArea.innerHTML = '<pre>' + encodeHTMLEntity(scripts[scripts.length-1].innerHTML) + '</pre>';
-    }
-}
-
-/**
- * html entity 로 인코딩한다.
- * @param html
- * @returns {XML|string|void}
- */
-function encodeHTMLEntity(html) {
-    var entities = {'"': 'quot', '&': 'amp', '<': 'lt', '>': 'gt', '\'': '#39'};
-    return html.replace(/[<>&"']/g, function(m0) {
-        return entities[m0] ? '&' + entities[m0] + ';' : m0;
-    });
-}
-</script>
 
 </section>
+
 </div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AgentDetector.html">AgentDetector</a></li><li><a href="AppLoader.html">AppLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="Detector.html">Detector</a></li><li><a href="Detector.androidIntendDetector.html">androidIntendDetector</a></li><li><a href="Detector.androidSchemeDetector.html">androidSchemeDetector</a></li><li><a href="EtcDetector.html">EtcDetector</a></li><li><a href="iOSDetector.html">iOSDetector</a></li><li><a href="iOSDetector.iosOlderDetector.html">iosOlderDetector</a></li><li><a href="iOSDetector.iosRecentDetector.html">iosRecentDetector</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-tutorial.html">Default Example</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 29 2015 18:46:17 GMT+0900 (KST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

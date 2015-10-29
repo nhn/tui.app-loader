@@ -1,82 +1,636 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Mobile App Loader API</title>
-    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/layout.css">
-    <script type="text/javascript" src="scripts/prettify/prettify.js"></script>
-    <script type="text/javascript" src="scripts/prettify/lang-css.js"></script>
-    	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/code-snippet.js"></script>
-	<script type="text/javascript" src="js/toast-doc.js"></script>
-	<script type="text/javascript" src="js/list.js"></script>
-	<script type="text/javascript" src="agentDetector.js.html.js"></script>
-	<script type="text/javascript" src="appLoader.js.html.js"></script>
-	<script type="text/javascript" src="detectors.js.html.js"></script>
-	<script type="text/javascript" src="etcDetectors.js.html.js"></script>
-	<script type="text/javascript" src="iosDetectors.js.html.js"></script>
-	<script type="text/javascript" src="main.html.js"></script>
-	<script type="text/javascript" src="AgentDetector.html.js"></script>
-	<script type="text/javascript" src="AppLoader.html.js"></script>
-	<script type="text/javascript" src="Detector.html.js"></script>
-	<script type="text/javascript" src="Detector.androidIntendDetector.html.js"></script>
-	<script type="text/javascript" src="Detector.androidSchemeDetector.html.js"></script>
-	<script type="text/javascript" src="EtcDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.iosOlderDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.iosRecentDetector.html.js"></script>
+    <title>JSDoc: Home</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
+
 <body>
 
-<div id="wrap">
+<div id="main">
 
-    <div id="left">
-        <div class="home">
-            <a href="index.html">Mobile App Loader API</a>
-        </div>
-        <div id="search">
-            <input type="text" placeholder="Search" class="searchbox" />
-            <ul class="searchList">
-            </ul>
-        </div>
-        <div id="menu"></div>
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Mobile App Loader</h1><p>AppLoader Component<br>
+Call app from web page, each environment.<br>
+First, check whether app is installed or not.<br></p>
+<ul>
+<li>If the app is installed run the app<br></li>
+<li>If the app is not installed move to sthore</li>
+</ul>
+<h2>Feature</h2><ul>
+<li>Check some app is installed</li>
+<li>Call app or move to install page</li>
+</ul>
+<h2>Documentation</h2><ul>
+<li><strong>API</strong> : https://nhnent.github.io/tui.component.m-app-loader/latest</li>
+<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.component.m-app-loader/wiki/AppLoader-Tutorial</li>
+<li><strong>Sample</strong> - https://nhnent.github.io/tui.component.m-app-loader/latest/tutorial-tutorial.html</li>
+</ul>
+<h2>Dependency</h2><ul>
+<li>jquery: ~1.8.3</li>
+<li>tui-code-snippet: ~1.0.2</li>
+</ul>
+<h2>Test environment</h2><ul>
+<li>Mobile<ul>
+<li>Galaxy Note I(Android 2.3), II(Android 4.1)</li>
+<li>Galaxy S III(Android 4.0), IV(Android 4.2.2)</li>
+<li>iPhone 5S(iOS 8)</li>
+<li>Chrome Emulator</li>
+</ul>
+</li>
+</ul>
+<h2>Download/Install</h2><ul>
+<li>Bower:<ul>
+<li>latest : <code>bower install tui-component-m-app-loader#master</code></li>
+<li>each version : <code>bower install tui-component-m-app-loader[#tag]</code></li>
+</ul>
+</li>
+<li>Download: https://github.com/nhnent/tui.component.m-app-loader</li>
+</ul>
+<h2>History</h2><table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Description</th>
+<th>Date</th>
+<th>Developer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0b</td>
+<td>ios new window bug fix</td>
+<td>2015.08</td>
+<td>NHN Ent. FE dev team <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#100;&#x6c;&#x5f;&#x6a;&#x61;&#118;&#x61;&#115;&#99;&#x72;&#105;&#x70;&#116;&#64;&#x6e;&#x68;&#110;&#101;&#x6e;&#x74;&#46;&#99;&#111;&#x6d;">&#100;&#x6c;&#x5f;&#x6a;&#x61;&#118;&#x61;&#115;&#99;&#x72;&#105;&#x70;&#116;&#64;&#x6e;&#x68;&#110;&#101;&#x6e;&#x74;&#46;&#99;&#111;&#x6d;</a></td>
+</tr>
+<tr>
+<td>1.0.0a</td>
+<td>defineNamespace apply</td>
+<td>2015.05</td>
+<td>NHN Ent. FE dev team <a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x64;&#108;&#x5f;&#x6a;&#x61;&#118;&#97;&#x73;&#x63;&#x72;&#105;&#112;&#116;&#64;&#110;&#104;&#110;&#101;&#x6e;&#x74;&#x2e;&#99;&#111;&#109;">&#x64;&#108;&#x5f;&#x6a;&#x61;&#118;&#97;&#x73;&#x63;&#x72;&#105;&#112;&#116;&#64;&#110;&#104;&#110;&#101;&#x6e;&#x74;&#x2e;&#99;&#111;&#109;</a></td>
+</tr>
+<tr>
+<td><a href="https://nhnent.github.io/fe.component-m-app-loader/1.0.0/">1.0.0</a></td>
+<td>release</td>
+<td>2015.04</td>
+<td>NHN Ent. FE dev team <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#100;&#x6c;&#95;&#106;&#x61;&#118;&#97;&#115;&#x63;&#114;&#105;&#112;&#x74;&#64;&#110;&#104;&#110;&#101;&#110;&#x74;&#46;&#x63;&#x6f;&#x6d;">&#100;&#x6c;&#95;&#106;&#x61;&#118;&#97;&#115;&#x63;&#114;&#105;&#112;&#x74;&#64;&#110;&#104;&#110;&#101;&#110;&#x74;&#46;&#x63;&#x6f;&#x6d;</a></td>
+</tr>
+</tbody>
+</table>
+<h2>LICENSE</h2><p><a href="LICENSE">MIT LICENSE</a></p></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        agentDetector.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>The extractor and detector user agent by device info.</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>NHN Entertain ment. FE dev team.</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="agentDetector.js.html">agentDetector.js</a>, <a href="agentDetector.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
     </div>
-    <div id="content" class="body">
-        <div id="pagetop"></div>
-        <div id="contentTab">
-            <ul>
-                <li class="tabmenu info on">Specification</li>
-                <li class="tabmenu code">Code</li>
-            </ul>
-        </div>
-        <div id="contentBody"></div>
-        <div id="contentCode"></div>
-        <div class="clearfix"></div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        appLoader.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Load native app or move to install page</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>NHN Ent. FE dev team.&lt;dl_javascript@nhnent.com></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="appLoader.js.html">appLoader.js</a>, <a href="appLoader.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
     </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        detectors.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Mixin modules</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>NHN Ent. FE dev team.&lt;dl_javascript@nhnent.com></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="detectors.js.html">detectors.js</a>, <a href="detectors.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        etcDetectors.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Etc not support invironment</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>NHN Ent. FE dev team.&lt;dl_javascript@nhnent.com></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="etcDetectors.js.html">etcDetectors.js</a>, <a href="etcDetectors.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        iosDetectors.js
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>iOS Mixin modules</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>NHN Ent. FE dev team.&lt;dl_javascript@nhnent.com></li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="iosDetectors.js.html">iosDetectors.js</a>, <a href="iosDetectors.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
 
 </div>
-<footer class="footer">
-    NHN Entertainment. Frontend Development team.  
-</footer>
-<script type="text/javascript">
-var ui = new toast.ui.doc({
-    element: {
-        menu: $('#menu'),
-        content: $('#contentBody'),
-        code: $('#contentCode'),
-        tab: $('#contentTab'),
-        search: $('#search')
-    },
-    data: {
-        content: fedoc.content['main.html'],
-        menu: fedoc.lnb
-    }
-});
 
-</script>
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AgentDetector.html">AgentDetector</a></li><li><a href="AppLoader.html">AppLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="Detector.html">Detector</a></li><li><a href="Detector.androidIntendDetector.html">androidIntendDetector</a></li><li><a href="Detector.androidSchemeDetector.html">androidSchemeDetector</a></li><li><a href="EtcDetector.html">EtcDetector</a></li><li><a href="iOSDetector.html">iOSDetector</a></li><li><a href="iOSDetector.iosOlderDetector.html">iosOlderDetector</a></li><li><a href="iOSDetector.iosRecentDetector.html">iosRecentDetector</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-tutorial.html">Default Example</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 29 2015 18:46:17 GMT+0900 (KST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>
