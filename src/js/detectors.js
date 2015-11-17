@@ -128,9 +128,7 @@ Detector.androidIntendDetector = tui.util.extend({
      * @memberof Detector.androidIntendDetector
      */
     run: function(context) {
-        //setTimeout(function () {
-            top.location.href = context.intentURI;
-        //}, this.TIMEOUT.INTERVAL);
+        top.location.href = context.intentURI;
     }
 }, Detector);
 module.exports = Detector;
