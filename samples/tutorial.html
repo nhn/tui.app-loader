@@ -14,7 +14,8 @@
     <script type="text/javascript">
         // Run code
         var iosScheme = 'payco://open';
-        var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
+        var androidScheme = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http$3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
+        //var androidScheme = 'intent://open#Intent;scheme=xxpayco;S.browser_fallback_url=about:blank;package=com.nhnent.payapp;end'
         var loader = new tui.component.m.AppLoader();
 
         loader.exec({

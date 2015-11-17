@@ -112,7 +112,12 @@ iOSDetector.iosFixDetector = tui.util.extend({
         } else {
             this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
-        this.bindVisibilityChangeEvent();
+
+        if (context.useUniversalLinks) {
+            clearTimeout(this.tid);
+        } else {
+            this.bindVisibilityChangeEvent();
+        }
         this.moveTo(context.urlScheme);
     }
 }, iOSDetector);
