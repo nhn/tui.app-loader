@@ -260,7 +260,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             andVersion: options.android.version,
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9,
-            useUniversalLinks: options.ios.useUniversalLinks
+            universalLink: options.ios.universalLink
         }, timerSet = options.timerSet;
 
         this._setDetector(context);
