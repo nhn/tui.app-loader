@@ -113,12 +113,13 @@ iOSDetector.iosFixDetector = tui.util.extend({
             this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
         }
 
-        if (context.useUniversalLinks) {
+        if (context.universalLink) {
             clearTimeout(this.tid);
+            this.moveTo(context.universalLink);
         } else {
             this.bindVisibilityChangeEvent();
+            this.moveTo(context.urlScheme);
         }
-        this.moveTo(context.urlScheme);
     }
 }, iOSDetector);
 
