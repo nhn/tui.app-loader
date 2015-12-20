@@ -16,15 +16,6 @@ var iOSDetector = tui.util.extend({
     type: 'ios',
 
     /**
-     * default app page move functino
-     * @param storeURL
-     * @memberof iOSDetector
-     */
-    moveTo: function(storeURL) {
-        window.location.href = storeURL;
-    },
-
-    /**
      * visiblitychange event
      * @memberof iOSDetector
      */
@@ -107,16 +98,15 @@ iOSDetector.iosFixDetector = tui.util.extend({
     run: function(context) {
         var storeURL = context.storeURL,
             callback = context.notFoundCallback || this.moveTo;
-        if (this.moveTo === callback) {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
-        } else {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
-        }
 
         if (context.universalLink) {
-            clearTimeout(this.tid);
             this.moveTo(context.universalLink);
         } else {
+            if (this.moveTo === callback) {
+                this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+            } else {
+                this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+            }
             this.bindVisibilityChangeEvent();
             this.moveTo(context.urlScheme);
         }

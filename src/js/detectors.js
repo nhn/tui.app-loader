@@ -18,6 +18,15 @@ var Detector = {
     },
 
     /**
+     * Move page
+     * @param url
+     * @memberof Detector
+     */
+    moveTo: function(url) {
+        window.location.href = url;
+    },
+
+    /**
      * Call app by iframe
      * @param {string} urlScheme iframe url
      */
@@ -104,8 +113,10 @@ Detector.androidSchemeDetector = tui.util.extend({
      * @memberof Detector.androidSchemeDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL;
-        this.deferCallback(storeURL, context.notFoundCallback, this.TIMEOUT.ANDROID);
+        var storeURL = context.storeURL,
+            notFoundCallback = context.notFoundCallback || this.moveTo;
+
+        this.deferCallback(storeURL, notFoundCallback, this.TIMEOUT.ANDROID);
         this.runAppWithIframe(context.urlScheme);
     }
 }, Detector);
@@ -128,7 +139,13 @@ Detector.androidIntendDetector = tui.util.extend({
      * @memberof Detector.androidIntendDetector
      */
     run: function(context) {
-        top.location.href = context.intentURI;
+        var storeURL = context.storeURL,
+            notFoundCallback = context.notFoundCallback || this.moveTo;
+
+        console.log('1');
+        location.href = context.intentURI;
+        console.log('2');
+        this.deferCallback(storeURL, notFoundCallback, 3000);
     }
 }, Detector);
 module.exports = Detector;
