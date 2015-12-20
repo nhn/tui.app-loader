@@ -38,8 +38,8 @@
   },
   "opts": {
     "template": "./node_modules/fedoc-template",
+    "name": "App Loader",
     "recurse": true,
-    "private": true,
     "destination": "doc",
     "tutorials": "samples"
   }

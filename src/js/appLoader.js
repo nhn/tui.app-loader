@@ -40,7 +40,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
         },
         android: {
             scheme: ''
-        },
+        }
     },
 
     /*****************
@@ -49,6 +49,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     static:{
         /**
          * Get first user agent (it will be browser name)
+         * @api
          * @memberof AppLoader
          * @function getUserAgent
          * @return {string}
@@ -59,6 +60,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get all user agents by array
+         * @api
          * @memberof AppLoader
          * @function getUserAgents
          * @return {Array} agent strings
@@ -69,6 +71,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get OS
+         * @api
          * @memberof AppLoader
          * @function getOS
          * @return {string}
@@ -79,6 +82,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get version
+         * @api
          * @memberof AppLoader
          * @function getVersion
          * @example
@@ -219,7 +223,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *  @param {object} options.ios IOS app information
      *  @param {object} options.android Android information
      *  @param {object} options.timerSet A timer time set for callback deley time
-     *
+     * @api
      * @example
      * var loader = new tui.component.AppLoader();
      * loader.exec({
