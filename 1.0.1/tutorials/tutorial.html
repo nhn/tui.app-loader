@@ -3,18 +3,26 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
 </head>
 <body>
     <p>App loader run in mobile.</p>
+
+    <div class="wrap"></div>
+    <div class="codeArea"></div>
+    <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/prettify/prettify.js"></script>
+    <script src="../scripts/prettify/lang-css.js"></script>
+    <script src="../scripts/samplecode.js"></script>
+
     <script type="text/javascript" src="js/code-snippet.js"></script>
-    <!--<script type="text/javascript" src="src/js/appLoader.js"></script>-->
-    <!--<script type="text/javascript" src="src/js/detectors.js"></script>-->
-    <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
     <script type="text/javascript" src="js/app-loader.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" class="serviceCode">
         // Run code
         var iosScheme = 'payco://open';
-        var androidScheme = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end'
+        var androidScheme = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http$3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
         var loader = new tui.component.m.AppLoader();
 
         loader.exec({

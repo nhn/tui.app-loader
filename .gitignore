@@ -1,0 +1,14 @@
+#bower
+bower_components
+
+#node_modules
+node_modules
+
+#doc
+doc
+
+#idea
+.idea
+
+#DS_Store
+.DS_Store
