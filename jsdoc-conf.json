@@ -39,7 +39,7 @@
   "opts": {
     "template": "./node_modules/fedoc-template",
     "recurse": true,
-    "private": true,
+    "name": "App Loader",
     "destination": "doc",
     "tutorials": "samples"
   }
