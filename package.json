@@ -1,6 +1,6 @@
 {
   "name": "component-m-app-loader",
-  "version": "1.0.1a",
+  "version": "1.0.1b",
   "description": "",
   "devDependencies": {
     "browserify": "latest",
