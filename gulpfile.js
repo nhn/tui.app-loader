@@ -6,25 +6,16 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var sourceMap = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
-var karma = require('karma').server;
 var hbsfy = require('hbsfy');
 var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var filename = require('./package.json').name.replace('component-m-', '');
-
-gulp.task('default', function() {
-    karma.start({
-        configFile: path.join(__dirname, 'karma.conf.js'),
-        singleRun: true
-    });
-});
-
 gulp.task('connect', function() {
     connect.server({
         livereload: true
     });
-    gulp.watch(['./src/**/*.js', './index.js', './demo/**/*.html'], ['bundle']);
+    gulp.watch(['./src/**/*.js', './index.js', './demo/**/*.html'], ['default']);
 });
 
 gulp.task('bundle', function() {

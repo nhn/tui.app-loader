@@ -3,7 +3,7 @@
  * @dependency code-snippet.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
-
+'use strict';
 /**
  * @namespace EtcDetector
  */

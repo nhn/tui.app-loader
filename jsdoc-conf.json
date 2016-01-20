@@ -40,6 +40,7 @@
     "template": "./node_modules/fedoc-template",
     "name": "App Loader",
     "recurse": true,
+    "name": "App Loader",
     "destination": "doc",
     "tutorials": "samples"
   }

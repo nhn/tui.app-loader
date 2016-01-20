@@ -3,6 +3,7 @@
  * @dependency code-snippet.js, appLoader.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
+'use strict';
 /**
  * @namespace Detector
  */
@@ -13,64 +14,80 @@ var Detector = {
     TIMEOUT: {
         IOS_SHORT: 1000,
         IOS_LONG: 1000 * 2,
-        ANDROID: 100 * 3,
+        ANDROID: 800,
         INTERVAL: 100
     },
 
     /**
-     * Call app by iframe
-     * @param {string} urlScheme iframe url
+     * Id for support frame
      */
-    runAppWithIframe: function (urlScheme) {
-        var self = this,
-            iframe;
-        setTimeout(function () {
-            iframe = self.getIframeMadeById('supportFrame');
-            iframe.src = urlScheme;
-        }, this.TIMEOUT.INTERVAL);
+    SUPPORT_FRAME_ID: 'tui-support-frame',
+
+    /**
+     * Move page
+     * @param {string} url - URL
+     * @memberof Detector
+     */
+    moveTo: function(url) {
+        top.location.href = url;
     },
 
     /**
-     * Create iframe
-     * @param {string} id iframe ID
-     * @returns {HTMLElement}
+     * Call app by iframe
+     * @param {string} url - App url
+     * @returns {HTMLElement} IFrame
      */
-    getIframeMadeById: function (id) {
-        var iframe = document.createElement('iframe');
-        tui.util.extend(iframe, {
-            id: id,
-            frameborder: '0',
-            width: '0',
-            height: '0'
-        });
-        iframe.style.display = 'none';
+    runAppWithIframe: function (url) {
+        var self = this,
+            iframe = self.createSupportFrame();
+
+        iframe.src = url;
         document.body.appendChild(iframe);
         return iframe;
     },
 
     /**
-     * Defer call callback
-     * @param {string} time A delay time
-     * @param {string} url A url to request
-     * @param {function} callback A callback
-     * @returns {number}
+     * Create iframe
+     * @returns {HTMLElement} IFrame
      */
-    deferCallback: function (url, callback, time) {
+    createSupportFrame: function () {
+        var iframe = document.createElement('iframe');
+        tui.util.extend(iframe, {
+            id: this.SUPPORT_FRAME_ID,
+            frameborder: '0',
+            width: '0',
+            height: '0'
+        });
+        iframe.style.display = 'none';
+        return iframe;
+    },
+
+    /**
+     * Defer call callback
+     * @param {function} callback A callback
+     * @param {number} time A delay time
+     * @returns {number|undefined} Timer id
+     */
+    deferCallback: function (callback, time) {
         var clickedAt = new Date().getTime(),
             now,
             self = this;
 
+        if (!tui.util.isFunction(callback)) {
+            return;
+        }
+
         return setTimeout(function () {
             now = new Date().getTime();
             if (self.isPageVisibility() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
-                callback(url);
+                callback();
             }
         }, time);
     },
 
     /**
      * check a webpage is visible or in focus
-     * @returns {boolean}
+     * @returns {boolean} Page visibility
      */
     isPageVisibility: function () {
         if (tui.util.isExisty(document.hidden)) {
@@ -100,12 +117,17 @@ Detector.androidSchemeDetector = tui.util.extend({
 
     /**
      * Run detector
-     * @param {object} context
+     * @deprecated
+     * @param {object} context - Data for running
      * @memberof Detector.androidSchemeDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL;
-        this.deferCallback(storeURL, context.notFoundCallback, this.TIMEOUT.ANDROID);
+        var storeURL = context.androidStoreURL,
+            notFoundCallback = context.notFoundCallback;
+
+        if (storeURL || context.notFoundCallback) {
+            this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
+        }
         this.runAppWithIframe(context.urlScheme);
     }
 }, Detector);
@@ -113,22 +135,52 @@ Detector.androidSchemeDetector = tui.util.extend({
 
 /**
  * Android intent
- * @namespace Detector.androidIntendDetector
+ * @namespace Detector.androidIntentDetector
  */
-Detector.androidIntendDetector = tui.util.extend({
+Detector.androidIntentDetector = tui.util.extend({
     /**
      * detector type
-     * @memberof Detector.androidIntendDetector
+     * @memberof Detector.androidIntentDetector
      */
-    type: 'intend',
+    type: 'intent',
+
+    launchViaIframe: function(intentURI, notFoundCallback, onErrorIframe) {
+        var iframe = this.runAppWithIframe(intentURI), // Launch app via iframe
+            timeoutId = this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
+
+        setTimeout(function() {
+            try {
+                // Whether broswer supports intentURI with iframe and without error.
+                if (iframe && iframe.contentDocument.body) {
+                    document.body.removeChild(iframe);
+                }
+            } catch (e) {
+                // If browser caught an error(CORS, accessing to error page in iframe),
+                //  this component cannot judge the app is installed or not.
+                document.body.removeChild(iframe);
+                clearTimeout(timeoutId);
+                if (tui.util.isFunction(onErrorIframe)) {
+                    onErrorIframe();
+                }
+            }
+        }, 100);
+    },
 
     /**
      * Run detector
-     * @param {object} context
-     * @memberof Detector.androidIntendDetector
+     * @param {object} context - Data for running
+     * @memberof Detector.androidIntentDetector
      */
     run: function(context) {
-        top.location.href = context.intentURI;
+        var notFoundCallback = context.notFoundCallback,
+            intentURI = context.intentURI;
+
+        if (context.useIframe) {
+            this.launchViaIframe(intentURI, notFoundCallback, context.onErrorIframe);
+        } else {
+            this.moveTo(intentURI);
+            this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
+        }
     }
 }, Detector);
 module.exports = Detector;

@@ -3,15 +3,17 @@
 * @dependency code-snippet.js, appLoader.js
 * @author NHN Entertain ment. FE dev team.
 */
-
+'use strict';
 /**
  * @constructor
  */
 var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
     cache: {},
-    /***************
-     * RegExp processing start : original - 출처 mobile-detect.js @link [https://github.com/hgoebl/mobile-detect.js]
-     ***************/
+    /**
+     * @link https://github.com/hgoebl/mobile-detect.js
+     * @license https://github.com/hgoebl/mobile-detect.js/blob/master/LICENSE
+     **/
+     
     /**
      * Each device info and os reg string
      */
@@ -165,9 +167,9 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
      * Initialize
      */
     init: function() {
+        var rules;
         this.convert();
-
-        var rules = this.mobileRegText;
+        rules = this.mobileRegText;
         rules.oss0 = {
             WindowsPhoneOS: rules.oss.WindowsPhoneOS,
             WindowsMobileOS: rules.oss.WindowsMobileOS
@@ -187,7 +189,7 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
         this._propConvert();
 
         for (rule in mobileDetectRules) {
-            if(rule !== 'props') {
+            if (rule !== 'props') {
                 this._convertToRegExp(mobileDetectRules[rule]);
             }
         }
@@ -259,6 +261,7 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
         }
         return this.cache.userAgents;
     },
+
     /**
      * Conver to reg exp
      * @param object
@@ -397,4 +400,3 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
 });
 
 module.exports =  AgentDetector;
-

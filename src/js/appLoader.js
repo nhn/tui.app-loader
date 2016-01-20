@@ -3,7 +3,7 @@
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
-
+'use strict';
 var AgentDetector = require('./agentDetector');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
@@ -39,7 +39,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             syncToIOS9: false
         },
         android: {
-            scheme: ''
+            scheme: '',
+            url: ''
         }
     },
 
@@ -85,11 +86,11 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          * @api
          * @memberof AppLoader
          * @function getVersion
+         * @return {number|string} version
          * @example
          *  getVersion('IOS');
          *  getVersion('Chrome');
          *  getVersion('Android');
-         * @return {number|string} version
          */
         getVersion: function(type) {
             return ad.version(type);
@@ -116,15 +117,11 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The options
      */
     _setDetector: function(context) {
-        var self = this,
-            isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
-            isIntend = tui.util.isExisty(context.intentURI),
-            store = context.storeURL,
-            ad = this.agentDetector;
+        var ad = this.agentDetector;
 
-        if (ad.android && this.version >= context.andVersion) { // Andriod
+        if (ad.android) { // Andriod
             this._setAndroidDetector(context);
-        } else if (ad.ios && store) {// IOS
+        } else if (ad.ios && context.iosStoreURL) { // IOS
             this._setIOSDetector(context);
         } else { // ETC
            this._setEtcDetector(context);
@@ -144,12 +141,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             } else {
                 this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector;
             }
-        } else  {
-            if (iosVersion < 8) {
-                this.detector = iOSDetector.iosOlderDetector;
-            } else {
-                this.detector = iOSDetector.iosRecentDetector;
-            }
+        } else  if (iosVersion < 8) {
+            this.detector = iOSDetector.iosOlderDetector;
+        } else {
+            this.detector = iOSDetector.iosRecentDetector;
         }
     },
 
@@ -159,12 +154,12 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _setAndroidDetector: function(context) {
-        var isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
-            isIntend = tui.util.isExisty(context.intentURI);
-        if (isNotIntend && store) {
+        var isNotIntent = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntent = tui.util.isExisty(context.intentURI);
+        if (isNotIntent) {
             this.detector = Detector.androidSchemeDetector;
-        } else if (isIntend) {
-            this.detector = Detector.androidIntendDetector;
+        } else if (isIntent) {
+            this.detector = Detector.androidIntentDetector;
         }
     },
 
@@ -223,16 +218,18 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *  @param {object} options.ios IOS app information
      *  @param {object} options.android Android information
      *  @param {object} options.timerSet A timer time set for callback deley time
-     * @api
+     *  @param {function} options.etcCallback
+     *  @param {function} options.notFoundCallback
+     *
      * @example
-     * var loader = new tui.component.AppLoader();
+     * var loader = new tui.component.m.AppLoader();
      * loader.exec({
-     *      name: 'app', // application Name (ex. facebook, twitter, daum)
      *      ios: {
      *          scheme: 'fecheck://', // iphone app scheme
-     *          url: 'itms-apps://itunes.apple.com/app/.....' // app store url,
+     *          url: 'itms-apps://itunes.apple.com/app/.....', // app store url,
      *          useIOS9: true,
-     *          syncIOS9: false
+     *          syncIOS9: false,
+     *          universalLink: 'app:///links/'
      *      },
      *      android: {
      *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
@@ -242,7 +239,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *              long: 3000,
      *              short: 2000
      *          },
-     *          and: 1000
+     *          android: 1000
      *      },
      *      notFoundCallback: function() {
      *          alert('not found');
@@ -250,29 +247,30 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *      etcCallback: function() {
      *          alert('etc');
      *      }
-     *  });
+     * });
      */
     exec: function(options) {
+        var timerSet, context;
+
         options = tui.util.extend(this.defaults, options);
-        var context = {
-            appName: options.name,
+        timerSet = options.timerSet;
+        context = {
             urlScheme: options.ios.scheme,
-            storeURL: options.ios.url,
-            intentURI: options.android.scheme,
-            etcCallback: options.etcCallback,
-            notFoundCallback: options.notFoundCallback,
-            andVersion: options.android.version,
+            iosStoreURL: options.ios.url,
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9,
-            universalLink: options.ios.universalLink
-        }, timerSet = options.timerSet;
+            universalLink: options.ios.universalLink,
+            intentURI: options.android.intentURI,
+            useIframe: options.android.useIframe,
+            onErrorIframe: options.android.onErrorIframe,
+            etcCallback: options.etcCallback,
+            notFoundCallback: options.notFoundCallback
+        };
 
         this._setDetector(context);
-
         if (timerSet) {
             this._setTimerTime(timerSet);
         }
-
         this._runDetector(context);
     },
 
@@ -283,9 +281,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     _setTimerTime: function(timerSet) {
         this.detector.TIMEOUT.IOS_SHORT = timerSet.ios.short || this.detector.TIMEOUT.IOS_SHORT;
         this.detector.TIMEOUT.IOS_LONG = timerSet.ios.long || this.detector.TIMEOUT.IOS_LONG;
-        this.detector.TIMEOUT.ANDROID = timerSet.and || this.detector.TIMEOUT.ANDROID;
+        this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
     }
 });
 
 module.exports = AppLoader;
-

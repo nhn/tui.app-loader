@@ -9,45 +9,44 @@
 </head>
 <body>
     <p>App loader run in mobile.</p>
-
-    <div class="wrap"></div>
-    <div class="codeArea"></div>
-    <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/prettify/prettify.js"></script>
-    <script src="../scripts/prettify/lang-css.js"></script>
-    <script src="../scripts/samplecode.js"></script>
-
+    <div>
+        <button id='loaderBtn'>load</button>
+    </div>
     <script type="text/javascript" src="js/code-snippet.js"></script>
     <script type="text/javascript" src="js/app-loader.js"></script>
-    <script type="text/javascript" class="serviceCode">
-        // Run code
+    <script type="text/javascript">
         var iosScheme = 'payco://open';
-        var androidScheme = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http$3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
-        var loader = new tui.component.m.AppLoader();
+//        var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
+        var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end';
+        var loader = new tui.component.m.AppLoader(),
+            btn = document.getElementById('loaderBtn');
 
-        loader.exec({
-            name: 'payco',
-            ios: {
-                scheme: iosScheme,
-                url: "https://itunes.apple.com/kr/app/id924292102",
-                useIOS9: true,
-                syncToIOS9 : false
-            },
-            android: {
-                scheme: androidScheme,
-                version: 4.0 // android version
-            },
-            etcCallback: function() {
-                var contr = tui.component.m.AppLoader;
-                if (contr.getOS() === 'IOS' || contr.getOS() === 'Android') {
-                    alert(contr.getUserAgent());
-                    alert(contr.getUserAgents().join(' '));
-                    alert(contr.getVersion(contr.getOS()));
-                    alert(contr.getVersion(contr.getUserAgent()));
-                } else {
-                    alert('Run in mobile');
+        btn.addEventListener('click', function() {
+            loader.exec({
+                ios: {
+                    scheme: iosScheme,
+                    url: "https://itunes.apple.com/kr/app/id924292102",
+                    useIOS9: true,
+                    syncToIOS9 : false
+                },
+                android: {
+                    intentURI: intentURI
+                },
+                etcCallback: function() {
+                    var contr = tui.component.m.AppLoader;
+                    if (contr.getOS() === 'IOS' || contr.getOS() === 'Android') {
+                        alert(contr.getUserAgent());
+                        alert(contr.getUserAgents().join(' '));
+                        alert(contr.getVersion(contr.getOS()));
+                        alert(contr.getVersion(contr.getUserAgent()));
+                    } else {
+                        alert('Run in mobile');
+                    }
+                },
+                notFoundCallback: function() {
+                    console.log('Not Found Application');
                 }
-            }
+            });
         });
     </script>
 </body>
