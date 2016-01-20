@@ -3,6 +3,7 @@
  * @dependency code-snippet.js, appLoader.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
+'use strict';
 /**
  * @namespace Detector
  */
@@ -13,58 +14,61 @@ var Detector = {
     TIMEOUT: {
         IOS_SHORT: 1000,
         IOS_LONG: 1000 * 2,
-        ANDROID: 100 * 3,
+        ANDROID: 300,
         INTERVAL: 100
     },
 
     /**
+     * Id for support frame
+     */
+    SUPPORT_FRAME_ID: 'tui-support-frame',
+
+    /**
      * Move page
-     * @param url
+     * @param {string} url - URL
      * @memberof Detector
      */
     moveTo: function(url) {
-        window.location.href = url;
+        top.location.href = url;
     },
 
     /**
      * Call app by iframe
-     * @param {string} urlScheme iframe url
+     * @param {string} url - App url
+     * @returns {HTMLElement} IFrame
      */
-    runAppWithIframe: function (urlScheme) {
+    runAppWithIframe: function (url) {
         var self = this,
-            iframe;
-        setTimeout(function () {
-            iframe = self.getIframeMadeById('supportFrame');
-            iframe.src = urlScheme;
-        }, this.TIMEOUT.INTERVAL);
-    },
+            iframe = self.createSupportFrame();
 
-    /**
-     * Create iframe
-     * @param {string} id iframe ID
-     * @returns {HTMLElement}
-     */
-    getIframeMadeById: function (id) {
-        var iframe = document.createElement('iframe');
-        tui.util.extend(iframe, {
-            id: id,
-            frameborder: '0',
-            width: '0',
-            height: '0'
-        });
-        iframe.style.display = 'none';
+        iframe.src = url;
         document.body.appendChild(iframe);
         return iframe;
     },
 
     /**
-     * Defer call callback
-     * @param {string} time A delay time
-     * @param {string} url A url to request
-     * @param {function} callback A callback
-     * @returns {number}
+     * Create iframe
+     * @returns {HTMLElement} IFrame
      */
-    deferCallback: function (url, callback, time) {
+    createSupportFrame: function () {
+        var iframe = document.createElement('iframe');
+        tui.util.extend(iframe, {
+            id: this.SUPPORT_FRAME_ID,
+            frameborder: '0',
+            width: '0',
+            height: '0'
+        });
+        iframe.style.display = 'none';
+        return iframe;
+    },
+
+    /**
+     * Defer call callback
+     * @param {function} callback A callback
+     * @param {number} time A delay time
+     * @returns {number} Timer id
+     */
+    deferCallback: function (callback, time) {
         var clickedAt = new Date().getTime(),
             now,
             self = this;
@@ -72,14 +76,14 @@ var Detector = {
         return setTimeout(function () {
             now = new Date().getTime();
             if (self.isPageVisibility() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
-                callback(url);
+                callback();
             }
         }, time);
     },
 
     /**
      * check a webpage is visible or in focus
-     * @returns {boolean}
+     * @returns {boolean} Page visibility
      */
     isPageVisibility: function () {
         if (tui.util.isExisty(document.hidden)) {
@@ -109,14 +113,17 @@ Detector.androidSchemeDetector = tui.util.extend({
 
     /**
      * Run detector
-     * @param {object} context
+     * @deprecated
+     * @param {object} context - Data for running
      * @memberof Detector.androidSchemeDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL,
-            notFoundCallback = context.notFoundCallback || this.moveTo;
+        var storeURL = context.androidStoreURL,
+            notFoundCallback = context.notFoundCallback;
 
-        this.deferCallback(storeURL, notFoundCallback, this.TIMEOUT.ANDROID);
+        if (storeURL || context.notFoundCallback) {
+            this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
+        }
         this.runAppWithIframe(context.urlScheme);
     }
 }, Detector);
@@ -124,28 +131,52 @@ Detector.androidSchemeDetector = tui.util.extend({
 
 /**
  * Android intent
- * @namespace Detector.androidIntendDetector
+ * @namespace Detector.androidIntentDetector
  */
-Detector.androidIntendDetector = tui.util.extend({
+Detector.androidIntentDetector = tui.util.extend({
     /**
      * detector type
-     * @memberof Detector.androidIntendDetector
+     * @memberof Detector.androidIntentDetector
      */
-    type: 'intend',
+    type: 'intent',
+
+    launchViaIframe: function(intentURI, notFoundCallback) {
+        var iframe = this.runAppWithIframe(intentURI), // Launch app via iframe
+            timeoutId = this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID),
+            self = this,
+            popup;
+
+        setTimeout(function() {
+            try { // Check the broswer supports iframe
+                if (iframe && iframe.contentDocument.body) {
+                    document.body.removeChild(iframe);
+                }
+            } catch (e) { // If not, open popup
+                document.body.removeChild(iframe);
+                clearTimeout(timeoutId);
+                popup = window.open(intentURI);
+                popup.addEventListener('unload', function() {
+                    popup.close();
+                    self.deferCallback(notFoundCallback, self.TIMEOUT.ANDROID);
+                });
+            }
+        }, 100);
+    },
 
     /**
      * Run detector
-     * @param {object} context
-     * @memberof Detector.androidIntendDetector
+     * @param {object} context - Data for running
+     * @memberof Detector.androidIntentDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL,
-            notFoundCallback = context.notFoundCallback || this.moveTo;
+        var notFoundCallback = context.notFoundCallback,
+            intentURI = context.intentURI;
 
-        console.log('1');
-        location.href = context.intentURI;
-        console.log('2');
-        this.deferCallback(storeURL, notFoundCallback, 3000);
+        if (context.useIframe) {
+            this.launchViaIframe(intentURI, notFoundCallback || function() {});
+        } else {
+            this.moveTo(intentURI);
+        }
     }
 }, Detector);
 module.exports = Detector;

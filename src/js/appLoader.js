@@ -3,7 +3,7 @@
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
-
+'use strict';
 var AgentDetector = require('./agentDetector');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
@@ -39,7 +39,8 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             syncToIOS9: false
         },
         android: {
-            scheme: ''
+            scheme: '',
+            url: ''
         }
     },
 
@@ -114,9 +115,9 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     _setDetector: function(context) {
         var ad = this.agentDetector;
 
-        if (ad.android && this.version >= context.androidVersion) { // Andriod
+        if (ad.android) { // Andriod
             this._setAndroidDetector(context);
-        } else if (ad.ios && context.storeURL ) { // IOS
+        } else if (ad.ios && context.iosStoreURL) { // IOS
             this._setIOSDetector(context);
         } else { // ETC
            this._setEtcDetector(context);
@@ -136,12 +137,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             } else {
                 this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector;
             }
-        } else  {
-            if (iosVersion < 8) {
-                this.detector = iOSDetector.iosOlderDetector;
-            } else {
-                this.detector = iOSDetector.iosRecentDetector;
-            }
+        } else  if (iosVersion < 8) {
+            this.detector = iOSDetector.iosOlderDetector;
+        } else {
+            this.detector = iOSDetector.iosRecentDetector;
         }
     },
 
@@ -151,12 +150,12 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _setAndroidDetector: function(context) {
-        var isNotIntend = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
-            isIntend = tui.util.isExisty(context.intentURI);
-        if (isNotIntend && store) {
+        var isNotIntent = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntent = tui.util.isExisty(context.intentURI);
+        if (isNotIntent) {
             this.detector = Detector.androidSchemeDetector;
-        } else if (isIntend) {
-            this.detector = Detector.androidIntendDetector;
+        } else if (isIntent) {
+            this.detector = Detector.androidIntentDetector;
         }
     },
 
@@ -253,13 +252,13 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
         timerSet = options.timerSet;
         context = {
             urlScheme: options.ios.scheme,
-            storeURL: options.ios.url,
+            iosStoreURL: options.ios.url,
             syncToIOS9: options.ios.syncToIOS9,
             useIOS9: options.ios.useIOS9,
             universalLink: options.ios.universalLink,
-            intentURI: options.android.scheme,
-            androidVersion: options.android.version,
+            intentURI: options.android.intentURI,
             etcCallback: options.etcCallback,
+            useIframe: options.android.useIframe,
             notFoundCallback: options.notFoundCallback
         };
 
@@ -282,4 +281,3 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 });
 
 module.exports = AppLoader;
-

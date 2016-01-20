@@ -3,6 +3,7 @@
  * @dependency code-snippet.js, appLoader.js
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
+ 'use strict';
 var Detector = require('./detectors');
 
 /**
@@ -51,13 +52,14 @@ var iOSDetector = tui.util.extend({
 iOSDetector.iosOlderDetector = tui.util.extend({
     /**
      * detector Run
-     * @param {object} context
+     * @param {object} context Data for app loading
      * @memberof iOSDetector.iosOlderDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL,
-            callback = context.notFoundCallback || this.moveTo;
-        this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+        var storeURL = context.iosStoreURL,
+            callback = context.notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+
+        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
         this.bindPagehideEvent();
         this.runAppWithIframe(context.urlScheme);
     }
@@ -70,16 +72,18 @@ iOSDetector.iosOlderDetector = tui.util.extend({
 iOSDetector.iosRecentDetector = tui.util.extend({
     /**
      * detector run
-     * @param {object} context
+     * @param {object} context Data for app loading
      * @memberof iOSDetector.iosRecentDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL,
-            callback = context.notFoundCallback || this.moveTo;
-        if (this.moveTo === callback) {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+        var storeURL = context.iosStoreURL,
+            notFoundCallback = context.notFoundCallback,
+            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+
+        if (!notFoundCallback) {
+            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_SHORT);
         } else {
-            this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
         }
         this.bindVisibilityChangeEvent();
         this.runAppWithIframe(context.urlScheme);
@@ -92,20 +96,21 @@ iOSDetector.iosRecentDetector = tui.util.extend({
 iOSDetector.iosFixDetector = tui.util.extend({
     /**
      * detector run
-     * @param {object} context
+     * @param {object} context Data for app loading
      * @memberof iOSDetector.iosFixDetector
      */
     run: function(context) {
-        var storeURL = context.storeURL,
-            callback = context.notFoundCallback || this.moveTo;
+        var storeURL = context.iosStoreURL,
+            notFoundCallback = context.notFoundCallback,
+            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
 
         if (context.universalLink) {
             this.moveTo(context.universalLink);
         } else {
-            if (this.moveTo === callback) {
-                this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_SHORT);
+            if (!notFoundCallback) {
+                this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_SHORT);
             } else {
-                this.tid = this.deferCallback(storeURL, callback, this.TIMEOUT.IOS_LONG);
+                this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
             }
             this.bindVisibilityChangeEvent();
             this.moveTo(context.urlScheme);
@@ -114,4 +119,3 @@ iOSDetector.iosFixDetector = tui.util.extend({
 }, iOSDetector);
 
 module.exports = iOSDetector;
-
