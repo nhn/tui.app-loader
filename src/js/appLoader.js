@@ -257,8 +257,9 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             useIOS9: options.ios.useIOS9,
             universalLink: options.ios.universalLink,
             intentURI: options.android.intentURI,
-            etcCallback: options.etcCallback,
             useIframe: options.android.useIframe,
+            onErrorIframe: options.android.onErrorIframe,
+            etcCallback: options.etcCallback,
             notFoundCallback: options.notFoundCallback
         };
 

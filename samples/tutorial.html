@@ -9,25 +9,17 @@
     <div>
         <button id='loaderBtn'>load</button>
     </div>
-    /**
-     * S.browser_fallback_url=about:blank;package=com.nhnent.payapp;
-     */
     <script type="text/javascript" src="js/code-snippet.js"></script>
-    <!--<script type="text/javascript" src="src/js/appLoader.js"></script>-->
-    <!--<script type="text/javascript" src="src/js/detectors.js"></script>-->
-    <!--<script type="text/javascript" src="src/js/agentDetector.js"></script>-->
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
-        // Run code
         var iosScheme = 'payco://open';
 //        var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
-        var intentURI = 'intent://open#Intent;scheme=xxxpayco;';
+        var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end';
         var loader = new tui.component.m.AppLoader(),
             btn = document.getElementById('loaderBtn');
 
         btn.addEventListener('click', function() {
             loader.exec({
-                name: 'payco',
                 ios: {
                     scheme: iosScheme,
                     url: "https://itunes.apple.com/kr/app/id924292102",
@@ -47,12 +39,11 @@
                     } else {
                         alert('Run in mobile');
                     }
+                },
+                notFoundCallback: function() {
+                    console.log('Not Found Application');
                 }
             });
-
-            // setTimeout(function() {
-            //     location.href = 'http://naver.com';
-            // }, 400);
         });
     </script>
 </body>

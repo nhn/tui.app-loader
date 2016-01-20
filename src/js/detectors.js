@@ -14,7 +14,7 @@ var Detector = {
     TIMEOUT: {
         IOS_SHORT: 1000,
         IOS_LONG: 1000 * 2,
-        ANDROID: 300,
+        ANDROID: 800,
         INTERVAL: 100
     },
 
@@ -66,12 +66,16 @@ var Detector = {
      * Defer call callback
      * @param {function} callback A callback
      * @param {number} time A delay time
-     * @returns {number} Timer id
+     * @returns {number|undefined} Timer id
      */
     deferCallback: function (callback, time) {
         var clickedAt = new Date().getTime(),
             now,
             self = this;
+
+        if (!tui.util.isFunction(callback)) {
+            return;
+        }
 
         return setTimeout(function () {
             now = new Date().getTime();
@@ -140,25 +144,24 @@ Detector.androidIntentDetector = tui.util.extend({
      */
     type: 'intent',
 
-    launchViaIframe: function(intentURI, notFoundCallback) {
+    launchViaIframe: function(intentURI, notFoundCallback, onErrorIframe) {
         var iframe = this.runAppWithIframe(intentURI), // Launch app via iframe
-            timeoutId = this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID),
-            self = this,
-            popup;
+            timeoutId = this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
 
         setTimeout(function() {
-            try { // Check the broswer supports iframe
+            try {
+                // Whether broswer supports intentURI with iframe and without error.
                 if (iframe && iframe.contentDocument.body) {
                     document.body.removeChild(iframe);
                 }
-            } catch (e) { // If not, open popup
+            } catch (e) {
+                // If browser caught an error(CORS, accessing to error page in iframe),
+                //  this component cannot judge the app is installed or not.
                 document.body.removeChild(iframe);
                 clearTimeout(timeoutId);
-                popup = window.open(intentURI);
-                popup.addEventListener('unload', function() {
-                    popup.close();
-                    self.deferCallback(notFoundCallback, self.TIMEOUT.ANDROID);
-                });
+                if (tui.util.isFunction(onErrorIframe)) {
+                    onErrorIframe();
+                }
             }
         }, 100);
     },
@@ -173,9 +176,10 @@ Detector.androidIntentDetector = tui.util.extend({
             intentURI = context.intentURI;
 
         if (context.useIframe) {
-            this.launchViaIframe(intentURI, notFoundCallback || function() {});
+            this.launchViaIframe(intentURI, notFoundCallback, context.onErrorIframe);
         } else {
             this.moveTo(intentURI);
+            this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
         }
     }
 }, Detector);
