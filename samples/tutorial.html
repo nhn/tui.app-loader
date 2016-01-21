@@ -34,7 +34,7 @@
                 },
                 etcCallback: function() {
                     var contr = tui.component.m.AppLoader;
-                    if (contr.getOS() === 'IOS' || contr.getOS() === 'Android') {
+                    if (contr.getOS() === 'iOS' || contr.getOS() === 'Android') {
                         alert(contr.getUserAgent());
                         alert(contr.getUserAgents().join(' '));
                         alert(contr.getVersion(contr.getOS()));
@@ -44,6 +44,9 @@
                     }
                 },
                 notFoundCallback: function() {
+                    if (tui.component.m.AppLoader.getOS() === 'iOS') {
+                        top.location.href = 'https://itunes.apple.com/kr/app/id924292102';
+                    }
                     console.log('Not Found Application');
                 }
             });
