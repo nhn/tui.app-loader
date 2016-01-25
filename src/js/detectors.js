@@ -122,10 +122,9 @@ Detector.androidSchemeDetector = tui.util.extend({
      * @memberof Detector.androidSchemeDetector
      */
     run: function(context) {
-        var storeURL = context.androidStoreURL,
-            notFoundCallback = context.notFoundCallback;
+        var notFoundCallback = context.notFoundCallback;
 
-        if (storeURL || context.notFoundCallback) {
+        if (notFoundCallback) {
             this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
         }
         this.runAppWithIframe(context.urlScheme);

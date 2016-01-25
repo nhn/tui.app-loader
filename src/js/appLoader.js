@@ -214,12 +214,11 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     /**
      * Call app
      * @param {object} options The option for app
-     *  @param {string} options.name An application name
      *  @param {object} options.ios IOS app information
      *  @param {object} options.android Android information
      *  @param {object} options.timerSet A timer time set for callback deley time
-     *  @param {function} options.etcCallback
-     *  @param {function} options.notFoundCallback
+     *  @param {Function} options.etcCallback If unsupportable mobile
+     *  @param {Function} options.notFoundCallback It not found
      *
      * @example
      * var loader = new tui.component.m.AppLoader();
@@ -228,11 +227,11 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *          scheme: 'fecheck://', // iphone app scheme
      *          url: 'itms-apps://itunes.apple.com/app/.....', // app store url,
      *          useIOS9: true,
-     *          syncIOS9: false,
+     *          syncToIOS9: false,
      *          universalLink: 'app:///links/'
      *      },
      *      android: {
-     *          scheme: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+     *          intentURI: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
      *      },
      *      timerSet: {
      *          ios: {
