@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <p>App loader run in mobile.</p>
+    <script type="text/javascript" src="js/code-snippet.js"></script>
+    <script type="text/javascript" src="js/app-loader.js"></script>
+    <script type="text/javascript">
+        // Run code
+        var iosScheme = 'payco://open';
+//        var intentURI = 'intent://open#Intent;scheme=xpayco;S.browser_fallback_url=http$3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end;';
+        var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;';
+        var loader = new tui.component.m.AppLoader();
+
+        loader.exec({
+            ios: {
+                scheme: iosScheme,
+                url: "https://itunes.apple.com/kr/app/id924292102",
+                useIOS9: true,
+                syncToIOS9 : false
+            },
+            timerSet: {
+                ios: 2000,
+                android: 1000
+            },
+            android: {
+                intentURI: intentURI,
+                useIframe: true,
+                onErrorIframe: function() {
+                    console.log('On error iframe');
+                    // top.location.href = 'http://www.payco.com';
+                }
+            },
+            etcCallback: function() { // Not mobile
+                var contr = tui.component.m.AppLoader;
+                if (contr.getOS() !== 'iOS' && contr.getOS() !== 'Android') {
+                    alert('Run in mobile');
+                }
+            },
+            notFoundCallback: function() {
+                if (tui.component.m.AppLoader.getOS() === 'iOS') {
+                    top.location.href = 'https://itunes.apple.com/kr/app/id924292102';
+                }
+                console.log('Not Found Application');
+            }
+        });
+    </script>
+</body>
+</html>
