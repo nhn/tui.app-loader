@@ -12,13 +12,18 @@
     <div>
         <button id='loaderBtn'>load</button>
     </div>
+    <div>
+        <a href="https://itunes.apple.com/kr/app/id924292102"><button>Go to app store!</button></a>
+    </div>
     <script type="text/javascript" src="js/code-snippet.js"></script>
     <script type="text/javascript" src="js/app-loader.js"></script>
     <script type="text/javascript">
         var iosScheme = 'payco://open';
 //        var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
-        var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end';
-        var loader = new tui.component.m.AppLoader(),
+        var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;';
+        var AppLoader = tui.component.m.AppLoader;
+
+        var loader = new AppLoader(),
             btn = document.getElementById('loaderBtn');
 
         btn.addEventListener('click', function() {
@@ -32,19 +37,22 @@
                 android: {
                     intentURI: intentURI
                 },
+                timerSet: {
+                    ios: 2000,
+                    android: 1000
+                },
                 etcCallback: function() {
-                    var contr = tui.component.m.AppLoader;
-                    if (contr.getOS() === 'iOS' || contr.getOS() === 'Android') {
-                        alert(contr.getUserAgent());
-                        alert(contr.getUserAgents().join(' '));
-                        alert(contr.getVersion(contr.getOS()));
-                        alert(contr.getVersion(contr.getUserAgent()));
+                    if (AppLoader.getOS() === 'iOS' || AppLoader.getOS() === 'Android') {
+                        alert(AppLoader.getUserAgent());
+                        alert(AppLoader.getUserAgents().join(' '));
+                        alert(AppLoader.getVersion(AppLoader.getOS()));
+                        alert(AppLoader.getVersion(AppLoader.getUserAgent()));
                     } else {
                         alert('Run in mobile');
                     }
                 },
                 notFoundCallback: function() {
-                    if (tui.component.m.AppLoader.getOS() === 'iOS') {
+                    if (AppLoader.getOS() === 'iOS') {
                         top.location.href = 'https://itunes.apple.com/kr/app/id924292102';
                     }
                     console.log('Not Found Application');

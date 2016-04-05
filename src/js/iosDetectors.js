@@ -59,7 +59,7 @@ iOSDetector.iosOlderDetector = tui.util.extend({
         var storeURL = context.iosStoreURL,
             callback = context.notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
 
-        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
+        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
         this.bindPagehideEvent();
         this.runAppWithIframe(context.urlScheme);
     }
@@ -80,11 +80,7 @@ iOSDetector.iosRecentDetector = tui.util.extend({
             notFoundCallback = context.notFoundCallback,
             callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
 
-        if (!notFoundCallback) {
-            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_SHORT);
-        } else {
-            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
-        }
+        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
         this.bindVisibilityChangeEvent();
         this.runAppWithIframe(context.urlScheme);
     }
@@ -107,11 +103,7 @@ iOSDetector.iosFixDetector = tui.util.extend({
         if (context.universalLink) {
             this.moveTo(context.universalLink);
         } else {
-            if (!notFoundCallback) {
-                this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_SHORT);
-            } else {
-                this.tid = this.deferCallback(callback, this.TIMEOUT.IOS_LONG);
-            }
+            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
             this.bindVisibilityChangeEvent();
             this.moveTo(context.urlScheme);
         }

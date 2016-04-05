@@ -12,8 +12,7 @@ var Detector = {
      * for timer
      */
     TIMEOUT: {
-        IOS_SHORT: 1000,
-        IOS_LONG: 1000 * 2,
+        IOS: 2000,
         ANDROID: 800,
         INTERVAL: 100
     },
@@ -143,6 +142,7 @@ Detector.androidIntentDetector = tui.util.extend({
      */
     type: 'intent',
 
+    // Force iframe
     launchViaIframe: function(intentURI, notFoundCallback, onErrorIframe) {
         var iframe = this.runAppWithIframe(intentURI), // Launch app via iframe
             timeoutId = this.deferCallback(notFoundCallback, this.TIMEOUT.ANDROID);
@@ -154,7 +154,7 @@ Detector.androidIntentDetector = tui.util.extend({
                     document.body.removeChild(iframe);
                 }
             } catch (e) {
-                // If browser caught an error(CORS, accessing to error page in iframe),
+                // If browser caught an error(accessing to error page in iframe),
                 //  this component cannot judge the app is installed or not.
                 document.body.removeChild(iframe);
                 clearTimeout(timeoutId);

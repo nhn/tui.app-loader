@@ -22,6 +22,10 @@
                 useIOS9: true,
                 syncToIOS9 : false
             },
+            timerSet: {
+                ios: 2000,
+                android: 1000
+            },
             android: {
                 intentURI: intentURI,
                 useIframe: true,
@@ -30,14 +34,9 @@
                     // top.location.href = 'http://www.payco.com';
                 }
             },
-            etcCallback: function() {
+            etcCallback: function() { // Not mobile
                 var contr = tui.component.m.AppLoader;
-                if (contr.getOS() === 'iOS' || contr.getOS() === 'Android') {
-                    alert(contr.getUserAgent());
-                    alert(contr.getUserAgents().join(' '));
-                    alert(contr.getVersion(contr.getOS()));
-                    alert(contr.getVersion(contr.getUserAgent()));
-                } else {
+                if (contr.getOS() !== 'iOS' && contr.getOS() !== 'Android') {
                     alert('Run in mobile');
                 }
             },

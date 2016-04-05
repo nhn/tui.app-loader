@@ -14,36 +14,6 @@ var ad = new AgentDetector();
  * @class
  */
 var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
-
-    /****************
-     * member fields
-     ****************/
-
-    /**
-     * browser, device detector
-     */
-    detector: null,
-    /**
-     * OS (android/ios/etc)
-     */
-    os: null,
-    /**
-     * default options to run exec
-     */
-    defaults: {
-        name: '',
-        ios: {
-            scheme: '',
-            url: '',
-            useIOS9: false,
-            syncToIOS9: false
-        },
-        android: {
-            scheme: '',
-            url: ''
-        }
-    },
-
     /*****************
      * static members
      *****************/
@@ -94,6 +64,35 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          */
         getVersion: function(type) {
             return ad.version(type);
+        }
+    },
+
+    /****************
+     * member fields
+     ****************/
+
+    /**
+     * browser, device detector
+     */
+    detector: {},
+    /**
+     * OS (android/ios/etc)
+     */
+    os: null,
+    /**
+     * default options to run exec
+     */
+    defaults: {
+        name: '',
+        ios: {
+            scheme: '',
+            url: '',
+            useIOS9: false,
+            syncToIOS9: false
+        },
+        android: {
+            scheme: '',
+            url: ''
         }
     },
 
@@ -234,10 +233,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *          intentURI: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
      *      },
      *      timerSet: {
-     *          ios: {
-     *              long: 3000,
-     *              short: 2000
-     *          },
+     *          ios: 2000,
      *          android: 1000
      *      },
      *      notFoundCallback: function() {
@@ -278,8 +274,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} timerSet A set of timer times
      */
     _setTimerTime: function(timerSet) {
-        this.detector.TIMEOUT.IOS_SHORT = timerSet.ios.short || this.detector.TIMEOUT.IOS_SHORT;
-        this.detector.TIMEOUT.IOS_LONG = timerSet.ios.long || this.detector.TIMEOUT.IOS_LONG;
+        if (!this.detector.TIMEOUT) {
+            this.detector.TIMEOUT = {};
+        }
+        this.detector.TIMEOUT.IOS = timerSet.ios || this.detector.TIMEOUT.IOS;
         this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
     }
 });

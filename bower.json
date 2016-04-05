@@ -1,6 +1,6 @@
 {
   "name": "component-m-app-loader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "authors": [
     "NHN Ent. FE Dev team.<dl_javascript@nhnent.com>"
   ],
@@ -16,10 +16,13 @@
     "server",
     "data.js",
     "Gruntfile.js",
-    "conf.json",
+    "gulpfile.js",
+    "index.js",
+    "jsdoc-conf.json",
     "karma.conf.js",
     "package.json",
     ".gitignore",
+    ".eslintrc",
     "samples"
   ],
   "dependencies": {
