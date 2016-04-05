@@ -37,13 +37,13 @@ First, check whether app is installed or not.<br>
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
-| 1.0.2  | Fix ios timeout 2000ms | 2016.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
+| [1.0.2](https://nhnent.github.io/tui.component.m-app-loader/1.0.2/)  | [Fix ios timeout 2000ms](https://github.com/nhnent/tui.component.m-app-loader/releases/tag/1.0.2) | 2016.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 | 1.0.1b  | Supporting intentURI using iframe (Android) | 2016.01 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 | 1.0.1a  | Hotfix for supporting intentURI, universalLinks | 2015.10 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
-| <a href="https://nhnent.github.io/tui.component.m-app-loader/1.0.1/">1.0.1</a>  | Add static methods for detecting user agent | 2015.10 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
+| [1.0.1](https://nhnent.github.io/tui.component.m-app-loader/1.0.1/)  | Add static methods for detecting user agent | 2015.10 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 | 1.0.0b | ios new window bug fix | 2015.08 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 | 1.0.0a | defineNamespace apply | 2015.05 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
-| <a href="https://nhnent.github.io/tui.component.m-app-loader/1.0.0/">1.0.0</a> | release | 2015.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
+| [1.0.0](https://nhnent.github.io/tui.component.m-app-loader/1.0.0/) | release | 2015.04 | NHN Ent. FE dev team <dl_javascript@nhnent.com> |
 
 ## LICENSE
 [MIT LICENSE](LICENSE)

@@ -22,8 +22,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          * Get first user agent (it will be browser name)
          * @api
          * @memberof AppLoader
-         * @function getUserAgent
-         * @return {string}
+         * @return {string} user agent
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var ua = AppLoader.getUserAgent(); // ex) 'safari'
          */
         getUserAgent: function() {
             return ad.userAgent();
@@ -33,8 +35,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          * Get all user agents by array
          * @api
          * @memberof AppLoader
-         * @function getUserAgents
          * @return {Array} agent strings
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var uas = AppLoader.getUserAgents(); // ex) ['safari']
          */
         getUserAgents: function() {
             return ad.userAgents();
@@ -44,8 +48,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          * Get OS
          * @api
          * @memberof AppLoader
-         * @function getOS
-         * @return {string}
+         * @return {string} os
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var os = AppLoader.getOS(); //  'iOS' or 'AndroidOS'
          */
         getOS: function() {
             return ad.getOS();
@@ -55,7 +61,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
          * Get version
          * @api
          * @memberof AppLoader
-         * @function getVersion
+         * @param {string} type - os type
          * @return {number|string} version
          * @example
          *  getVersion('IOS');
@@ -212,6 +218,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /**
      * Call app
+     * @api
      * @param {object} options The option for app
      *  @param {object} options.ios IOS app information
      *  @param {object} options.android Android information
@@ -232,14 +239,14 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      *      android: {
      *          intentURI: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
      *      },
-     *      timerSet: {
-     *          ios: 2000,
-     *          android: 1000
+     *      timerSet: { // optional values
+     *          ios: 2000, // default: 2000
+     *          android: 1000 // default: 800
      *      },
-     *      notFoundCallback: function() {
+     *      notFoundCallback: function() { // if not installed
      *          alert('not found');
      *      },
-     *      etcCallback: function() {
+     *      etcCallback: function() { // if not mobile
      *          alert('etc');
      *      }
      * });
