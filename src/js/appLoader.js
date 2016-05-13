@@ -174,9 +174,9 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _setEtcDetector: function(context) {
-        var self = this;
+        this.detector = EtcDetector;
+
         setTimeout(function () {
-            self.detector = EtcDetector;
             if (context.etcCallback) {
                 context.etcCallback();
             }
@@ -189,7 +189,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _runDetector: function(context) {
-        if(this.detector && (this.detector.type !== EtcDetector.type)) {
+        if (this.detector && (this.detector.type !== EtcDetector.type)) {
             this.detector.run(context);
         }
     },
