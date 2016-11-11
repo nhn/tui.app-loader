@@ -1,14 +1,11 @@
 Mobile App Loader
 ===============
-AppLoader Component<br>
-Call app from web page, each environment.<br>
-First, check whether app is installed or not.<br>
-- If the app is installed run the app<br>
-- If the app is not installed move to store
+App-loader Component<br>
+Launch an app on mobile web page.
 
 ## Feature
-* Check some app is installed
-* Call app or move to install page
+* Check the whether a mobile-app is installed.
+* Launch app or move to app-store
 
 ## Documentation
 * **API** : https://nhnent.github.io/tui.component.m-app-loader/latest
@@ -16,8 +13,7 @@ First, check whether app is installed or not.<br>
 * **Sample** - https://nhnent.github.io/tui.component.m-app-loader/latest/tutorial-tutorial.html
 
 ## Dependency
-* jquery: ~1.8.3
-* tui-code-snippet: ~1.0.4
+* tui-code-snippet: ~1.1.0
 
 ## Test environment
 * Mobile
@@ -27,10 +23,9 @@ First, check whether app is installed or not.<br>
 	* Safari - iPhone 5S(iOS 9)
 	* Chrome Emulator
 
-
 ## Download/Install
 * Bower:
-   * latest : `bower install tui-component-m-app-loader#master`
+   * latest : `bower install tui-component-m-app-loader`
    * each version : `bower install tui-component-m-app-loader[#tag]`
 * Download: https://github.com/nhnent/tui.component.m-app-loader
 
@@ -38,4 +33,4 @@ First, check whether app is installed or not.<br>
 * See the [Releases](https://github.com/nhnent/tui.component.m-app-loader/releases) tab 
 
 ## LICENSE
-[MIT LICENSE](LICENSE)
+[MIT LICENSE](https://github.com/nhnent/tui.component.m-app-loader/blob/master/LICENSE)

@@ -1,13 +1,14 @@
 /**
  * @fileoverview iOS Mixin modules
  * @dependency code-snippet.js, appLoader.js
- * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
  'use strict';
 var Detector = require('./detectors');
 
 /**
  * @namespace iOSDetector
+ * @ignore
  */
 var iOSDetector = tui.util.extend({
     /**
@@ -48,6 +49,7 @@ var iOSDetector = tui.util.extend({
 /**
  * ios old detector
  * @namespace iOSDetector.iosOlderDetector
+ * @ignore
  */
 iOSDetector.iosOlderDetector = tui.util.extend({
     /**
@@ -68,6 +70,7 @@ iOSDetector.iosOlderDetector = tui.util.extend({
 /**
  * ios recent detector
  * @namespace iOSDetector.iosRecentDetector
+ * @ignore
  */
 iOSDetector.iosRecentDetector = tui.util.extend({
     /**
@@ -88,6 +91,7 @@ iOSDetector.iosRecentDetector = tui.util.extend({
 
 /**
  * ios recent but safari prevent to call application via iframe src.
+ * @ignore
  */
 iOSDetector.iosFixDetector = tui.util.extend({
     /**

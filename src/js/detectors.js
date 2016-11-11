@@ -1,11 +1,12 @@
 /**
  * @fileoverview Mixin modules
  * @dependency code-snippet.js, appLoader.js
- * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
 'use strict';
 /**
  * @namespace Detector
+ * @ignore
  */
 var Detector = {
     /**
@@ -106,6 +107,7 @@ var Detector = {
 /**
  * Android intent less
  * @namespace Detector.androidSchemeDetector
+ * @ignore
  */
 Detector.androidSchemeDetector = tui.util.extend({
     /**
@@ -134,6 +136,7 @@ Detector.androidSchemeDetector = tui.util.extend({
 /**
  * Android intent
  * @namespace Detector.androidIntentDetector
+ * @ignore
  */
 Detector.androidIntentDetector = tui.util.extend({
     /**
@@ -169,6 +172,7 @@ Detector.androidIntentDetector = tui.util.extend({
      * Run detector
      * @param {object} context - Data for running
      * @memberof Detector.androidIntentDetector
+     * @ignore
      */
     run: function(context) {
         var notFoundCallback = context.notFoundCallback,

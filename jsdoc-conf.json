@@ -10,38 +10,17 @@
   },
   "plugins": ["plugins/markdown"],
   "templates": {
-    "cleverLinks": true,
-    "monospaceLinks": true,
-    "default": {
-      "outputSourceFiles" : true
-    },
-    "applicationName": "component-app-loader",
-    "disqus": "",
-    "googleAnalytics": "",
-    "openGraph": {
-      "title": "",
-      "type": "website",
-      "image": "",
-      "site_name": "",
-      "url": ""
-    },
-    "meta": {
-      "title": "",
-      "description": "",
-      "keyword": ""
-    },
-    "linenums": false
-  },
-  "markdown": {
-    "parser": "gfm",
-    "hardwrap": true
+    "name": "App Loader",
+    "logo": {
+      "url": "https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png",
+      "width": "150px"
+    }
   },
   "opts": {
-    "template": "./node_modules/fedoc-template",
-    "name": "App Loader",
+    "template": "./node_modules/tui-jsdoc-template",
     "recurse": true,
-    "name": "App Loader",
     "destination": "doc",
-    "tutorials": "samples"
+    "tutorials": "samples",
+    "package": "package.json"
   }
 }

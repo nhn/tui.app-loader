@@ -1,11 +1,11 @@
 /**
- * @fileoverview Etc not support invironment
- * @dependency code-snippet.js
- * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ * @fileoverview EtcDetector for unsupported env.
+ * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
 'use strict';
 /**
  * @namespace EtcDetector
+ * @ignore
  */
 var EtcDetector = {
     /**

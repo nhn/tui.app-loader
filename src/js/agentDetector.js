@@ -1,19 +1,29 @@
 /**
 * @fileoverview The extractor and detector user agent by device info.
 * @dependency code-snippet.js, appLoader.js
-* @author NHN Entertain ment. FE dev team.
+* @author NHN Entertainment. FE dev Lab.
 */
 'use strict';
 /**
  * @constructor
+ * @See {@link https://github.com/hgoebl/mobile-detect.js}
+ * @license https://github.com/hgoebl/mobile-detect.js/blob/master/LICENSE
+ * @ignore
  */
 var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
+    init: function() {
+        var rules;
+        this.convert();
+        rules = this.mobileRegText;
+        rules.oss0 = {
+            WindowsPhoneOS: rules.oss.WindowsPhoneOS,
+            WindowsMobileOS: rules.oss.WindowsMobileOS
+        };
+        this.device =  this._findMatch(rules.phones, this.ua);
+        this.ios = this.isIOS();
+        this.android = this.isAndroid();
+    },
     cache: {},
-    /**
-     * @link https://github.com/hgoebl/mobile-detect.js
-     * @license https://github.com/hgoebl/mobile-detect.js/blob/master/LICENSE
-     **/
-     
     /**
      * Each device info and os reg string
      */
@@ -162,22 +172,6 @@ var AgentDetector = tui.util.defineClass(/**@lends AgentDetector.prototype */{
      * Browser userAgent
      */
     ua: window.navigator.userAgent,
-
-    /**
-     * Initialize
-     */
-    init: function() {
-        var rules;
-        this.convert();
-        rules = this.mobileRegText;
-        rules.oss0 = {
-            WindowsPhoneOS: rules.oss.WindowsPhoneOS,
-            WindowsMobileOS: rules.oss.WindowsMobileOS
-        };
-        this.device =  this._findMatch(rules.phones, this.ua);
-        this.ios = this.isIOS();
-        this.android = this.isAndroid();
-    },
 
     /**
      * Convert device, os, browser info to reg edit.

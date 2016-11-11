@@ -1,7 +1,7 @@
 /**
  * @fileoverview Load native app or move to install page
  * @dependency code-snippet.js, detectors.js, agentDetector.js
- * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
  */
 'use strict';
 var AgentDetector = require('./agentDetector');
@@ -10,17 +10,24 @@ var iOSDetector = require('./iosDetectors');
 var EtcDetector = require('./etcDetectors');
 var ad = new AgentDetector();
 /**
+ * It works on mobile!
  * @constructor
  * @class
+ * @see AppLoader#exec
+ * @tutorial tutorial
+ * @tutorial tutorial2
  */
 var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
-    /*****************
-     * static members
-     *****************/
+    init: function() {
+        this.agentDetector = ad;
+        this.ua = ad.userAgent();
+        this.os = ad.getOS();
+        this.version = ad.version(ad.ios ? ad.device : 'Android');
+    },
+
     static:{
         /**
          * Get first user agent (it will be browser name)
-         * @api
          * @memberof AppLoader
          * @return {string} user agent
          * @example
@@ -33,7 +40,6 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get all user agents by array
-         * @api
          * @memberof AppLoader
          * @return {Array} agent strings
          * @example
@@ -46,7 +52,6 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get OS
-         * @api
          * @memberof AppLoader
          * @return {string} os
          * @example
@@ -59,7 +64,6 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
         /**
          * Get version
-         * @api
          * @memberof AppLoader
          * @param {string} type - os type
          * @return {number|string} version
@@ -73,20 +77,19 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
         }
     },
 
-    /****************
-     * member fields
-     ****************/
-
     /**
      * browser, device detector
+     * @private
      */
     detector: {},
     /**
      * OS (android/ios/etc)
+     * @private
      */
     os: null,
     /**
      * default options to run exec
+     * @private
      */
     defaults: {
         name: '',
@@ -100,20 +103,6 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
             scheme: '',
             url: ''
         }
-    },
-
-    /****************
-     * member methods
-     ****************/
-
-    /**
-     * Initialize
-     */
-    init: function() {
-        this.agentDetector = ad;
-        this.ua = ad.userAgent();
-        this.os = ad.getOS();
-        this.version = ad.version(ad.ios ? ad.device : 'Android');
     },
 
     /**
@@ -195,7 +184,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     },
 
     /**
-     * Whether intent supported
+     * Whether the intent is supported
      * @returns {boolean}
      */
     isIntentLess: function() {
@@ -218,7 +207,6 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
 
     /**
      * Call app
-     * @api
      * @param {object} options The option for app
      *  @param {object} options.ios IOS app information
      *  @param {object} options.android Android information
@@ -279,6 +267,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     /**
      * Set timer time set
      * @param {object} timerSet A set of timer times
+     * @private
      */
     _setTimerTime: function(timerSet) {
         if (!this.detector.TIMEOUT) {
