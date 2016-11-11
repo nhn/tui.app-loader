@@ -1,99 +1,128 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>App Loader API</title>
+    <title>App Loader</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/layout.css">
-    <script type="text/javascript" src="scripts/prettify/prettify.js"></script>
-    <script type="text/javascript" src="scripts/prettify/lang-css.js"></script>
-    	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/code-snippet.js"></script>
-	<script type="text/javascript" src="js/tui.doc.js"></script>
-	<script type="text/javascript" src="js/list.js"></script>
-	<script type="text/javascript" src="agentDetector.js.html.js"></script>
-	<script type="text/javascript" src="appLoader.js.html.js"></script>
-	<script type="text/javascript" src="detectors.js.html.js"></script>
-	<script type="text/javascript" src="etcDetectors.js.html.js"></script>
-	<script type="text/javascript" src="iosDetectors.js.html.js"></script>
-	<script type="text/javascript" src="main.html.js"></script>
-	<script type="text/javascript" src="AgentDetector.html.js"></script>
-	<script type="text/javascript" src="AppLoader.html.js"></script>
-	<script type="text/javascript" src="Detector.html.js"></script>
-	<script type="text/javascript" src="Detector.androidIntentDetector.html.js"></script>
-	<script type="text/javascript" src="Detector.androidSchemeDetector.html.js"></script>
-	<script type="text/javascript" src="EtcDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.iosOlderDetector.html.js"></script>
-	<script type="text/javascript" src="iOSDetector.iosRecentDetector.html.js"></script>
-
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
 </head>
 <body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">App Loader</a></h1>
+        
+            <span class="version">v1.0.3</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-tutorial.html">Default Example</a><div class="hidden" id="tutorial_sub"></div></li><li><a href="tutorial-tutorial2.html">Android using iframe Example</a><div class="hidden" id="tutorial2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AppLoader.html">AppLoader</a><div class="hidden" id="AppLoader_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AppLoader.html#.getOS">getOS</a></li><li><a href="AppLoader.html#.getUserAgent">getUserAgent</a></li><li><a href="AppLoader.html#.getUserAgents">getUserAgents</a></li><li><a href="AppLoader.html#.getVersion">getVersion</a></li><li><a href="AppLoader.html#exec">exec</a></li><li><a href="AppLoader.html#getOS">getOS</a></li><li><a href="AppLoader.html#isIntentLess">isIntentLess</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
 
-<div id="wrap">
-    <div id="left">
-        <div class="logo">
-            Toast UI Component
-        </div>
-        <div class="home">
-            <a id="mainLink" href="index.html"><h1>App Loader</h1></a>
-        </div>
-        <div id="search">
-            <input type="text" placeholder="Search" class="searchbox" />
-            <ul class="searchList">
-            </ul>
-        </div>
-        <div id="menu"></div>
-    </div>
-    <div id="content" class="body">
-        <div id="pagetop"></div>
-        <div id="contentTab">
-            <ul>
-                <li class="tabmenu info on">API</li>
-                <li class="tabmenu code">Code</li>
-                <li class="tabmenu sample">Sample</li>
-            </ul>
-        </div>
-        <div id="contentBody"></div>
-        <div id="contentCode"></div>
-        <div class="clearfix"></div>
-    </div>
+<div class="main" id="main">
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section>
+        <article class="readme"><h1>Mobile App Loader</h1><p>App-loader Component<br>
+Launch an app on mobile web page.</p>
+<h2>Feature</h2><ul>
+<li>Check the whether a mobile-app is installed.</li>
+<li>Launch app or move to app-store</li>
+</ul>
+<h2>Documentation</h2><ul>
+<li><strong>API</strong> : https://nhnent.github.io/tui.component.m-app-loader/latest</li>
+<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.component.m-app-loader/wiki/AppLoader-Tutorial</li>
+<li><strong>Sample</strong> - https://nhnent.github.io/tui.component.m-app-loader/latest/tutorial-tutorial.html</li>
+</ul>
+<h2>Dependency</h2><ul>
+<li>tui-code-snippet: ~1.1.0</li>
+</ul>
+<h2>Test environment</h2><ul>
+<li>Mobile<ul>
+<li>Chrome for android(Chromium 47)</li>
+<li>Samsung browser 2.1(Chromium 34)</li>
+<li>Safari - iPhone 5(iOS 8)</li>
+<li>Safari - iPhone 5S(iOS 9)</li>
+<li>Chrome Emulator</li>
+</ul>
+</li>
+</ul>
+<h2>Download/Install</h2><ul>
+<li>Bower:<ul>
+<li>latest : <code>bower install tui-component-m-app-loader</code></li>
+<li>each version : <code>bower install tui-component-m-app-loader[#tag]</code></li>
+</ul>
+</li>
+<li>Download: https://github.com/nhnent/tui.component.m-app-loader</li>
+</ul>
+<h2>History</h2><ul>
+<li>See the <a href="https://github.com/nhnent/tui.component.m-app-loader/releases">Releases</a> tab </li>
+</ul>
+<h2>LICENSE</h2><p><a href="https://github.com/nhnent/tui.component.m-app-loader/blob/master/LICENSE">MIT LICENSE</a></p></article>
+    </section>
+
+
+
+
+
 
 </div>
-<footer class="footer">
-    <div class="f_wrap">
-        <div class="logo">
-            Toast UI Component
-        </div>
-        <copyright class="copyright">
-            NHN Entertainment. Frontend Development Team.
-        </copyright>
-    </div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
 </footer>
-<script type="text/javascript">
-    $('#mainLink').attr({
-        href: location.href.replace(location.hash, '')
-    });
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
 
-    var ui = new tui.doc({
-        element: {
-            menu: $('#menu'),
-            content: $('#contentBody'),
-            code: $('#contentCode'),
-            tab: $('#contentTab'),
-            search: $('#search')
-        },
-        data: {
-            content: fedoc.content['main.html'],
-            menu: fedoc.lnb
-        }
-    });
+    <script>
+        var id = 'package:tui-component-m-app-loader_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
 
-    if (tui.util.isEmpty(fedoc.lnb.tutorials)) {
-        $('#content #contentTab .tabmenu.sample').hide();
-    }
-</script>
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
 </body>
 </html>

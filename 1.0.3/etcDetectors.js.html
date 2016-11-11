@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,58 +51,32 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Mobile App Loader</h1><p>App-loader Component<br>
-Launch an app on mobile web page.</p>
-<h2>Feature</h2><ul>
-<li>Check the whether a mobile-app is installed.</li>
-<li>Launch app or move to app-store</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : https://nhnent.github.io/tui.component.m-app-loader/latest</li>
-<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.component.m-app-loader/wiki/AppLoader-Tutorial</li>
-<li><strong>Sample</strong> - https://nhnent.github.io/tui.component.m-app-loader/latest/tutorial-tutorial.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>tui-code-snippet: ~1.1.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>Mobile<ul>
-<li>Chrome for android(Chromium 47)</li>
-<li>Samsung browser 2.1(Chromium 34)</li>
-<li>Safari - iPhone 5(iOS 8)</li>
-<li>Safari - iPhone 5S(iOS 9)</li>
-<li>Chrome Emulator</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower:<ul>
-<li>latest : <code>bower install tui-component-m-app-loader</code></li>
-<li>each version : <code>bower install tui-component-m-app-loader[#tag]</code></li>
-</ul>
-</li>
-<li>Download: https://github.com/nhnent/tui.component.m-app-loader</li>
-</ul>
-<h2>History</h2><ul>
-<li>See the <a href="https://github.com/nhnent/tui.component.m-app-loader/releases">Releases</a> tab </li>
-</ul>
-<h2>LICENSE</h2><p><a href="https://github.com/nhnent/tui.component.m-app-loader/blob/master/LICENSE">MIT LICENSE</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview EtcDetector for unsupported env.
+ * @author NHN Ent. FE dev Lab.&lt;dl_javascript@nhnent.com>
+ */
+'use strict';
+/**
+ * @namespace EtcDetector
+ * @ignore
+ */
+var EtcDetector = {
+    /**
+     * @memberof EtcDetector
+     */
+    type: 'etc',
+    /**
+     * @memberof EtcDetector
+     */
+    run: function() {
+    }
+};
+module.exports = EtcDetector;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -117,7 +93,7 @@ Launch an app on mobile web page.</p>
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-component-m-app-loader_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var element = document.getElementById(id); // do not use jquery selector
 
         $(element).removeClass('hidden');

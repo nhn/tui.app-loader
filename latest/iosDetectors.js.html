@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>App Loader</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">App Loader</a></h1>
+        
+            <span class="version">v1.0.3</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-tutorial.html">Default Example</a><div class="hidden" id="tutorial_sub"></div></li><li><a href="tutorial-tutorial2.html">Android using iframe Example</a><div class="hidden" id="tutorial2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AppLoader.html">AppLoader</a><div class="hidden" id="AppLoader_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AppLoader.html#.getOS">getOS</a></li><li><a href="AppLoader.html#.getUserAgent">getUserAgent</a></li><li><a href="AppLoader.html#.getUserAgents">getUserAgents</a></li><li><a href="AppLoader.html#.getVersion">getVersion</a></li><li><a href="AppLoader.html#exec">exec</a></li><li><a href="AppLoader.html#getOS">getOS</a></li><li><a href="AppLoader.html#isIntentLess">isIntentLess</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview iOS Mixin modules
+ * @dependency code-snippet.js, appLoader.js
+ * @author NHN Ent. FE dev Lab.&lt;dl_javascript@nhnent.com>
+ */
+ 'use strict';
+var Detector = require('./detectors');
+
+/**
+ * @namespace iOSDetector
+ * @ignore
+ */
+var iOSDetector = tui.util.extend({
+    /**
+     * detector type
+     * @memberof iOSDetector
+     */
+    type: 'ios',
+
+    /**
+     * visiblitychange event
+     * @memberof iOSDetector
+     */
+    bindVisibilityChangeEvent: function() {
+        var self = this;
+        document.addEventListener('visibilitychange', function clear() {
+            if (self.isPageVisibility()) {
+                clearTimeout(self.tid);
+                document.removeEventListener('visibilitychange', clear);
+            }
+        });
+    },
+
+    /**
+     *  pagehide event
+     *  @memberof iOSDetector
+     */
+    bindPagehideEvent: function() {
+        var self = this;
+        window.addEventListener('pagehide', function clear() {
+            if (self.isPageVisibility()) {
+                clearTimeout(self.tid);
+                window.removeEventListener('pagehide', clear);
+            }
+        });
+    }
+}, Detector);
+
+/**
+ * ios old detector
+ * @namespace iOSDetector.iosOlderDetector
+ * @ignore
+ */
+iOSDetector.iosOlderDetector = tui.util.extend({
+    /**
+     * detector Run
+     * @param {object} context Data for app loading
+     * @memberof iOSDetector.iosOlderDetector
+     */
+    run: function(context) {
+        var storeURL = context.iosStoreURL,
+            callback = context.notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+
+        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
+        this.bindPagehideEvent();
+        this.runAppWithIframe(context.urlScheme);
+    }
+}, iOSDetector);
+
+/**
+ * ios recent detector
+ * @namespace iOSDetector.iosRecentDetector
+ * @ignore
+ */
+iOSDetector.iosRecentDetector = tui.util.extend({
+    /**
+     * detector run
+     * @param {object} context Data for app loading
+     * @memberof iOSDetector.iosRecentDetector
+     */
+    run: function(context) {
+        var storeURL = context.iosStoreURL,
+            notFoundCallback = context.notFoundCallback,
+            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+
+        this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
+        this.bindVisibilityChangeEvent();
+        this.runAppWithIframe(context.urlScheme);
+    }
+}, iOSDetector);
+
+/**
+ * ios recent but safari prevent to call application via iframe src.
+ * @ignore
+ */
+iOSDetector.iosFixDetector = tui.util.extend({
+    /**
+     * detector run
+     * @param {object} context Data for app loading
+     * @memberof iOSDetector.iosFixDetector
+     */
+    run: function(context) {
+        var storeURL = context.iosStoreURL,
+            notFoundCallback = context.notFoundCallback,
+            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+
+        if (context.universalLink) {
+            this.moveTo(context.universalLink);
+        } else {
+            this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
+            this.bindVisibilityChangeEvent();
+            this.moveTo(context.urlScheme);
+        }
+    }
+}, iOSDetector);
+
+module.exports = iOSDetector;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

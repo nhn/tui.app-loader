@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>App Loader</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">App Loader</a></h1>
+        
+            <span class="version">v1.0.3</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-tutorial.html">Default Example</a><div class="hidden" id="tutorial_sub"></div></li><li><a href="tutorial-tutorial2.html">Android using iframe Example</a><div class="hidden" id="tutorial2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AppLoader.html">AppLoader</a><div class="hidden" id="AppLoader_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AppLoader.html#.getOS">getOS</a></li><li><a href="AppLoader.html#.getUserAgent">getUserAgent</a></li><li><a href="AppLoader.html#.getUserAgents">getUserAgents</a></li><li><a href="AppLoader.html#.getVersion">getVersion</a></li><li><a href="AppLoader.html#exec">exec</a></li><li><a href="AppLoader.html#getOS">getOS</a></li><li><a href="AppLoader.html#isIntentLess">isIntentLess</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Load native app or move to install page
+ * @dependency code-snippet.js, detectors.js, agentDetector.js
+ * @author NHN Ent. FE dev Lab &lt;dl_javascript@nhnent.com>
+ */
+'use strict';
+var AgentDetector = require('./agentDetector');
+var Detector = require('./detectors');
+var iOSDetector = require('./iosDetectors');
+var EtcDetector = require('./etcDetectors');
+var ad = new AgentDetector();
+/**
+ * It works on mobile!
+ * @constructor
+ * @class
+ * @see AppLoader#exec
+ * @tutorial tutorial
+ * @tutorial tutorial2
+ */
+var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
+    init: function() {
+        this.agentDetector = ad;
+        this.ua = ad.userAgent();
+        this.os = ad.getOS();
+        this.version = ad.version(ad.ios ? ad.device : 'Android');
+    },
+
+    static:{
+        /**
+         * Get first user agent (it will be browser name)
+         * @memberof AppLoader
+         * @return {string} user agent
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var ua = AppLoader.getUserAgent(); // ex) 'safari'
+         */
+        getUserAgent: function() {
+            return ad.userAgent();
+        },
+
+        /**
+         * Get all user agents by array
+         * @memberof AppLoader
+         * @return {Array} agent strings
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var uas = AppLoader.getUserAgents(); // ex) ['safari']
+         */
+        getUserAgents: function() {
+            return ad.userAgents();
+        },
+
+        /**
+         * Get OS
+         * @memberof AppLoader
+         * @return {string} os
+         * @example
+         * var AppLoader = tui.component.m.AppLoader;
+         * var os = AppLoader.getOS(); //  'iOS' or 'AndroidOS'
+         */
+        getOS: function() {
+            return ad.getOS();
+        },
+
+        /**
+         * Get version
+         * @memberof AppLoader
+         * @param {string} type - os type
+         * @return {number|string} version
+         * @example
+         *  getVersion('IOS');
+         *  getVersion('Chrome');
+         *  getVersion('Android');
+         */
+        getVersion: function(type) {
+            return ad.version(type);
+        }
+    },
+
+    /**
+     * browser, device detector
+     * @private
+     */
+    detector: {},
+    /**
+     * OS (android/ios/etc)
+     * @private
+     */
+    os: null,
+    /**
+     * default options to run exec
+     * @private
+     */
+    defaults: {
+        name: '',
+        ios: {
+            scheme: '',
+            url: '',
+            useIOS9: false,
+            syncToIOS9: false
+        },
+        android: {
+            scheme: '',
+            url: ''
+        }
+    },
+
+    /**
+     * Set os by Detector
+     * @private
+     * @param {object} context The options
+     */
+    _setDetector: function(context) {
+        var ad = this.agentDetector;
+
+        if (ad.android) { // Andriod
+            this._setAndroidDetector(context);
+        } else if (ad.ios &amp;&amp; context.iosStoreURL) { // IOS
+            this._setIOSDetector(context);
+        } else { // ETC
+           this._setEtcDetector(context);
+        }
+    },
+
+    /**
+     * Set IOS Detector
+     * @private
+     * @param {object} context The information for app
+     */
+    _setIOSDetector: function(context) {
+        var iosVersion = parseInt(this.version, 10);
+        if (context.useIOS9) {
+            if (iosVersion > 8 || context.syncToIOS9) {
+                this.detector = iOSDetector.iosFixDetector;
+            } else {
+                this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector;
+            }
+        } else  if (iosVersion &lt; 8) {
+            this.detector = iOSDetector.iosOlderDetector;
+        } else {
+            this.detector = iOSDetector.iosRecentDetector;
+        }
+    },
+
+    /**
+     * Set android Detector
+     * @private
+     * @param {object} context The information for app
+     */
+    _setAndroidDetector: function(context) {
+        var isNotIntent = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
+            isIntent = tui.util.isExisty(context.intentURI);
+        if (isNotIntent) {
+            this.detector = Detector.androidSchemeDetector;
+        } else if (isIntent) {
+            this.detector = Detector.androidIntentDetector;
+        }
+    },
+
+    /**
+     * Set EtcDetector
+     * @private
+     * @param {object} context The information for app
+     */
+    _setEtcDetector: function(context) {
+        this.detector = EtcDetector;
+
+        setTimeout(function () {
+            if (context.etcCallback) {
+                context.etcCallback();
+            }
+        }, 100);
+    },
+
+    /**
+     * Run selected detector
+     * @private
+     * @param {object} context The information for app
+     */
+    _runDetector: function(context) {
+        if (this.detector &amp;&amp; (this.detector.type !== EtcDetector.type)) {
+            this.detector.run(context);
+        }
+    },
+
+    /**
+     * Whether the intent is supported
+     * @returns {boolean}
+     */
+    isIntentLess: function() {
+        var intentlessBrowsers = [
+            'firefox',
+            'opr'
+        ];
+        var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
+            app = this.agentDetector;
+        return blackListRegexp.test(app.ua);
+    },
+
+    /**
+     * Get os
+     * @returns {string}
+     */
+    getOS: function() {
+        return this.agentDetector.getOS();
+    },
+
+    /**
+     * Call app
+     * @param {object} options The option for app
+     *  @param {object} options.ios IOS app information
+     *  @param {object} options.android Android information
+     *  @param {object} options.timerSet A timer time set for callback deley time
+     *  @param {Function} options.etcCallback If unsupportable mobile
+     *  @param {Function} options.notFoundCallback It not found
+     *
+     * @example
+     * var loader = new tui.component.m.AppLoader();
+     * loader.exec({
+     *      ios: {
+     *          scheme: 'fecheck://', // iphone app scheme
+     *          url: 'itms-apps://itunes.apple.com/app/.....', // app store url,
+     *          useIOS9: true,
+     *          syncToIOS9: false,
+     *          universalLink: 'app:///links/'
+     *      },
+     *      android: {
+     *          intentURI: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+     *      },
+     *      timerSet: { // optional values
+     *          ios: 2000, // default: 2000
+     *          android: 1000 // default: 800
+     *      },
+     *      notFoundCallback: function() { // if not installed
+     *          alert('not found');
+     *      },
+     *      etcCallback: function() { // if not mobile
+     *          alert('etc');
+     *      }
+     * });
+     */
+    exec: function(options) {
+        var timerSet, context;
+
+        options = tui.util.extend(this.defaults, options);
+        timerSet = options.timerSet;
+        context = {
+            urlScheme: options.ios.scheme,
+            iosStoreURL: options.ios.url,
+            syncToIOS9: options.ios.syncToIOS9,
+            useIOS9: options.ios.useIOS9,
+            universalLink: options.ios.universalLink,
+            intentURI: options.android.intentURI,
+            useIframe: options.android.useIframe,
+            onErrorIframe: options.android.onErrorIframe,
+            etcCallback: options.etcCallback,
+            notFoundCallback: options.notFoundCallback
+        };
+
+        this._setDetector(context);
+        if (timerSet) {
+            this._setTimerTime(timerSet);
+        }
+        this._runDetector(context);
+    },
+
+    /**
+     * Set timer time set
+     * @param {object} timerSet A set of timer times
+     * @private
+     */
+    _setTimerTime: function(timerSet) {
+        if (!this.detector.TIMEOUT) {
+            this.detector.TIMEOUT = {};
+        }
+        this.detector.TIMEOUT.IOS = timerSet.ios || this.detector.TIMEOUT.IOS;
+        this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
+    }
+});
+
+module.exports = AppLoader;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var element = document.getElementById(id); // do not use jquery selector
+
+        $(element).removeClass('hidden');
+        showLnbApi();
+    </script>
+
+</body>
+</html>

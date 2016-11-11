@@ -2,29 +2,28 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
-    <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
-    <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+    <title>App Loader - Basic</title>
 </head>
 <body>
     <p>App loader run in mobile.</p>
-    <div>
-        <button id='loaderBtn'>load</button>
+    <div class="code-html">
+        <div>
+            <button id='loaderBtn'>load</button>
+        </div>
+        <div>
+            <a href="https://itunes.apple.com/kr/app/id924292102" target="_blank"><button>Go to app store!</button></a>
+        </div>
     </div>
-    <div>
-        <a href="https://itunes.apple.com/kr/app/id924292102"><button>Go to app store!</button></a>
-    </div>
-    <script type="text/javascript" src="js/code-snippet.min.js"></script>
-    <script type="text/javascript" src="js/app-loader.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="//cdn.rawgit.com/nhnent/tui.code-snippet/1.2.1/code-snippet.js"></script>
+    <script type="text/javascript" src="../dist/tui-component-m-app-loader.js"></script>
+    <script type="text/javascript" class="code-js">
         var iosScheme = 'payco://open';
 //        var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end';
         var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;';
         var AppLoader = tui.component.m.AppLoader;
 
-        var loader = new AppLoader(),
-            btn = document.getElementById('loaderBtn');
+        var loader = new AppLoader();
+        var btn = document.getElementById('loaderBtn');
 
         btn.addEventListener('click', function() {
             loader.exec({
