@@ -3,122 +3,67 @@
  * @dependency code-snippet.js, detectors.js, agentDetector.js
  * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
-var AgentDetector = require('./agentDetector');
+
+var snippet = require('tui-code-snippet');
+var UAParser = require('ua-parser-js');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
 var EtcDetector = require('./etcDetectors');
-var ad = new AgentDetector();
+
+var defaultOptions = {
+    ios: {
+        scheme: '',
+        url: ''
+    },
+    android: {
+        scheme: '',
+        url: ''
+    }
+};
+
 /**
- * It works on mobile!
+ * Mobile App loader
  * @constructor
  * @class
  * @see AppLoader#exec
- * @tutorial tutorial
- * @tutorial tutorial2
+ * @example <caption>node, commonjs</caption>
+ * var Apploader = require('tui-app-loader');
+ * var appLoader = new AppLoader();
+ * appLoader.exec(...);
+ * @example <caption>brower, global namespace</caption>
+ * var appLoader = new tui.AppLoader();
+ * appLoader.exec(...);
  */
-var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
+var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
     init: function() {
-        this.agentDetector = ad;
-        this.ua = ad.userAgent();
-        this.os = ad.getOS();
-        this.version = ad.version(ad.ios ? ad.device : 'Android');
-    },
+        var agent = new UAParser().getResult();
+        var os = agent.os;
 
-    static:{
-        /**
-         * Get first user agent (it will be browser name)
-         * @memberof AppLoader
-         * @return {string} user agent
-         * @example
-         * var AppLoader = tui.component.m.AppLoader;
-         * var ua = AppLoader.getUserAgent(); // ex) 'safari'
-         */
-        getUserAgent: function() {
-            return ad.userAgent();
-        },
-
-        /**
-         * Get all user agents by array
-         * @memberof AppLoader
-         * @return {Array} agent strings
-         * @example
-         * var AppLoader = tui.component.m.AppLoader;
-         * var uas = AppLoader.getUserAgents(); // ex) ['safari']
-         */
-        getUserAgents: function() {
-            return ad.userAgents();
-        },
-
-        /**
-         * Get OS
-         * @memberof AppLoader
-         * @return {string} os
-         * @example
-         * var AppLoader = tui.component.m.AppLoader;
-         * var os = AppLoader.getOS(); //  'iOS' or 'AndroidOS'
-         */
-        getOS: function() {
-            return ad.getOS();
-        },
-
-        /**
-         * Get version
-         * @memberof AppLoader
-         * @param {string} type - os type
-         * @return {number|string} version
-         * @example
-         *  getVersion('IOS');
-         *  getVersion('Chrome');
-         *  getVersion('Android');
-         */
-        getVersion: function(type) {
-            return ad.version(type);
-        }
+        this.agent = agent;
+        this.ua = agent.ua;
+        this.osName = os.name;
+        this.osVersion = os.version;
+        this.detector = null;
     },
 
     /**
-     * browser, device detector
-     * @private
-     */
-    detector: {},
-    /**
-     * OS (android/ios/etc)
-     * @private
-     */
-    os: null,
-    /**
-     * default options to run exec
-     * @private
-     */
-    defaults: {
-        name: '',
-        ios: {
-            scheme: '',
-            url: '',
-            useIOS9: false,
-            syncToIOS9: false
-        },
-        android: {
-            scheme: '',
-            url: ''
-        }
-    },
-
-    /**
-     * Set os by Detector
+     * Set Detector by OS
      * @private
      * @param {object} context The options
      */
     _setDetector: function(context) {
-        var ad = this.agentDetector;
+        var osName = this.osName;
+        var isAndroid = (osName === 'Android');
+        var isIOS = (osName === 'iOS');
 
-        if (ad.android) { // Andriod
+        if (isAndroid) {
             this._setAndroidDetector(context);
-        } else if (ad.ios && context.iosStoreURL) { // IOS
-            this._setIOSDetector(context);
-        } else { // ETC
-           this._setEtcDetector(context);
+        } else if (isIOS && context.iosStoreURL) {
+            this._setIOSDetector();
+        } else {
+            this._setEtcDetector(context);
         }
     },
 
@@ -127,18 +72,14 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @private
      * @param {object} context The information for app
      */
-    _setIOSDetector: function(context) {
-        var iosVersion = parseInt(this.version, 10);
-        if (context.useIOS9) {
-            if (iosVersion > 8 || context.syncToIOS9) {
-                this.detector = iOSDetector.iosFixDetector;
-            } else {
-                this.detector = (iosVersion === 8) ? iOSDetector.iosRecentDetector : iOSDetector.iosOlderDetector;
-            }
-        } else  if (iosVersion < 8) {
-            this.detector = iOSDetector.iosOlderDetector;
+    _setIOSDetector: function() {
+        var iosVersion = parseInt(this.osVersion, 10);
+        if (iosVersion > 8) {
+            this.detector = iOSDetector.iOS9AndLater;
+        } else if (iosVersion === 8) {
+            this.detector = iOSDetector.iOS8;
         } else {
-            this.detector = iOSDetector.iosRecentDetector;
+            this.detector = iOSDetector.iOS7AndBefore;
         }
     },
 
@@ -148,12 +89,10 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _setAndroidDetector: function(context) {
-        var isNotIntent = (this.isIntentLess() || tui.util.isExisty(context.useUrlScheme)),
-            isIntent = tui.util.isExisty(context.intentURI);
-        if (isNotIntent) {
-            this.detector = Detector.androidSchemeDetector;
-        } else if (isIntent) {
+        if (context.intentURI && this.doesBrowserSupportIntent()) {
             this.detector = Detector.androidIntentDetector;
+        } else {
+            this.detector = Detector.androidSchemeDetector;
         }
     },
 
@@ -165,7 +104,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     _setEtcDetector: function(context) {
         this.detector = EtcDetector;
 
-        setTimeout(function () {
+        setTimeout(function() {
             if (context.etcCallback) {
                 context.etcCallback();
             }
@@ -178,7 +117,7 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
      * @param {object} context The information for app
      */
     _runDetector: function(context) {
-        if (this.detector && (this.detector.type !== EtcDetector.type)) {
+        if (this.detector && (this.detector !== EtcDetector)) {
             this.detector.run(context);
         }
     },
@@ -186,46 +125,31 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     /**
      * Whether the intent is supported
      * @returns {boolean}
+     * @private
      */
-    isIntentLess: function() {
-        var intentlessBrowsers = [
-            'firefox',
-            'opr'
-        ];
-        var blackListRegexp = new RegExp(intentlessBrowsers.join('|'), 'i'),
-            app = this.agentDetector;
-        return blackListRegexp.test(app.ua);
-    },
-
-    /**
-     * Get os
-     * @returns {string}
-     */
-    getOS: function() {
-        return this.agentDetector.getOS();
+    doesBrowserSupportIntent: function() {
+        return !(/firefox|opr/i.test(this.agent.ua));
     },
 
     /**
      * Call app
      * @param {object} options The option for app
-     *  @param {object} options.ios IOS app information
-     *  @param {object} options.android Android information
-     *  @param {object} options.timerSet A timer time set for callback deley time
-     *  @param {Function} options.etcCallback If unsupportable mobile
-     *  @param {Function} options.notFoundCallback It not found
+     * @param {object} options.ios IOS app information
+     * @param {object} options.android Android information
+     * @param {object} options.timerSet A timer time set for callback deley time
+     * @param {Function} options.etcCallback If unsupportable mobile
+     * @param {Function} options.notFoundCallback It not found
      *
      * @example
-     * var loader = new tui.component.m.AppLoader();
+     * var loader = new tui.AppLoader();
      * loader.exec({
      *      ios: {
-     *          scheme: 'fecheck://', // iphone app scheme
-     *          url: 'itms-apps://itunes.apple.com/app/.....', // app store url,
-     *          useIOS9: true,
-     *          syncToIOS9: false,
-     *          universalLink: 'app:///links/'
+     *          scheme: '<app-scheme>://', // iphone app scheme
+     *          url: 'https://itunes.apple.com/app/<id-app>', // app store url,
+     *          universalLink: 'app:///<universal-link>/'
      *      },
      *      android: {
-     *          intentURI: 'intent://home#Intent;scheme=fecheck;package=com.fecheck;end' // android intent uri
+     *          intentURI: 'intent://<action>#Intent;scheme=<app-scheme>;package=<package-name>;end' // android intent uri
      *      },
      *      timerSet: { // optional values
      *          ios: 2000, // default: 2000
@@ -242,13 +166,11 @@ var AppLoader = tui.util.defineClass(/** @lends AppLoader.prototype */{
     exec: function(options) {
         var timerSet, context;
 
-        options = tui.util.extend(this.defaults, options);
+        options = snippet.extend(defaultOptions, options);
         timerSet = options.timerSet;
         context = {
             urlScheme: options.ios.scheme,
             iosStoreURL: options.ios.url,
-            syncToIOS9: options.ios.syncToIOS9,
-            useIOS9: options.ios.useIOS9,
             universalLink: options.ios.universalLink,
             intentURI: options.android.intentURI,
             useIframe: options.android.useIframe,
