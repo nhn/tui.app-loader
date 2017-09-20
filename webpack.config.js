@@ -11,9 +11,8 @@ var webpack = require('webpack');
 var SafeUmdPlugin = require('safe-umd-webpack-plugin');
 
 var isProduction = process.argv.indexOf('-p') >= 0;
-var isCombined = process.argv.indexOf('--combine') >= 0;
 
-var FILENAME = pkg.name + (isCombined ? '.comb' : '') + (isProduction ? '.min.js' : '.js');
+var FILENAME = pkg.name + (isProduction ? '.min.js' : '.js');
 var BANNER = [
     FILENAME,
     '@version ' + pkg.version,
