@@ -3,9 +3,7 @@
   "version": "2.0.0",
   "main": "dist/tui-app-loader",
   "scripts": {
-    "bundle": "npm run bundle:node & npm run bundle:browser",
-    "bundle:node": "webpack & webpack -p",
-    "bundle:browser": "webpack --combine & webpack -p --combine",
+    "bundle": "webpack & webpack -p",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
