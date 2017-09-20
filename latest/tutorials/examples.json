@@ -1,0 +1,8 @@
+{
+    "example01-button": {
+        "title" : "Launch App by clicking a button"
+    },
+    "example02-iframe": {
+        "title" : "Launch App with page loading"
+    }
+}
