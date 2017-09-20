@@ -1,9 +1,13 @@
 /**
  * @fileoverview Mixin modules
- * @dependency code-snippet.js, appLoader.js
  * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
+
 'use strict';
+
+var snippet = require('tui-code-snippet');
+var ID_SUPPORT_FRAME = 'tui-support-frame';
+
 /**
  * @namespace Detector
  * @ignore
@@ -19,11 +23,6 @@ var Detector = {
     },
 
     /**
-     * Id for support frame
-     */
-    SUPPORT_FRAME_ID: 'tui-support-frame',
-
-    /**
      * Move page
      * @param {string} url - URL
      * @memberof Detector
@@ -37,12 +36,12 @@ var Detector = {
      * @param {string} url - App url
      * @returns {HTMLElement} IFrame
      */
-    runAppWithIframe: function (url) {
-        var self = this,
-            iframe = self.createSupportFrame();
+    runAppWithIframe: function(url) {
+        var iframe = this.createIFrameElement();
 
         iframe.src = url;
         document.body.appendChild(iframe);
+
         return iframe;
     },
 
@@ -50,15 +49,14 @@ var Detector = {
      * Create iframe
      * @returns {HTMLElement} IFrame
      */
-    createSupportFrame: function () {
+    createIFrameElement: function() {
         var iframe = document.createElement('iframe');
-        tui.util.extend(iframe, {
-            id: this.SUPPORT_FRAME_ID,
-            frameborder: '0',
-            width: '0',
-            height: '0'
-        });
+        iframe.id = ID_SUPPORT_FRAME;
+        iframe.frameborder = '0';
+        iframe.width = '0';
+        iframe.height = '0';
         iframe.style.display = 'none';
+
         return iframe;
     },
 
@@ -68,34 +66,34 @@ var Detector = {
      * @param {number} time A delay time
      * @returns {number|undefined} Timer id
      */
-    deferCallback: function (callback, time) {
-        var clickedAt = new Date().getTime(),
-            now,
-            self = this;
+    deferCallback: function(callback, time) {/* eslint-disable consistent-return */
+        var clickedAt = new Date().getTime();
+        var self = this;
 
-        if (!tui.util.isFunction(callback)) {
+        if (!snippet.isFunction(callback)) {
             return;
         }
 
-        return setTimeout(function () {
-            now = new Date().getTime();
-            if (self.isPageVisibility() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
+        return setTimeout(function() {
+            var now = new Date().getTime();
+            if (self.isPageVisible() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
                 callback();
             }
-        }, time);
+        }, time); /* eslint-enable consistent-return */
     },
 
     /**
      * check a webpage is visible or in focus
      * @returns {boolean} Page visibility
      */
-    isPageVisibility: function () {
-        if (tui.util.isExisty(document.hidden)) {
+    isPageVisible: function() {
+        if (snippet.isExisty(document.hidden)) {
             return !document.hidden;
         }
-        if (tui.util.isExisty(document.webkitHidden)) {
+        if (snippet.isExisty(document.webkitHidden)) {
             return !document.webkitHidden;
         }
+
         return true;
     }
 };
@@ -109,7 +107,7 @@ var Detector = {
  * @namespace Detector.androidSchemeDetector
  * @ignore
  */
-Detector.androidSchemeDetector = tui.util.extend({
+Detector.androidSchemeDetector = snippet.extend({
     /**
      * detector type
      * @memberof Detector.androidSchemeDetector
@@ -132,13 +130,12 @@ Detector.androidSchemeDetector = tui.util.extend({
     }
 }, Detector);
 
-
 /**
  * Android intent
  * @namespace Detector.androidIntentDetector
  * @ignore
  */
-Detector.androidIntentDetector = tui.util.extend({
+Detector.androidIntentDetector = snippet.extend({
     /**
      * detector type
      * @memberof Detector.androidIntentDetector
@@ -161,7 +158,7 @@ Detector.androidIntentDetector = tui.util.extend({
                 //  this component cannot judge the app is installed or not.
                 document.body.removeChild(iframe);
                 clearTimeout(timeoutId);
-                if (tui.util.isFunction(onErrorIframe)) {
+                if (snippet.isFunction(onErrorIframe)) {
                     onErrorIframe();
                 }
             }
@@ -186,4 +183,5 @@ Detector.androidIntentDetector = tui.util.extend({
         }
     }
 }, Detector);
+
 module.exports = Detector;

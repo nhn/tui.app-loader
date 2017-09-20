@@ -2,7 +2,9 @@
  * @fileoverview EtcDetector for unsupported env.
  * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
+
 'use strict';
+
 /**
  * @namespace EtcDetector
  * @ignore

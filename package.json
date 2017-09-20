@@ -1,25 +1,42 @@
 {
-  "name": "tui-component-m-app-loader",
-  "version": "1.0.3",
-  "description": "Mobile app launcher on web page",
-  "private": true,
-  "devDependencies": {
-    "browserify": "^13.1.0",
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-connect": "^5.0.0",
-    "gulp-header": "^1.8.8",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^2.0.0",
-    "tui-jsdoc-template": "^1.0.4",
-    "vinyl-buffer": "latest",
-    "vinyl-source-stream": "latest",
-    "watchify": "^3.7.0"
-  },
+  "name": "tui-app-loader",
+  "version": "2.0.0",
+  "main": "dist/tui-app-loader",
   "scripts": {
-    "bundle": "gulp bundle",
-    "cpy-dist2doc": "mkdir -p doc/dist && cp -f dist/tui-component-m-app-loader.js doc/dist",
-    "doc": "jsdoc -c jsdoc-conf.json && npm run cpy-dist2doc"
+    "bundle": "npm run bundle:node & npm run bundle:browser",
+    "bundle:node": "webpack & webpack -p",
+    "bundle:browser": "webpack --combine & webpack -p --combine",
+    "serve": "webpack-dev-server --inline --hot -d",
+    "serve:ie8": "webpack-dev-server -d",
+    "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
+    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
   },
-  "author": "NHNEnt FE Development Lab <dl_javascript@nhnent.com>"
+  "description": "TOAST UI Component: AppLoader for mobile deep-linking",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nhnent/tui.app-loader"
+  },
+  "keywords": [
+    "nhnent",
+    "tui",
+    "deep linking",
+    "app-loader",
+    "app launcher"
+  ],
+  "author": "NHNEnt FE Development Lab <dl_javascript@nhnent.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-tui": "^1.0.1",
+    "eslint-loader": "^1.6.1",
+    "jsdoc": "^3.5.4",
+    "safe-umd-webpack-plugin": "^0.0.1",
+    "tui-jsdoc-template": "^1.0.4",
+    "webpack": "^1.15.0",
+    "webpack-dev-server": "^1.11.0"
+  },
+  "dependencies": {
+    "tui-code-snippet": "^1.2.5",
+    "ua-parser-js": "^0.7.14"
+  }
 }

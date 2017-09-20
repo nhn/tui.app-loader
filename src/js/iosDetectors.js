@@ -3,20 +3,17 @@
  * @dependency code-snippet.js, appLoader.js
  * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
  */
- 'use strict';
+
+'use strict';
+
+var snippet = require('tui-code-snippet');
 var Detector = require('./detectors');
 
 /**
  * @namespace iOSDetector
  * @ignore
  */
-var iOSDetector = tui.util.extend({
-    /**
-     * detector type
-     * @memberof iOSDetector
-     */
-    type: 'ios',
-
+var iOSDetector = snippet.extend({
     /**
      * visiblitychange event
      * @memberof iOSDetector
@@ -24,7 +21,7 @@ var iOSDetector = tui.util.extend({
     bindVisibilityChangeEvent: function() {
         var self = this;
         document.addEventListener('visibilitychange', function clear() {
-            if (self.isPageVisibility()) {
+            if (self.isPageVisible()) {
                 clearTimeout(self.tid);
                 document.removeEventListener('visibilitychange', clear);
             }
@@ -38,7 +35,7 @@ var iOSDetector = tui.util.extend({
     bindPagehideEvent: function() {
         var self = this;
         window.addEventListener('pagehide', function clear() {
-            if (self.isPageVisibility()) {
+            if (self.isPageVisible()) {
                 clearTimeout(self.tid);
                 window.removeEventListener('pagehide', clear);
             }
@@ -47,19 +44,19 @@ var iOSDetector = tui.util.extend({
 }, Detector);
 
 /**
- * ios old detector
- * @namespace iOSDetector.iosOlderDetector
+ * open an app on iOS7 and Before
+ * @namespace iOSDetector.iOS7AndBefore
  * @ignore
  */
-iOSDetector.iosOlderDetector = tui.util.extend({
+iOSDetector.iOS7AndBefore = snippet.extend({
     /**
      * detector Run
      * @param {object} context Data for app loading
-     * @memberof iOSDetector.iosOlderDetector
+     * @memberof iOSDetector.iOS7AndBefore
      */
     run: function(context) {
         var storeURL = context.iosStoreURL,
-            callback = context.notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+            callback = context.notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
 
         this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
         this.bindPagehideEvent();
@@ -69,19 +66,19 @@ iOSDetector.iosOlderDetector = tui.util.extend({
 
 /**
  * ios recent detector
- * @namespace iOSDetector.iosRecentDetector
+ * @namespace iOSDetector.iOS8
  * @ignore
  */
-iOSDetector.iosRecentDetector = tui.util.extend({
+iOSDetector.iOS8 = snippet.extend({
     /**
      * detector run
      * @param {object} context Data for app loading
-     * @memberof iOSDetector.iosRecentDetector
+     * @memberof iOSDetector.iOS8AndHigher
      */
     run: function(context) {
         var storeURL = context.iosStoreURL,
             notFoundCallback = context.notFoundCallback,
-            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+            callback = notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
 
         this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
         this.bindVisibilityChangeEvent();
@@ -93,16 +90,16 @@ iOSDetector.iosRecentDetector = tui.util.extend({
  * ios recent but safari prevent to call application via iframe src.
  * @ignore
  */
-iOSDetector.iosFixDetector = tui.util.extend({
+iOSDetector.iOS9AndLater = snippet.extend({
     /**
      * detector run
      * @param {object} context Data for app loading
-     * @memberof iOSDetector.iosFixDetector
+     * @memberof iOSDetector.iOS9AndLater
      */
     run: function(context) {
         var storeURL = context.iosStoreURL,
             notFoundCallback = context.notFoundCallback,
-            callback = notFoundCallback || tui.util.bind(this.moveTo, this, storeURL);
+            callback = notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
 
         if (context.universalLink) {
             this.moveTo(context.universalLink);
