@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Tutorial: Launch App with page loading | AppLoader</title>
+    <title>Tutorial: 2. Using iframe - aunch App with page loading | AppLoader</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -45,7 +45,7 @@
             </li>
         </ol>
     
-    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example01-button.html">Launch App by clicking a button</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example01-button_sub"></div></li><li><a href="tutorial-example02-iframe.html">Launch App with page loading</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example02-iframe_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AppLoader.html">AppLoader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AppLoader_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AppLoader.html#exec">exec</a></li></ul></div></li></ul></div>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example01-basic.html">1. Basic - launch App by clicking a button</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example01-basic_sub"></div></li><li><a href="tutorial-example02-using-iframe.html">2. Using iframe - aunch App with page loading</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example02-using-iframe_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="AppLoader.html">AppLoader</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="AppLoader_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="AppLoader.html#exec">exec</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -56,7 +56,7 @@
     <header>
         
 
-        <h2>Launch App with page loading</h2>
+        <h2>2. Using iframe - aunch App with page loading</h2>
     </header>
 
     
@@ -75,11 +75,11 @@
         </ul>
         <article>
             
-            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example02-iframe.html></iframe>
+            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example02-using-iframe.html></iframe>
             <div id="example-js" class="hidden"><pre class="prettyprint source">
         // Run code
         var iosScheme = 'payco://open';
-        // var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end;'; 
+        // var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end;';
         var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;';
         var loader = new tui.AppLoader();
 
