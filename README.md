@@ -9,7 +9,7 @@ Launches an app on mobile web page.
 ## Documentation
 * **API** : [https://nhnent.github.io/tui.app-loader/latest](https://nhnent.github.io/tui.app-loader/latest)
 * **Tutorial** : [https://github.com/nhnent/tui.app-loader/wiki](https://github.com/nhnent/tui.app-loader/wiki)
-* **Example** - [https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-basic.html](https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-basic.html)
+* **Example** - [https://nhnent.github.io/tui.app-loader/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.app-loader/latest/tutorial-example01-basic.html)
 
 ## Dependency
 * [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
