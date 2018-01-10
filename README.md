@@ -1,5 +1,4 @@
 # AppLoader
-
 Launches an app on mobile web page.
 
 ## Feature
@@ -10,11 +9,11 @@ Launches an app on mobile web page.
 ## Documentation
 * **API** : [https://nhnent.github.io/tui.app-loader/latest](https://nhnent.github.io/tui.app-loader/latest)
 * **Tutorial** : [https://github.com/nhnent/tui.app-loader/wiki](https://github.com/nhnent/tui.app-loader/wiki)
-* **Sample** - [https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-button.html](https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-button.html)
+* **Example** - [https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-basic.html](https://nhnent.github.io/tui.app-loader/latest/tutorial-examples01-basic.html)
 
 ## Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet): ^1.2.5
-* [ua-parser-js](https://github.com/faisalman/ua-parser-js): ^0.7.4
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
+* [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 ## Test environment
 * Mobile
