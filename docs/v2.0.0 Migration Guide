@@ -1,0 +1,49 @@
+## External Dependency: tui.code-snippet@^v1.2.5, ua-parser-js@^v0.7.1,
+
+AppLoader has `external` dependency.
+It means you should add these dependencies before loading `tui-app-loader.js`.
+
+```html
+<!-- html -->
+<script src="//cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.min.js"></script>
+<script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
+<script src="../dist/tui-app-loader.min.js"></script>
+```
+
+## Deprecate Parser APIs:
+
+AppLoader had a code dependency inside a module.
+So we provide Parser APIs for users who need User Agent information like OS and browser name and version.
+
+Now, in a v2.0.0, we exclude a dependency outside of a module.
+If user want to know User Agents, they can use a parser package, `ua-parser-js`.
+This is why we deprecated Parser APIs. Use `ua-parser-js`. AppLoader uses the same package.
+
+Deprecated APIs
+- AppLoader.getOS()
+- AppLoader.getUserAgent(): {string}
+- AppLoader.getUserAgents(): {Array}
+- AppLoader.getVersion(): {number|string}
+- new AppLoader().getOS(): {string}
+- new AppLoader().IsIntentLess(): {boolean}
+
+\* - Check a browser is not a Firefox or a Opera. This can be implemented by `new UAParser().getResult().os.name`
+
+## Changed naming policies
+
+|  | v2.0.0 | <v2.0.0 |
+| -- | -- | -- |
+| namespace | tui.AppLoader | tui.component.m.AppLoader |
+| repository | tui.app-loader | tui.component.m-app-loader |
+| package name | tui-app-loader | tui-component-m-app-loader |
+
+## change landing logic
+
+### Android
+- deprecated option: `android.useiframe` - blocked on Chromium
+- make a priority of intentURI larger than urlScheme
+- use intentURI if option has an intentURI and browser support it (not Firefox or Opera)
+
+### iOS:
+- deprecated options: `ios.useIOS9`, `ios.syncToIOS9`
+- launch app by iOS version only
