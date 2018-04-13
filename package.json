@@ -12,7 +12,7 @@
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nhnent/tui.app-loader"
+    "url": "https://github.com/nhnent/tui.app-loader.git"
   },
   "keywords": [
     "nhnent",
