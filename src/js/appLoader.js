@@ -27,6 +27,8 @@ var defaultOptions = {
  * Mobile App loader
  * @constructor
  * @class
+ * @param {object} options - Option object
+ * @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @see AppLoader#exec
  * @example <caption>node, commonjs</caption>
  * var Apploader = require('tui-app-loader');
@@ -37,7 +39,7 @@ var defaultOptions = {
  * appLoader.exec(...);
  */
 var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
-    init: function() {
+    init: function(options) {
         var agent = new UAParser().getResult();
         var os = agent.os;
 
@@ -46,6 +48,14 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
         this.osName = os.name;
         this.osVersion = os.version;
         this.detector = null;
+
+        options = snippet.extend({
+            usageStatistics: true
+        }, options);
+
+        if (options.usageStatistics) {
+            sendHostname();
+        }
     },
 
     /**
@@ -199,5 +209,29 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
         this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
     }
 });
+
+var hostnameSent = false;
+
+/**
+ * send hostname
+ * @ignore
+ */
+function sendHostname() {
+    var hostname = location.hostname;
+
+    if (hostnameSent) {
+        return;
+    }
+    hostnameSent = true;
+
+    snippet.imagePing('https://www.google-analytics.com/collect', {
+        v: 1,
+        t: 'event',
+        tid: 'UA-115377265-9',
+        cid: hostname,
+        dp: hostname,
+        dh: 'app-loader'
+    });
+}
 
 module.exports = AppLoader;

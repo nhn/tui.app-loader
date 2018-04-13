@@ -1,11 +1,11 @@
-## External Dependency: tui.code-snippet@^v1.2.5, ua-parser-js@^v0.7.1,
+## External Dependency: tui.code-snippet@^v1.3.0, ua-parser-js@^v0.7.1,
 
 AppLoader has `external` dependency.
 It means you should add these dependencies before loading `tui-app-loader.js`.
 
 ```html
 <!-- html -->
-<script src="//cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.min.js"></script>
+<script src="https://uicdn.toast.com/tui.code-snippet/v1.3.0/tui-code-snippet.min.js"></script>
 <script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
 <script src="../dist/tui-app-loader.min.js"></script>
 ```
