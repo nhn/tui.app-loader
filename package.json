@@ -1,6 +1,6 @@
 {
   "name": "tui-app-loader",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "dist/tui-app-loader",
   "scripts": {
     "bundle": "webpack & webpack -p",
