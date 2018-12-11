@@ -54,7 +54,7 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
         }, options);
 
         if (options.usageStatistics) {
-            sendHostname();
+            snippet.sendHostname('app-loader', 'UA-129987462-1');
         }
     },
 
@@ -209,29 +209,5 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
         this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
     }
 });
-
-var hostnameSent = false;
-
-/**
- * send hostname
- * @ignore
- */
-function sendHostname() {
-    var hostname = location.hostname;
-
-    if (hostnameSent) {
-        return;
-    }
-    hostnameSent = true;
-
-    snippet.imagePing('https://www.google-analytics.com/collect', {
-        v: 1,
-        t: 'event',
-        tid: 'UA-115377265-9',
-        cid: hostname,
-        dp: hostname,
-        dh: 'app-loader'
-    });
-}
 
 module.exports = AppLoader;
