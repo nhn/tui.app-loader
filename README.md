@@ -9,6 +9,7 @@
 
 
 ## 🚩 Table of Contents
+* [Collect statistics on the use of open source](#collect-statistics-on-the-use-of-open-source)
 * [Features](#-features)
 * [Examples](#-examples)
 * [Install](#-install)
@@ -26,6 +27,25 @@
 * [Contributing](#-contributing)
 * [Dependency](#-dependency)
 * [License](#-license)
+
+
+## Collect statistics on the use of open source
+
+TOAST UI AppLoader applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI AppLoader is used throughout the world. It also serves as important index to determine the future course of projects. location.hostname (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage. To disable GA, use the following `usageStatistics` options when creating the instance.
+
+```js
+var options = {
+    ...
+    usageStatistics: false
+}
+var instance = new AppLoader(options);
+```
+
+Or, include `tui-code-snippet.js` (**v1.5.0** or **later**) and then immediately write the options as follows:
+
+```js
+tui.usageStatistics = false;
+```
 
 
 ## 🎨 Features
@@ -189,7 +209,7 @@ You can also see the older versions of API page on the [releases page](https://g
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.3.0
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.5.0
 * [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 
