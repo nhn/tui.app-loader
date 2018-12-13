@@ -7,7 +7,8 @@
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
-    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
+    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc",
+    "note": "tuie --tag=$(git describe --tags)"
   },
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
   "repository": {
@@ -30,6 +31,7 @@
     "jsdoc": "^3.5.4",
     "safe-umd-webpack-plugin": "^0.0.1",
     "tui-jsdoc-template": "^1.0.4",
+    "tui-release-notes": "github:nhnent/tui.release-notes#v1.0.0",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.11.0"
   },
