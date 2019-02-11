@@ -56,7 +56,7 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.app-loader/latest/tutorial-example01-basic.html) : Example using default options.
+* [Basic](https://nhnent.github.io/tui.app-loader/latest/tutorial-example01-basic) : Example using default options.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 

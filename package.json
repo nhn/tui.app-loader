@@ -1,13 +1,16 @@
 {
   "name": "tui-app-loader",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "dist/tui-app-loader",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "bundle": "webpack & webpack -p",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
-    "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
-    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc",
+    "doc:dev": "tuidoc --dev",
+    "doc": "tuidoc",
     "note": "tuie --tag=$(git describe --tags)"
   },
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
@@ -28,9 +31,7 @@
     "eslint": "^4.5.0",
     "eslint-config-tui": "^1.0.1",
     "eslint-loader": "^1.6.1",
-    "jsdoc": "^3.5.4",
     "safe-umd-webpack-plugin": "^0.0.1",
-    "tui-jsdoc-template": "^1.0.4",
     "tui-release-notes": "github:nhnent/tui.release-notes#v1.0.0",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.11.0"
