@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>1. Basic - launch App by clicking a button</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
     <style type="text/css">
         button.tui-app-loader {
             background-color: #4b96e6;
@@ -16,7 +17,9 @@
     </style>
 </head>
 <body>
-    <p>AppLoader runs on Android or iOS device.</p>
+    <div class="code-description">
+      AppLoader runs on Android or iOS device.
+    </div>
     <div class="code-html">
         <div>
             <button class='tui-app-loader' id='loaderBtn'>Launch App</button>
@@ -24,7 +27,7 @@
     </div>
     <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
     <script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
-    <script src="../dist/tui-app-loader.min.js"></script>
+    <script src="../dist/tui-app-loader.js"></script>
     <script class="code-js">
         var loader = new tui.AppLoader();
         var osName = new UAParser().getResult().os.name;
