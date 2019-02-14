@@ -1,8 +1,0 @@
-{
-    "example01-basic": {
-        "title" : "1. Basic - launch App by clicking a button"
-    },
-    "example02-using-iframe": {
-        "title" : "2. Using iframe - aunch App with page loading"
-    }
-}
