@@ -1,7 +1,7 @@
 /**
  * @fileoverview Load native app or move to install page
  * @dependency code-snippet.js, detectors.js, agentDetector.js
- * @author NHN Ent. FE dev Lab <dl_javascript@nhnent.com>
+ * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 'use strict';

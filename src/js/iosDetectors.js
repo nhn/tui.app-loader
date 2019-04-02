@@ -1,7 +1,7 @@
 /**
  * @fileoverview iOS Mixin modules
  * @dependency code-snippet.js, appLoader.js
- * @author NHN Ent. FE dev Lab.<dl_javascript@nhnent.com>
+ * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
  */
 
 'use strict';
