@@ -16,10 +16,10 @@
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nhnent/tui.app-loader.git"
+    "url": "https://github.com/nhn/tui.app-loader.git"
   },
   "keywords": [
-    "nhnent",
+    "nhn",
     "tui",
     "deep linking",
     "app-loader",
@@ -32,7 +32,7 @@
     "eslint-config-tui": "^1.0.1",
     "eslint-loader": "^1.6.1",
     "safe-umd-webpack-plugin": "^0.0.1",
-    "tui-release-notes": "github:nhnent/tui.release-notes#v1.0.0",
+    "tui-release-notes": "github:nhn/tui.release-notes#v1.0.0",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.11.0"
   },
