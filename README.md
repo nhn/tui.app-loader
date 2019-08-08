@@ -1,11 +1,11 @@
 # TOAST UI Component : App Loader
 > Component that installs a specific app by determining whether an app is installed on mobile devices.
 
-[![GitHub release](https://img.shields.io/github/release/nhnent/tui.app-loader.svg)](https://github.com/nhnent/tui.app-loader/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/nhn/tui.app-loader.svg)](https://github.com/nhn/tui.app-loader/releases/latest)
 [![npm](https://img.shields.io/npm/v/tui-app-loader.svg)](https://www.npmjs.com/package/tui-app-loader)
-[![GitHub license](https://img.shields.io/github/license/nhnent/tui.app-loader.svg)](https://github.com/nhnent/tui.app-loader/blob/production/LICENSE)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhnent/tui.project-name/labels/help%20wanted)
-[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhnent)
+[![GitHub license](https://img.shields.io/github/license/nhn/tui.app-loader.svg)](https://github.com/nhn/tui.app-loader/blob/production/LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
+[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
 
 ## 🚩 Table of Contents
@@ -56,7 +56,7 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.app-loader/latest/tutorial-example01-basic) : Example using default options.
+* [Basic](https://nhn.github.io/tui.app-loader/latest/tutorial-example01-basic) : Example using default options.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 
@@ -109,8 +109,8 @@ tui-app-loader/
 ```
 
 ### Download Source Files
-* [Download bundle files](https://github.com/nhnent/tui.app-loader/tree/production/dist)
-* [Download all sources for each version](https://github.com/nhnent/tui.app-loader/releases)
+* [Download bundle files](https://github.com/nhn/tui.app-loader/tree/production/dist)
+* [Download all sources for each version](https://github.com/nhn/tui.app-loader/releases)
 
 
 ## 🔨 Usage
@@ -139,7 +139,7 @@ import {AppLoader} from 'tui-app-loader'; /* ES6 */
 ```
 
 
-You should call `exec` method with [options](http://nhnent.github.io/tui.app-loader/latest/AppLoader.html#exec) after creating an instance.
+You should call `exec` method with [options](http://nhn.github.io/tui.app-loader/latest/AppLoader#exec) after creating an instance.
 
 ``` javascript
 var instance = new AppLoader();
@@ -194,25 +194,25 @@ For more information on PR's step, please see links of Contributing section.
 
 
 ## 📙 Documents
-* [Getting Started](https://github.com/nhnent/tui.app-loader/blob/production/docs/getting-started.md)
-* [Tutorials](https://github.com/nhnent/tui.app-loader/tree/production/docs)
-* [APIs](https://nhnent.github.io/tui.app-loader/latest)
+* [Getting Started](https://github.com/nhn/tui.app-loader/blob/production/docs/getting-started.md)
+* [Tutorials](https://github.com/nhn/tui.app-loader/tree/production/docs)
+* [APIs](https://nhn.github.io/tui.app-loader/latest)
 
-You can also see the older versions of API page on the [releases page](https://github.com/nhnent/tui.app-loader/releases).
+You can also see the older versions of API page on the [releases page](https://github.com/nhn/tui.app-loader/releases).
 
 
 ## 💬 Contributing
-* [Code of Conduct](https://github.com/nhnent/tui.app-loader/blob/production/CODE_OF_CONDUCT.md)
-* [Contributing guideline](https://github.com/nhnent/tui.app-loader/blob/production/CONTRIBUTING.md)
-* [Issue guideline](https://github.com/nhnent/tui.app-loader/blob/production/docs/ISSUE_TEMPLATE.md)
-* [Commit convention](https://github.com/nhnent/tui.app-loader/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md)
+* [Code of Conduct](https://github.com/nhn/tui.app-loader/blob/production/CODE_OF_CONDUCT.md)
+* [Contributing guideline](https://github.com/nhn/tui.app-loader/blob/production/CONTRIBUTING.md)
+* [Issue guideline](https://github.com/nhn/tui.app-loader/blob/production/docs/ISSUE_TEMPLATE.md)
+* [Commit convention](https://github.com/nhn/tui.app-loader/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md)
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.5.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
 * [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 
 ## 📜 License
 
-This software is licensed under the [MIT](https://github.com/nhnent/tui.app-loader/blob/production/LICENSE) © [NHN](https://github.com/nhnent).
+This software is licensed under the [MIT](https://github.com/nhn/tui.app-loader/blob/production/LICENSE) © [NHN](https://github.com/nhn).

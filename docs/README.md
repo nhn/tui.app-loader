@@ -8,7 +8,7 @@
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
 - [Contributing Guide](../CONTRIBUTING.md)
 - [Commit Message Convention](COMMIT_MESSAGE_CONVENTION.md)
-- [API & Examples](https://nhnent.github.io/tui.app-loader/latest)
+- [API & Examples](https://nhn.github.io/tui.app-loader/latest)
 
 ## Issues
 - Firefox for android: Intent URI지원 - 41버전 (2015, 9) ([ref.](https://www.mozilla.org/en-US/firefox/android/41.0/releasenotes/))

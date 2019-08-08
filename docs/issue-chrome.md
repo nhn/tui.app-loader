@@ -19,13 +19,13 @@ ___( O* : <br> iframe을 body에 붙이기 전 src속성을 intentURI로 지정�
 # 이슈
 
 * 안드로이드의 기본 웹뷰에서는 앱로더의 기능은 전부 지원되지 않는다.
-  * [안드로이드 웹뷰에서 앱 로더가 수행되지 않는 이슈](https://github.com/nhnent/tui.component.m-app-loader/wiki/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%B9%EB%B7%B0%EC%97%90%EC%84%9C-%EC%95%B1%EB%A1%9C%EB%8D%94%EA%B0%80-%EC%88%98%ED%96%89%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9D%B4%EC%8A%88)
+  * [안드로이드 웹뷰에서 앱 로더가 수행되지 않는 이슈](https://github.com/nhn/tui.app-loader/wiki/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-%EC%9B%B9%EB%B7%B0%EC%97%90%EC%84%9C-%EC%95%B1%EB%A1%9C%EB%8D%94%EA%B0%80-%EC%88%98%ED%96%89%EB%90%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%9D%B4%EC%8A%88)
 
 * Chrome for Android 25~42에서 callback과 fallback url지원은 *팝업을 통한 우회가 가능*하다.
-  * [안드로이드에서 app 실행 또는 fallback url 기능 지원](https://github.com/nhnent/tui.component.m-app-loader/wiki/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-APP-%EC%8B%A4%ED%96%89-%EB%98%90%EB%8A%94-%ED%8A%B9%EC%A0%95-url%EB%A1%9C-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%9D%B4%EB%8F%99)
+  * [안드로이드에서 app 실행 또는 fallback url 기능 지원](https://github.com/nhn/tui.app-loader/wiki/%EC%95%88%EB%93%9C%EB%A1%9C%EC%9D%B4%EB%93%9C-APP-%EC%8B%A4%ED%96%89-%EB%98%90%EB%8A%94-%ED%8A%B9%EC%A0%95-url%EB%A1%9C-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%9D%B4%EB%8F%99)
 
 * IntentURI의 iframe지원?
-  * [Chromium의 intentURI와 iframe](https://github.com/nhnent/tui.component.m-app-loader/wiki/Chromium%EC%9D%98-intentURI%EC%99%80-iframe)
+  * [Chromium의 intentURI와 iframe](https://github.com/nhn/tui.app-loader/wiki/Chromium%EC%9D%98-intentURI%EC%99%80-iframe)
 
 # 관련 참고 링크
 
