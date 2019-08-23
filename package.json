@@ -1,6 +1,6 @@
 {
   "name": "tui-app-loader",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "dist/tui-app-loader",
   "files": [
     "dist"
@@ -9,7 +9,8 @@
     "bundle": "webpack & webpack -p",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
-    "doc": "tuidoc && tuidoc --serv",
+    "doc:serve": "tuidoc --serv",
+    "doc": "tuidoc",
     "note": "tuie --tag=$(git describe --tags)"
   },
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
