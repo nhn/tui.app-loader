@@ -13,14 +13,14 @@ var iOSDetector = require('./iosDetectors');
 var EtcDetector = require('./etcDetectors');
 
 var defaultOptions = {
-    ios: {
-        scheme: '',
-        url: ''
-    },
-    android: {
-        scheme: '',
-        url: ''
-    }
+  ios: {
+    scheme: '',
+    url: ''
+  },
+  android: {
+    scheme: '',
+    url: ''
+  }
 };
 
 /**
@@ -39,109 +39,109 @@ var defaultOptions = {
  * appLoader.exec(...);
  */
 var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
-    init: function(options) {
-        var agent = new UAParser().getResult();
-        var os = agent.os;
+  init: function(options) {
+    var agent = new UAParser().getResult();
+    var os = agent.os;
 
-        this.agent = agent;
-        this.ua = agent.ua;
-        this.osName = os.name;
-        this.osVersion = os.version;
-        this.detector = null;
+    this.agent = agent;
+    this.ua = agent.ua;
+    this.osName = os.name;
+    this.osVersion = os.version;
+    this.detector = null;
 
-        options = snippet.extend({
-            usageStatistics: true
-        }, options);
+    options = snippet.extend({
+      usageStatistics: true
+    }, options);
 
-        if (options.usageStatistics) {
-            snippet.sendHostname('app-loader', 'UA-129987462-1');
-        }
-    },
+    if (options.usageStatistics) {
+      snippet.sendHostname('app-loader', 'UA-129987462-1');
+    }
+  },
 
-    /**
+  /**
      * Set Detector by OS
      * @private
      * @param {object} context The options
      */
-    _setDetector: function(context) {
-        var osName = this.osName;
-        var isAndroid = (osName === 'Android');
-        var isIOS = (osName === 'iOS');
+  _setDetector: function(context) {
+    var osName = this.osName;
+    var isAndroid = (osName === 'Android');
+    var isIOS = (osName === 'iOS');
 
-        if (isAndroid) {
-            this._setAndroidDetector(context);
-        } else if (isIOS && context.iosStoreURL) {
-            this._setIOSDetector();
-        } else {
-            this._setEtcDetector(context);
-        }
-    },
+    if (isAndroid) {
+      this._setAndroidDetector(context);
+    } else if (isIOS && context.iosStoreURL) {
+      this._setIOSDetector();
+    } else {
+      this._setEtcDetector(context);
+    }
+  },
 
-    /**
+  /**
      * Set IOS Detector
      * @private
      * @param {object} context The information for app
      */
-    _setIOSDetector: function() {
-        var iosVersion = parseInt(this.osVersion, 10);
-        if (iosVersion > 8) {
-            this.detector = iOSDetector.iOS9AndLater;
-        } else if (iosVersion === 8) {
-            this.detector = iOSDetector.iOS8;
-        } else {
-            this.detector = iOSDetector.iOS7AndBefore;
-        }
-    },
+  _setIOSDetector: function() {
+    var iosVersion = parseInt(this.osVersion, 10);
+    if (iosVersion > 8) {
+      this.detector = iOSDetector.iOS9AndLater;
+    } else if (iosVersion === 8) {
+      this.detector = iOSDetector.iOS8;
+    } else {
+      this.detector = iOSDetector.iOS7AndBefore;
+    }
+  },
 
-    /**
+  /**
      * Set android Detector
      * @private
      * @param {object} context The information for app
      */
-    _setAndroidDetector: function(context) {
-        if (context.intentURI && this.doesBrowserSupportIntent()) {
-            this.detector = Detector.androidIntentDetector;
-        } else {
-            this.detector = Detector.androidSchemeDetector;
-        }
-    },
+  _setAndroidDetector: function(context) {
+    if (context.intentURI && this.doesBrowserSupportIntent()) {
+      this.detector = Detector.androidIntentDetector;
+    } else {
+      this.detector = Detector.androidSchemeDetector;
+    }
+  },
 
-    /**
+  /**
      * Set EtcDetector
      * @private
      * @param {object} context The information for app
      */
-    _setEtcDetector: function(context) {
-        this.detector = EtcDetector;
+  _setEtcDetector: function(context) {
+    this.detector = EtcDetector;
 
-        setTimeout(function() {
-            if (context.etcCallback) {
-                context.etcCallback();
-            }
-        }, 100);
-    },
+    setTimeout(function() {
+      if (context.etcCallback) {
+        context.etcCallback();
+      }
+    }, 100);
+  },
 
-    /**
+  /**
      * Run selected detector
      * @private
      * @param {object} context The information for app
      */
-    _runDetector: function(context) {
-        if (this.detector && (this.detector !== EtcDetector)) {
-            this.detector.run(context);
-        }
-    },
+  _runDetector: function(context) {
+    if (this.detector && (this.detector !== EtcDetector)) {
+      this.detector.run(context);
+    }
+  },
 
-    /**
+  /**
      * Whether the intent is supported
      * @returns {boolean}
      * @private
      */
-    doesBrowserSupportIntent: function() {
-        return !(/firefox|opr/i.test(this.agent.ua));
-    },
+  doesBrowserSupportIntent: function() {
+    return !(/firefox|opr/i.test(this.agent.ua));
+  },
 
-    /**
+  /**
      * Call app
      * @param {object} options The option for app
      * @param {object} options.ios IOS app information
@@ -173,41 +173,41 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
      *      }
      * });
      */
-    exec: function(options) {
-        var timerSet, context;
+  exec: function(options) {
+    var timerSet, context;
 
-        options = snippet.extend(defaultOptions, options);
-        timerSet = options.timerSet;
-        context = {
-            urlScheme: options.ios.scheme,
-            iosStoreURL: options.ios.url,
-            universalLink: options.ios.universalLink,
-            intentURI: options.android.intentURI,
-            useIframe: options.android.useIframe,
-            onErrorIframe: options.android.onErrorIframe,
-            etcCallback: options.etcCallback,
-            notFoundCallback: options.notFoundCallback
-        };
+    options = snippet.extend(defaultOptions, options);
+    timerSet = options.timerSet;
+    context = {
+      urlScheme: options.ios.scheme,
+      iosStoreURL: options.ios.url,
+      universalLink: options.ios.universalLink,
+      intentURI: options.android.intentURI,
+      useIframe: options.android.useIframe,
+      onErrorIframe: options.android.onErrorIframe,
+      etcCallback: options.etcCallback,
+      notFoundCallback: options.notFoundCallback
+    };
 
-        this._setDetector(context);
-        if (timerSet) {
-            this._setTimerTime(timerSet);
-        }
-        this._runDetector(context);
-    },
+    this._setDetector(context);
+    if (timerSet) {
+      this._setTimerTime(timerSet);
+    }
+    this._runDetector(context);
+  },
 
-    /**
+  /**
      * Set timer time set
      * @param {object} timerSet A set of timer times
      * @private
      */
-    _setTimerTime: function(timerSet) {
-        if (!this.detector.TIMEOUT) {
-            this.detector.TIMEOUT = {};
-        }
-        this.detector.TIMEOUT.IOS = timerSet.ios || this.detector.TIMEOUT.IOS;
-        this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
+  _setTimerTime: function(timerSet) {
+    if (!this.detector.TIMEOUT) {
+      this.detector.TIMEOUT = {};
     }
+    this.detector.TIMEOUT.IOS = timerSet.ios || this.detector.TIMEOUT.IOS;
+    this.detector.TIMEOUT.ANDROID = timerSet.android || this.detector.TIMEOUT.ANDROID;
+  }
 });
 
 module.exports = AppLoader;
