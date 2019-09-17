@@ -10,14 +10,14 @@
  * @ignore
  */
 var EtcDetector = {
-    /**
+  /**
      * @memberof EtcDetector
      */
-    type: 'etc',
-    /**
+  type: 'etc',
+  /**
      * @memberof EtcDetector
      */
-    run: function() {
-    }
+  run: function() {
+  }
 };
 module.exports = EtcDetector;
