@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>1. Basic - launch App by clicking a button</title>
+    <link rel="stylesheet" type="text/css" href="./css/tui-example-style.css" />
+    <style type="text/css">
+        button.tui-app-loader {
+            background-color: #4b96e6;
+            color: #fff;
+            padding: 10px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="code-description">
+      AppLoader runs on Android or iOS device.
+    </div>
+    <div class="code-html">
+        <div>
+            <button class='tui-app-loader' id='loaderBtn'>Launch App</button>
+        </div>
+    </div>
+    <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
+    <script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
+    <script src="../dist/tui-app-loader.js"></script>
+    <script class="code-js">
+        var loader = new tui.AppLoader();
+        var osName = new UAParser().getResult().os.name;
+
+        var btn = document.getElementById('loaderBtn');
+        btn.addEventListener('click', function() {
+            loader.exec({
+                ios: {
+                    scheme: 'payco://open',
+                    url: "https://itunes.apple.com/kr/app/id924292102"
+                },
+                android: {
+                    intentURI: 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;'
+                },
+                timerSet: {
+                    ios: 2000,
+                    android: 1000
+                },
+                etcCallback: function() {
+                    if (osName !== 'iOS' && osName !== 'Android') {
+                        alert('AppLoader runs on Android or iOS device.');
+                    }
+                },
+                notFoundCallback: function() {
+                    if (osName === 'iOS') {
+                        top.location.href = 'https://itunes.apple.com/kr/app/id924292102';
+                    }
+                    console.log('Not Found Application');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
