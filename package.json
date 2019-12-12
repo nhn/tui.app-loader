@@ -6,7 +6,7 @@
     "dist"
   ],
   "scripts": {
-    "bundle": "webpack & webpack -p",
+    "bundle": "webpack --mode=production & webpack --mode=production --minify",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",
@@ -33,6 +33,7 @@
     "eslint-config-tui": "^2.2.0",
     "eslint-loader": "^3.0.0",
     "prettier": "^1.18.2",
+    "terser-webpack-plugin": "^2.2.3",
     "tui-release-notes": "github:nhn/tui.release-notes#v1.0.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
