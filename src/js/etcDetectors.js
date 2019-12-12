@@ -1,6 +1,6 @@
 /**
  * @fileoverview EtcDetector for unsupported env.
- * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 'use strict';
