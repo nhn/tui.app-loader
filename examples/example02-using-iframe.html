@@ -7,15 +7,12 @@
 </head>
 <body>
     <div class="code-description">
-      AppLoader runs on Android or iOS device.
+        AppLoader runs on Android or iOS device.
     </div>
-    <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
     <script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
     <script src="../dist/tui-app-loader.js"></script>
     <script type="text/javascript" class="code-js">
-        // Run code
         var iosScheme = 'payco://open';
-        // var intentURI = 'intent://open#Intent;scheme=payco;S.browser_fallback_url=http%3A%2F%2Fwww.payco.com;package=com.nhnent.payapp;end;';
         var intentURI = 'intent://open#Intent;scheme=payco;package=com.nhnent.payapp;end;';
         var loader = new tui.AppLoader();
         var osName = new UAParser().getResult().os.name;

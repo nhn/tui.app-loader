@@ -1,12 +1,15 @@
 /**
  * @fileoverview Load native app or move to install page
- * @dependency code-snippet.js, detectors.js, agentDetector.js
+ * @dependency code-js, detectors.js, agentDetector.js
  * @author NHN. FE dev Lab <dl_javascript@nhn.com>
  */
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var defineClass = require('tui-code-snippet/defineClass/defineClass');
+var extend = require('tui-code-snippet/object/extend');
+var sendHostname = require('tui-code-snippet/request/sendHostname');
+
 var UAParser = require('ua-parser-js');
 var Detector = require('./detectors');
 var iOSDetector = require('./iosDetectors');
@@ -38,7 +41,7 @@ var defaultOptions = {
  * var appLoader = new tui.AppLoader();
  * appLoader.exec(...);
  */
-var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
+var AppLoader = defineClass(/** @lends AppLoader.prototype */{
   init: function(options) {
     var agent = new UAParser().getResult();
     var os = agent.os;
@@ -49,12 +52,12 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
     this.osVersion = os.version;
     this.detector = null;
 
-    options = snippet.extend({
+    options = extend({
       usageStatistics: true
     }, options);
 
     if (options.usageStatistics) {
-      snippet.sendHostname('app-loader', 'UA-129987462-1');
+      sendHostname('app-loader', 'UA-129987462-1');
     }
   },
 
@@ -176,7 +179,7 @@ var AppLoader = snippet.defineClass(/** @lends AppLoader.prototype */{
   exec: function(options) {
     var timerSet, context;
 
-    options = snippet.extend(defaultOptions, options);
+    options = extend(defaultOptions, options);
     timerSet = options.timerSet;
     context = {
       urlScheme: options.ios.scheme,

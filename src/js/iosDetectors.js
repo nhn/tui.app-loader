@@ -1,19 +1,20 @@
 /**
  * @fileoverview iOS Mixin modules
- * @dependency code-snippet.js, appLoader.js
  * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
  */
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var extend = require('tui-code-snippet/object/extend');
+var bind = require('./util').bind;
+
 var Detector = require('./detectors');
 
 /**
  * @namespace iOSDetector
  * @ignore
  */
-var iOSDetector = snippet.extend({
+var iOSDetector = extend({
   /**
      * visiblitychange event
      * @memberof iOSDetector
@@ -48,7 +49,7 @@ var iOSDetector = snippet.extend({
  * @namespace iOSDetector.iOS7AndBefore
  * @ignore
  */
-iOSDetector.iOS7AndBefore = snippet.extend({
+iOSDetector.iOS7AndBefore = extend({
   /**
      * detector Run
      * @param {object} context Data for app loading
@@ -56,7 +57,7 @@ iOSDetector.iOS7AndBefore = snippet.extend({
      */
   run: function(context) {
     var storeURL = context.iosStoreURL,
-      callback = context.notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
+      callback = context.notFoundCallback || bind(this.moveTo, this, storeURL);
 
     this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
     this.bindPagehideEvent();
@@ -69,7 +70,7 @@ iOSDetector.iOS7AndBefore = snippet.extend({
  * @namespace iOSDetector.iOS8
  * @ignore
  */
-iOSDetector.iOS8 = snippet.extend({
+iOSDetector.iOS8 = extend({
   /**
      * detector run
      * @param {object} context Data for app loading
@@ -78,7 +79,7 @@ iOSDetector.iOS8 = snippet.extend({
   run: function(context) {
     var storeURL = context.iosStoreURL,
       notFoundCallback = context.notFoundCallback,
-      callback = notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
+      callback = notFoundCallback || bind(this.moveTo, this, storeURL);
 
     this.tid = this.deferCallback(callback, this.TIMEOUT.IOS);
     this.bindVisibilityChangeEvent();
@@ -90,7 +91,7 @@ iOSDetector.iOS8 = snippet.extend({
  * ios recent but safari prevent to call application via iframe src.
  * @ignore
  */
-iOSDetector.iOS9AndLater = snippet.extend({
+iOSDetector.iOS9AndLater = extend({
   /**
      * detector run
      * @param {object} context Data for app loading
@@ -99,7 +100,7 @@ iOSDetector.iOS9AndLater = snippet.extend({
   run: function(context) {
     var storeURL = context.iosStoreURL,
       notFoundCallback = context.notFoundCallback,
-      callback = notFoundCallback || snippet.bind(this.moveTo, this, storeURL);
+      callback = notFoundCallback || bind(this.moveTo, this, storeURL);
 
     if (context.universalLink) {
       this.moveTo(context.universalLink);

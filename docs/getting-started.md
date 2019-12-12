@@ -10,8 +10,7 @@ appLoader.exec({ ... });
 
 ### browser
 ```html
-<script src="https://uicdn.toast.com/tui.code-snippet/v1.3.0/tui-code-snippet.min.js"></script>
-<script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
+<script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.20/src/ua-parser.min.js"></script>
 <script type="text/javascript" src="app-loader.js"></script>
 <script>
 var appLoader = new tui.AppLoader();

@@ -5,7 +5,10 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var extend = require('tui-code-snippet/object/extend');
+var isExisty = require('tui-code-snippet/type/isExisty');
+var isFunction = require('tui-code-snippet/type/isFunction');
+
 var ID_SUPPORT_FRAME = 'tui-support-frame';
 
 /**
@@ -70,7 +73,7 @@ var Detector = {
     var clickedAt = new Date().getTime();
     var self = this;
 
-    if (!snippet.isFunction(callback)) {
+    if (!isFunction(callback)) {
       return;
     }
 
@@ -87,10 +90,10 @@ var Detector = {
      * @returns {boolean} Page visibility
      */
   isPageVisible: function() {
-    if (snippet.isExisty(document.hidden)) {
+    if (isExisty(document.hidden)) {
       return !document.hidden;
     }
-    if (snippet.isExisty(document.webkitHidden)) {
+    if (isExisty(document.webkitHidden)) {
       return !document.webkitHidden;
     }
 
@@ -107,7 +110,7 @@ var Detector = {
  * @namespace Detector.androidSchemeDetector
  * @ignore
  */
-Detector.androidSchemeDetector = snippet.extend({
+Detector.androidSchemeDetector = extend({
   /**
      * detector type
      * @memberof Detector.androidSchemeDetector
@@ -135,7 +138,7 @@ Detector.androidSchemeDetector = snippet.extend({
  * @namespace Detector.androidIntentDetector
  * @ignore
  */
-Detector.androidIntentDetector = snippet.extend({
+Detector.androidIntentDetector = extend({
   /**
      * detector type
      * @memberof Detector.androidIntentDetector
@@ -158,7 +161,7 @@ Detector.androidIntentDetector = snippet.extend({
         //  this component cannot judge the app is installed or not.
         document.body.removeChild(iframe);
         clearTimeout(timeoutId);
-        if (snippet.isFunction(onErrorIframe)) {
+        if (isFunction(onErrorIframe)) {
           onErrorIframe();
         }
       }

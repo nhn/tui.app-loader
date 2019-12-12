@@ -11,12 +11,12 @@
  */
 var EtcDetector = {
   /**
-     * @memberof EtcDetector
-     */
+   * @memberof EtcDetector
+   */
   type: 'etc',
   /**
-     * @memberof EtcDetector
-     */
+   * @memberof EtcDetector
+   */
   run: function() {
   }
 };

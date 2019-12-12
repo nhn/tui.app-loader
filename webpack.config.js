@@ -51,12 +51,6 @@ module.exports = function(env, argv) {
       filename: FILENAME + '.js'
     },
     externals: {
-      'tui-code-snippet': {
-        commonjs: 'tui-code-snippet',
-        commonjs2: 'tui-code-snippet',
-        amd: 'tui-code-snippet',
-        root: ['tui', 'util']
-      },
       'ua-parser-js': {
         commonjs: 'ua-parser-js',
         commonjs2: 'ua-parser-js',
