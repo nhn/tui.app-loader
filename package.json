@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "tui-code-snippet": "^2.1.0",
-    "ua-parser-js": "^0.7.14"
+    "ua-parser-js": "^0.7.20"
   }
 }
