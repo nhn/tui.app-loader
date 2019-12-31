@@ -20,13 +20,12 @@ var iOSDetector = extend({
      * @memberof iOSDetector
      */
   bindVisibilityChangeEvent: function() {
-    var self = this;
-    document.addEventListener('visibilitychange', function clear() {
-      if (self.isPageVisible()) {
-        clearTimeout(self.tid);
+    document.addEventListener('visibilitychange', bind(function clear() {
+      if (this.isPageVisible()) {
+        clearTimeout(this.tid);
         document.removeEventListener('visibilitychange', clear);
       }
-    });
+    }, this));
   },
 
   /**
@@ -34,13 +33,12 @@ var iOSDetector = extend({
      *  @memberof iOSDetector
      */
   bindPagehideEvent: function() {
-    var self = this;
-    window.addEventListener('pagehide', function clear() {
-      if (self.isPageVisible()) {
-        clearTimeout(self.tid);
+    window.addEventListener('pagehide', bind(function clear() {
+      if (this.isPageVisible()) {
+        clearTimeout(this.tid);
         window.removeEventListener('pagehide', clear);
       }
-    });
+    }, this));
   }
 }, Detector);
 

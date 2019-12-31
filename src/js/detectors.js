@@ -8,6 +8,7 @@
 var extend = require('tui-code-snippet/object/extend');
 var isExisty = require('tui-code-snippet/type/isExisty');
 var isFunction = require('tui-code-snippet/type/isFunction');
+var bind = require('./util').bind;
 
 var ID_SUPPORT_FRAME = 'tui-support-frame';
 
@@ -69,20 +70,20 @@ var Detector = {
      * @param {number} time A delay time
      * @returns {number|undefined} Timer id
      */
-  deferCallback: function(callback, time) {/* eslint-disable consistent-return */
+  deferCallback: function(callback, time) {
     var clickedAt = new Date().getTime();
-    var self = this;
+    var timer;
 
-    if (!isFunction(callback)) {
-      return;
+    if (isFunction(callback)) {
+      timer = setTimeout(bind(function() {
+        var now = new Date().getTime();
+        if (this.isPageVisible() && now - clickedAt < time + this.TIMEOUT.INTERVAL) {
+          callback();
+        }
+      }, this), time);
     }
 
-    return setTimeout(function() {
-      var now = new Date().getTime();
-      if (self.isPageVisible() && now - clickedAt < time + self.TIMEOUT.INTERVAL) {
-        callback();
-      }
-    }, time); /* eslint-enable consistent-return */
+    return timer;
   },
 
   /**
