@@ -1,6 +1,5 @@
 /**
  * @fileoverview Load native app or move to install page
- * @dependency code-js, detectors.js, agentDetector.js
  * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
