@@ -17,7 +17,6 @@ var EtcDetector = {
   /**
    * @memberof EtcDetector
    */
-  run: function() {
-  }
+  run: function() {}
 };
 module.exports = EtcDetector;

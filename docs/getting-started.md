@@ -63,3 +63,5 @@ appLoader.exec({
   }
 });
 ```
+
+For more information about the API, please see [here](https://nhn.github.io/tui.app-loader/latest/AppLoader).

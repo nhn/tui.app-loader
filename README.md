@@ -136,14 +136,12 @@ const AppLoader = require('tui-app-loader'); /* CommonJS */
 ```
 
 ``` javascript
-import {AppLoader} from 'tui-app-loader'; /* ES6 */
+import AppLoader from 'tui-app-loader'; /* ES6 */
 ```
 
 You should call `exec` method with [options](http://nhn.github.io/tui.app-loader/latest/AppLoader#exec) after creating an instance.
 
 ``` javascript
-import AppLoader from 'tui-app-loader';
-
 const appLoader = new AppLoader();
 appLoader.exec({ ... });
 ```
