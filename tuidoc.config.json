@@ -29,7 +29,7 @@
     "filePath": "examples",
     "titles": {
       "example01-basic": "1. Basic - launch App by clicking a button",
-      "example02-using-iframe": "2. Using iframe - aunch App with page loading"
+      "example02-using-iframe": "2. Using iframe - launch App with page loading"
     }
   },
   "pathPrefix": "tui.app-loader"

@@ -1,17 +1,17 @@
 {
   "name": "tui-app-loader",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "main": "dist/tui-app-loader",
   "files": [
     "dist"
   ],
   "scripts": {
-    "bundle": "webpack & webpack -p",
+    "bundle": "webpack --mode=production & webpack --mode=production --minify",
     "serve": "webpack-dev-server --inline --hot -d",
     "serve:ie8": "webpack-dev-server -d",
     "doc:serve": "tuidoc --serv",
     "doc": "tuidoc",
-    "note": "tuie --tag=$(git describe --tags)"
+    "note": "tui-note"
   },
   "description": "TOAST UI Component: AppLoader for mobile deep-linking",
   "repository": {
@@ -28,18 +28,20 @@
   "author": "NHN. FE Development Lab <dl_javascript@nhn.com>",
   "license": "MIT",
   "devDependencies": {
+    "@toast-ui/release-notes": "^2.0.1",
     "eslint": "^5.12.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-config-tui": "^2.2.0",
     "eslint-loader": "^3.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "prettier": "^1.18.2",
-    "tui-release-notes": "github:nhn/tui.release-notes#v1.0.0",
+    "terser-webpack-plugin": "^2.2.3",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "tui-code-snippet": "^1.5.0",
-    "ua-parser-js": "^0.7.14"
+    "tui-code-snippet": "^2.2.0",
+    "ua-parser-js": "^0.7.20"
   }
 }

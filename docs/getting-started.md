@@ -1,24 +1,22 @@
-## Installation
+## Install
 
-### node
+``` sh
+$ npm install --save tui-app-loader # Latest version
+$ npm install --save tui-app-loader@<version> # Specific version
+```
+
+It can also be installed by using bower or downloaded by CDN. Please refer to the [💾 Install](https://github.com/nhn/tui.app-loader#-install).
+
+## Usage
 
 ```javascript
-var AppLoader = require('tui-app-loader');
-var appLoader = new AppLoader();
+import AppLoader from 'tui-app-loader';
+
+const appLoader = new AppLoader();
 appLoader.exec({ ... });
 ```
 
-### browser
-```html
-<script src="https://uicdn.toast.com/tui.code-snippet/v1.3.0/tui-code-snippet.min.js"></script>
-<script src="//cdn.rawgit.com/faisalman/ua-parser-js/v0.7.1/src/ua-parser.min.js"></script>
-<script type="text/javascript" src="app-loader.js"></script>
-<script>
-var appLoader = new tui.AppLoader();
-appLoader.exec({ ... });
-</script>
-...
-```
+It can also be used by namespace or CommonJS module. Please refer to the [🔨 Usage](https://github.com/nhn/tui.app-loader#-usage).
 
 ## Set options for landing scheme
 AppLoader runs on a iOS or Android device.  
@@ -48,20 +46,22 @@ As an Android and iOS have a different deep-linking policy, you should set both 
 ## Example code
 
 ```javascript
-var appLoader = new tui.AppLoader();
+const appLoader = new AppLoader();
 appLoader.exec({
-     ios: {
-         scheme: '<app-scheme>://',
-         url: '<fallback-url>', // app store url
-     },
-     android: {
-         intentURI: 'intent://<action>#Intent;scheme=<uri-scheme>;package=<package-name>;S.browser_fallback_url=<encoded-fallback-url>;end'
-     },
-     notFoundCallback: function(storeUrl) {
-         alert('could not find app');
-     },
-     etcCallback: function() {
-         alert('support iOS and Android only');
-     }
+  ios: {
+    scheme: '<app-scheme>://',
+    url: '<fallback-url>', // app store url
+  },
+  android: {
+    intentURI: 'intent://<action>#Intent;scheme=<uri-scheme>;package=<package-name>;S.browser_fallback_url=<encoded-fallback-url>;end'
+  },
+  notFoundCallback: function(storeUrl) {
+    alert('could not find app');
+  },
+  etcCallback: function() {
+    alert('support iOS and Android only');
+  }
 });
 ```
+
+For more information about the API, please see [here](https://nhn.github.io/tui.app-loader/latest/AppLoader).

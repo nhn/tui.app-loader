@@ -27,14 +27,14 @@
 TOAST UI AppLoader applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI AppLoader is used throughout the world. It also serves as important index to determine the future course of projects. location.hostname (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage. To disable GA, use the following `usageStatistics` options when creating the instance.
 
 ```js
-var options = {
-    ...
-    usageStatistics: false
+const options = {
+  ...
+  usageStatistics: false
 }
-var instance = new AppLoader(options);
+const instance = new AppLoader(options);
 ```
 
-Or, include `tui-code-snippet.js` (**v1.5.0** or **later**) and then immediately write the options as follows:
+Or, include `tui-code-snippet.js` (**v2.2.0** or **later**) and then immediately write the options as follows:
 
 ```js
 tui.usageStatistics = false;
@@ -127,25 +127,23 @@ To get the constructor function, you should import the module using one of the f
 
 #### Using namespace in browser environment
 ``` javascript
-var AppLoader = tui.AppLoader;
+const AppLoader = tui.AppLoader;
 ```
 
 #### Using module format in node environment
 ``` javascript
-var AppLoader = require('tui-app-loader'); /* CommonJS */
+const AppLoader = require('tui-app-loader'); /* CommonJS */
 ```
 
 ``` javascript
-import {AppLoader} from 'tui-app-loader'; /* ES6 */
+import AppLoader from 'tui-app-loader'; /* ES6 */
 ```
-
 
 You should call `exec` method with [options](http://nhn.github.io/tui.app-loader/latest/AppLoader#exec) after creating an instance.
 
 ``` javascript
-var instance = new AppLoader();
-
-instance.exec({ ... });
+const appLoader = new AppLoader();
+appLoader.exec({ ... });
 ```
 
 
@@ -195,7 +193,7 @@ For more information on PR's step, please see links of Contributing section.
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 * [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 
