@@ -193,7 +193,6 @@ For more information on PR's step, please see links of Contributing section.
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 * [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 
