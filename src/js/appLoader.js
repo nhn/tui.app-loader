@@ -33,11 +33,14 @@ var defaultOptions = {
  * @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @see AppLoader#exec
  * @example <caption>node, commonjs</caption>
- * var Apploader = require('tui-app-loader');
- * var appLoader = new AppLoader();
+ * import AppLoader from 'tui-app-loader'; // ES6
+ * // const AppLoader = require('tui-app-loader'); // CommonJS
+ * // const AppLoader = tui.AppLoader;
+ *
+ * const appLoader = new AppLoader();
  * appLoader.exec(...);
  * @example <caption>brower, global namespace</caption>
- * var appLoader = new tui.AppLoader();
+ * const appLoader = new tui.AppLoader();
  * appLoader.exec(...);
  */
 var AppLoader = defineClass(
@@ -157,7 +160,7 @@ var AppLoader = defineClass(
      * @param {Function} options.notFoundCallback It not found
      *
      * @example
-     * var loader = new tui.AppLoader();
+     * const loader = new AppLoader();
      * loader.exec({
      *      ios: {
      *          scheme: '<app-scheme>://', // iphone app scheme
