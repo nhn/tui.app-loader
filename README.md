@@ -9,17 +9,32 @@
 
 
 ## 🚩 Table of Contents
-* [Collect statistics on the use of open source](#Collect-statistics-on-the-use-of-open-source)
-* [Documents](#-documents)
-* [Features](#-features)
-* [Examples](#-examples)
-* [Install](#-install)
-* [Usage](#-usage)
-* [Dependency](#-dependency)
-* [Pull Request Steps](#-pull-request-steps)
-* [Contributing](#-contributing)
-* [TOAST UI Family](#-toast-ui-family)
-* [License](#-license)
+
+- [Collect statistics on the use of open source](#collect-statistics-on-the-use-of-open-source)
+- [📙 Documents](#-documents)
+- [🎨 Features](#-features)
+- [🐾 Examples](#-examples)
+- [💾 Install](#-install)
+  - [Via Package Manager](#via-package-manager)
+    - [npm](#npm)
+    - [bower](#bower)
+  - [Via Contents Delivery Network (CDN)](#via-contents-delivery-network-cdn)
+  - [Download Source Files](#download-source-files)
+- [🔨 Usage](#-usage)
+  - [HTML](#html)
+  - [JavaScript](#javascript)
+    - [Using namespace in browser environment](#using-namespace-in-browser-environment)
+    - [Using module format in node environment](#using-module-format-in-node-environment)
+- [🔧 Pull Request Steps](#-pull-request-steps)
+  - [Setup](#setup)
+  - [Develop](#develop)
+    - [Run webpack-dev-server](#run-webpack-dev-server)
+    - [Run karma test](#run-karma-test)
+  - [Pull Request](#pull-request)
+- [🔩 Dependency](#-dependency)
+- [💬 Contributing](#-contributing)
+- [🍞 TOAST UI Family](#-toast-ui-family)
+- [📜 License](#-license)
 
 
 ## Collect statistics on the use of open source
@@ -193,7 +208,6 @@ For more information on PR's step, please see links of Contributing section.
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 * [ua-parser-js](https://github.com/faisalman/ua-parser-js) >=0.7.4
 
 
