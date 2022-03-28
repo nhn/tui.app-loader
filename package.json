@@ -23,9 +23,10 @@
     "tui",
     "deep linking",
     "app-loader",
-    "app launcher"
+    "app launcher",
+    "nhn cloud"
   ],
-  "author": "NHN. FE Development Lab <dl_javascript@nhn.com>",
+  "author": "NHN Cloud. FE Development Lab <dl_javascript@nhn.com>",
   "license": "MIT",
   "devDependencies": {
     "@toast-ui/release-notes": "^2.0.1",
