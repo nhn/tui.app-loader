@@ -1,7 +1,7 @@
 /*!
  * TOAST UI App Loader
  * @version 2.1.6
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+ * @author NHN Cloud. FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -175,7 +175,6 @@ module.exports = isUndefined;
 "use strict";
 /**
  * @fileoverview Mixin modules
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -382,7 +381,6 @@ module.exports = Detector;
 "use strict";
 /**
  * @fileoverview Utility
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -420,7 +418,6 @@ module.exports = utils;
 "use strict";
 /**
  * @fileoverview Load native app or move to install page
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -1105,7 +1102,6 @@ module.exports = isFunction;
 "use strict";
 /**
  * @fileoverview iOS Mixin modules
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
@@ -1243,7 +1239,6 @@ module.exports = iOSDetector;
 "use strict";
 /**
  * @fileoverview EtcDetector for unsupported env.
- * @author NHN. FE Development Lab <dl_javascript@nhn.com>
  */
 
 
